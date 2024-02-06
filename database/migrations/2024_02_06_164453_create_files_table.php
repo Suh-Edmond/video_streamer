@@ -14,13 +14,11 @@ return new class extends Migration
     public function up()
     {
         Schema::create('files', function (Blueprint $table) {
-            $table->uuid('id')->primary();
+            $table->id();
             $table->string("name");
             $table->enum('file_type', ['IMAGE', 'VIDEO']);
-            $table->uuid('user_id');
+            $table->foreignId('user_id')->constrained();
             $table->timestamps();
-
-            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 
