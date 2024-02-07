@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\FileController;
+use App\Http\Controllers\UsersController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,5 +22,14 @@ Route::get('/', function () {
 
 Auth::routes();
 
-
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::get('/files', [FileController::class, 'manageFiles'])->name('files');
+
+Route::get('/users', [UsersController::class, 'manageUsers'])->name('users')
+    ->middleware('auth');
+Route::post('/users/{id}/block', [UsersController::class, 'blockUser'])->name('users.block')
+    ->middleware('auth');
+Route::post('/users/{id}/delete', [UsersController::class, 'deleteUser'])->name('users.delete')
+    ->middleware('auth');
+
