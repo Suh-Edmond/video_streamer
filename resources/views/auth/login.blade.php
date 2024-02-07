@@ -1,73 +1,130 @@
-@extends('layouts.app')
+@extends('layouts.auth')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Login') }}</div>
+    <div class="position-relative top-50">
+        <div>
+            <nav class="nav nav-pills nav-fill nav-justified" id="pills-tab" role="tablist">
+                <a class="nav-link active" href="{{ route('login') }}" id="pills-login-tab" data-bs-toggle="pill" data-bs-target="#pills-login" role="tab" aria-controls="pills-login" aria-selected="true">LOGIN</a>
+                <a class="nav-link" href="{{ route('register') }}"  id="pills-register-tab" data-bs-toggle="pill" data-bs-target="#pills-register" role="tab" aria-controls="pills-register" aria-selected="true">REGISTER</a>
+            </nav>
+            <div class="tab-content" id="pills-tabContent">
+                <div class="tab-pane fade show active" id="pills-login" role="tabpanel" aria-labelledby="pills-login-tab">
+                   <div class="my-4">
+                       <form method="POST" action="{{ route('login') }}">
+                           @csrf
 
-                <div class="card-body">
-                    <form method="POST" action="{{ route('login') }}">
-                        @csrf
-
-                        <div class="row mb-3">
-                            <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Email Address') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
-
-                                @error('email')
-                                    <span class="invalid-feedback" role="alert">
+                           <div class="row mb-3">
+                               <div class="col-md-12">
+                                   <label for="exampleFormControlInput1" class="form-label"><span><i class="email"></i></span>  Email Address</label>
+                                   <input class="form-control form-control-md @error('email') is-invalid @enderror" type="email" name="email" value="{{ old('email') }}" required>
+                                   <div class="col-md-6">
+                                       @error('email')
+                                       <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
-                                @enderror
-                            </div>
-                        </div>
+                                       @enderror
+                                   </div>
+                               </div>
+                           </div>
 
-                        <div class="row mb-3">
-                            <label for="password" class="col-md-4 col-form-label text-md-end">{{ __('Password') }}</label>
+                           <div class="row mb-3">
+                               <div class="col-md-12">
+                                   <label for="exampleFormControlInput1" class="form-label">Password</label>
+                                   <input id="password" type="password" class="form-control form-control-md @error('password') is-invalid @enderror" name="password">
 
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
-
-                                @error('password')
-                                    <span class="invalid-feedback" role="alert">
+                                   <div class="col-md-6">
+                                       @error('password')
+                                       <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
-                                @enderror
-                            </div>
-                        </div>
+                                       @enderror
+                                   </div>
+                               </div>
+                           </div>
 
-                        <div class="row mb-3">
-                            <div class="col-md-6 offset-md-4">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-
-                                    <label class="form-check-label" for="remember">
-                                        {{ __('Remember Me') }}
-                                    </label>
+                           <div class="row mb-0 mt-4">
+                               <div class="col-md-12">
+                                   <button type="submit" class="btn btn-primary w-100">
+                                       {{ __('Continue') }}
+                                   </button>
+                               </div>
+                           </div>
+                       </form>
+                   </div>
+                </div>
+                <div class="tab-pane fade show" id="pills-register" role="tabpanel" aria-labelledby="pills-register-tab">
+                    <div class="my-4">
+                        <form method="POST" action="{{ route('register') }}">
+                            @csrf
+                            <div class="row mb-3">
+                                <div class="col-md-12">
+                                    <label for="exampleFormControlInput1" class="form-label">Name</label>
+                                    <input class="form-control form-control-md @error('name') is-invalid @enderror" type="text" name="name" value="{{ old('name') }}" required>
+                                    <div class="col-md-6">
+                                        @error('name')
+                                        <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                        @enderror
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="row mb-0">
-                            <div class="col-md-8 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Login') }}
-                                </button>
-
-                                @if (Route::has('password.request'))
-                                    <a class="btn btn-link" href="{{ route('password.request') }}">
-                                        {{ __('Forgot Your Password?') }}
-                                    </a>
-                                @endif
+                            <div class="row mb-3">
+                                <div class="col-md-12">
+                                    <label for="exampleFormControlInput1" class="form-label">Email</label>
+                                    <input class="form-control form-control-md @error('email') is-invalid @enderror" type="email" name="email" value="{{ old('email') }}" required>
+                                    <div class="col-md-6">
+                                        @error('email')
+                                        <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                        @enderror
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </form>
+
+                            <div class="row mb-3">
+                                <div class="col-md-12">
+                                    <label for="exampleFormControlInput1" class="form-label">Password</label>
+                                    <input id="password" type="password" class="form-control form-control-md @error('password') is-invalid @enderror" name="password" required>
+
+                                    <div class="col-md-6">
+                                        @error('password')
+                                        <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-12">
+                                    <label for="exampleFormControlInput1" class="form-label">Confirm Password</label>
+                                    <input id="password-confirm"  type="password" class="form-control form-control-md" name="password_confirmation">
+
+                                    <div class="col-md-6">
+                                        @error('password_confirmation')
+                                        <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mb-0 mt-4">
+                                <div class="col-md-12">
+                                    <button type="submit" class="btn btn-primary w-100">
+                                        {{ __('Continue') }}
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 @endsection
