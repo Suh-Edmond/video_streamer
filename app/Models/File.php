@@ -8,9 +8,19 @@ use Illuminate\Database\Eloquent\Model;
 class File extends Model
 {
     use HasFactory;
+
+    const IMAGE_DIR ='/storage/uploads/images/';
     protected $fillable = [
         'name',
         'file_type',
         'user_id'
     ];
+
+
+    public function getFilePath($fileId)
+    {
+        $file = File::findOrFail($fileId);
+        $user = "USER_".$file->user_id;
+        return self::IMAGE_DIR. $user . "/". $file->name;
+    }
 }

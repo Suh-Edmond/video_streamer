@@ -3,20 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Constant\FileType;
+use App\Http\Resources\FileResource;
 use App\Models\File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class FileController extends Controller
 {
-    const IMAGE_DIR ='/images/';
+    const IMAGE_DIR ='/uploads/images/';
 
     public function manageFiles()
     {
-
-        $user_id = $this->getUser()->id;
         $files = File::all();
-
         $data = [
             'items' => $files,
             'gridView' => true,
@@ -35,14 +33,16 @@ class FileController extends Controller
 
     public function uploadFile(Request $request)
     {
-
         $request->validate([
-            'image' => 'required|image'
+            'image' => 'required|image|mimes:jpg,jpeg,png'
         ]);
 
         $fileName = $request->file('image')->getClientOriginalName();
 
-        Storage::disk('local')->put(self::IMAGE_DIR.$fileName, $request->file('image'));
+        $authUserId = auth()->user()->getAuthIdentifier();
+        $user = "USER_".$authUserId;
+
+        $request->file('image')->storeAs(self::IMAGE_DIR.$user, $fileName, 'public');
 
         $this->saveFile($fileName, $request);
 

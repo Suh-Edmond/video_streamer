@@ -96,6 +96,5 @@
             @endforelse
         </table>
 
-{{--        {{ $data['items']->links() }}--}}
     </div>
 @endsection

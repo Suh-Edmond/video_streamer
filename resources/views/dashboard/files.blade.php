@@ -11,13 +11,13 @@
                     <div class="d-flex flex-column align-items-center">
                         <div class="text-center px-2 py-4">{{ $item->name }}</div>
 
-                        <img class="h-2 w-full" src={{ asset('storage/uploads/images/'.$item->name)}} alt="">
+                        <img class="h-2 w-full" src={{ asset($item->getFilePath($item->id))}} alt="" width="150px" height="150px">
 
                         <div class="py-3">
                             <button class="btn " title="Generate QR Code"><i
                                     class="fa-regular fa-share-from-square"></i></button>
                             <button class="btn text-danger" title="Delete">
-                                <a href="{{route('delete_file')}}">
+                                <a>
                                     <i class="fa-solid fa-trash-can"></i>
                                 </a>
                             </button>
