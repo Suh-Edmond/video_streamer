@@ -30,6 +30,8 @@ Route::get('/users', [UsersController::class, 'manageUsers'])->name('users')
     ->middleware('auth');
 Route::post('/users/{id}/block', [UsersController::class, 'blockUser'])->name('users.block')
     ->middleware('auth');
+Route::post('/users/{id}/unblock', [UsersController::class, 'unBlockUser'])->name('users.unblock')
+    ->middleware('auth');
 Route::post('/users/{id}/delete', [UsersController::class, 'deleteUser'])->name('users.delete')
     ->middleware('auth');
 

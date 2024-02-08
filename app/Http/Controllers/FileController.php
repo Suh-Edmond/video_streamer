@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\File;
-use Illuminate\Support\Facades\Auth;
 
 class FileController extends Controller
 {
