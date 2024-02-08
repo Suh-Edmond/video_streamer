@@ -5,11 +5,11 @@
 
 @section('dashboard-content')
     @if ($data['gridView'])
-        <div class="row gap-auto">
+        <div class="row gap-auto gap-4">
             @forelse ($data['items'] as $item)
                 <div class="col-12 col-md-5 col-lg-2 mb-2 bg-white rounded">
                     <div class="d-flex flex-column align-items-center">
-                        <div class="text-center px-2 py-4">{{ $item->name }}</div>
+                        <div class="text-center  py-4">{{ $item->name }}</div>
 
                         <img class="h-2 w-full" src={{ asset($item->getFilePath($item->id))}} alt="" width="150px" height="150px">
 
@@ -17,9 +17,16 @@
                             <button class="btn " title="Generate QR Code"><i
                                     class="fa-regular fa-share-from-square"></i></button>
                             <button class="btn text-danger" title="Delete">
-                                <a>
-                                    <i class="fa-solid fa-trash-can"></i>
+                                <a href="{{route('delete_file', ['id' => $item->id])}}" onclick="event.preventDefault();
+                                         document.getElementById('delete-form').submit();">
+                                    <i class="fa-solid fa-trash-can text-danger"></i>
                                 </a>
+
+                                <form id="delete-form" action="{{ route('delete_file', ['id' => $item->id]) }}"
+                                      method="POST" class="d-none">
+                                    @csrf
+
+                                </form>
                             </button>
                         </div>
                     </div>

@@ -37,6 +37,6 @@ Route::middleware('auth')->group(function (){
 
     Route::post('/files/upload', [FileController::class, 'uploadFile'])->name('upload_files');
 
-    Route::delete('files/{id}/delete', [FileController::class, 'deleteFile'])->name('delete_file');
+    Route::post('/files/{id}/delete', [FileController::class, 'deleteImage'])->name('delete_file');
 });
 

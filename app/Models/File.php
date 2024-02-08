@@ -23,4 +23,10 @@ class File extends Model
         $user = "USER_".$file->user_id;
         return self::IMAGE_DIR. $user . "/". $file->name;
     }
+
+    public function getImageDeletePath($userId, $fileName)
+    {
+        $user = "USER_".$userId;
+        return "uploads/images/".$user."/".$fileName;
+    }
 }

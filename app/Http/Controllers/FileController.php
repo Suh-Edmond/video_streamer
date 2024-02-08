@@ -38,6 +38,7 @@ class FileController extends Controller
         ]);
 
         $fileName = $request->file('image')->getClientOriginalName();
+        $fileName = str_replace(' ', '', $fileName);
 
         $authUserId = auth()->user()->getAuthIdentifier();
         $user = "USER_".$authUserId;
@@ -52,10 +53,9 @@ class FileController extends Controller
     public function deleteImage($id)
     {
         $file = File::findOrFail($id);
-        $path = Storage::path($file->name);
+        $path = $file->getImageDeletePath($file->user_id, $file->name);
         Storage::delete($path);
         $file->delete();
-
         return back();
     }
 

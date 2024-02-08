@@ -75,7 +75,7 @@
                                     <li>
                                         <a href="{{ route('users.delete', ['id' => $user->id]) }}"  onclick="event.preventDefault();
                                          document.getElementById('delete-form').submit();"
-                                            class="dropdown-item d-flex gap-2 align-items-center"><i
+                                            class="dropdown-item d-flex gap-2 align-items-center text-danger"><i
                                                 class="fas fa-trash-can"></i><span class="text-danger">Delete</span></a>
                                         </a>
 
