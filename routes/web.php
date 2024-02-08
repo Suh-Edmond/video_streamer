@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\QRCodeController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FileController;
@@ -38,5 +39,11 @@ Route::middleware('auth')->group(function (){
     Route::post('/files/upload', [FileController::class, 'uploadFile'])->name('upload_files');
 
     Route::post('/files/{id}/delete', [FileController::class, 'deleteImage'])->name('delete_file');
+
+    Route::get("files/{id}/get_share_link", [QRCodeController::class, 'generateShareLink'])->name('share_link');
+});
+
+Route::middleware('guest')->group(function (){
+    Route::get('/files/{id}/share/code', [QRCodeController::class, 'generateQRCode'])->name('scan_qrcode');
 });
 
