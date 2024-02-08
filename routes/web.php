@@ -22,16 +22,21 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::middleware('auth')->group(function (){
+    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::get('/files', [FileController::class, 'manageFiles'])->name('files');
+    Route::get('/files', [FileController::class, 'manageFiles'])->name('files');
 
-Route::get('/users', [UsersController::class, 'manageUsers'])->name('users')
-    ->middleware('auth');
-Route::post('/users/{id}/block', [UsersController::class, 'blockUser'])->name('users.block')
-    ->middleware('auth');
-Route::post('/users/{id}/unblock', [UsersController::class, 'unBlockUser'])->name('users.unblock')
-    ->middleware('auth');
-Route::post('/users/{id}/delete', [UsersController::class, 'deleteUser'])->name('users.delete')
-    ->middleware('auth');
+    Route::get('/users', [UsersController::class, 'manageUsers'])->name('users');
+
+    Route::post('/users/{id}/block', [UsersController::class, 'blockUser'])->name('users.block');
+
+    Route::post('/users/{id}/unblock', [UsersController::class, 'unBlockUser'])->name('users.unblock');
+
+    Route::post('/users/{id}/delete', [UsersController::class, 'deleteUser'])->name('users.delete');
+
+    Route::post('/files/upload', [FileController::class, 'uploadFile'])->name('upload_files');
+
+    Route::delete('files/{id}/delete', [FileController::class, 'deleteFile'])->name('delete_file');
+});
 
