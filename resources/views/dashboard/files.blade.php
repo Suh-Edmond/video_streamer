@@ -9,27 +9,38 @@
             @forelse ($data['items'] as $item)
                 <div class="col-12 col-md-5 col-lg-2 mb-2 bg-white rounded">
                     <div class="d-flex flex-column align-items-center">
-                        <div class="text-center  py-4">{{ $item->name }}</div>
+                        <img class="h-2 w-full pt-4" src={{ asset($item->getFilePath($item->id))}} alt="" width="150px" height="150px">
+                        <div class="text-center py-4">
+                            <button type="button" class="btn btn-light btn-sm w-100 dropdown-toggle"  id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"> {{ $item->name }}</button>
 
-                        <img class="h-2 w-full" src={{ asset($item->getFilePath($item->id))}} alt="" width="150px" height="150px">
-
-                        <div class="py-3">
-                            <button class="btn shareBtn-{{$item->id}}" title="Generate QR Code" onclick="generateQRcode({{$item}})">
-                                <i
-                                    class="fa-regular fa-share-from-square"></i>
-                            </button>
-                            <button class="btn text-danger" title="Delete">
-                                <a href="{{route('delete_file', ['id' => $item->id])}}" onclick="event.preventDefault();
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                <li><button class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#propertiesModal" onclick="showProperties({{$item}})">
+                                        <i class="fa-solid fa-circle-info"></i>&nbsp; Properties
+                                    </button></li>
+                                <li><button class="dropdown-item" type="button"  >
+                                        <i class="fa-solid fa-crop"></i>&nbsp; Crop
+                                    </button></li>
+                                <li>
+                                    <button class="btn shareBtn-{{$item->id}}"   onclick="generateQRcode({{$item}})">
+                                        <i
+                                            class="fa-regular fa-share-from-square"></i>&nbsp; Generate QR Code
+                                    </button>
+                                </li>
+                                <li>
+                                    <button class="btn text-danger">
+                                        <a href="{{route('delete_file', ['id' => $item->id])}}" onclick="event.preventDefault();
                                          document.getElementById('delete-form').submit();">
-                                    <i class="fa-solid fa-trash-can text-danger"></i>
-                                </a>
+                                            <i class="fa-solid fa-trash-can text-danger"></i>
+                                        </a>&nbsp; Delete
 
-                                <form id="delete-form" action="{{ route('delete_file', ['id' => $item->id]) }}"
-                                      method="POST" class="d-none">
-                                    @csrf
+                                        <form id="delete-form" action="{{ route('delete_file', ['id' => $item->id]) }}"
+                                              method="POST" class="d-none">
+                                            @csrf
 
-                                </form>
-                            </button>
+                                        </form>
+                                    </button>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </div>
@@ -104,8 +115,39 @@
         </div>
     </div>
 
-    <style>
+    <div class="modal fade" id="propertiesModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content m-3">
+                <div class="modal-header">
+                    <h5 class="modal-title file_label" id="exampleModalLabel">File Properties</h5>
+                    <button type="button" class="btn-close"   data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body mb-2">
+                    <div class="my-2">
+                        <label><span class="file_label">Name</span>:&nbsp;<span class="item_name"></span></label>
+                    </div>
+                    <div class="my-2">
+                        <label><span class="file_label">Type</span>:&nbsp;<span class="item_type"></span></label>
+                    </div>
+                    <div class="my-2">
+                        <label><span class="file_label">Size</span>:&nbsp;<span class="item_size"></span>bytes</label>
+                    </div>
+                    <div class="my-2">
+                        <label><span class="file_label">Created</span>:&nbsp;<span class="item_created"></span></label>
+                    </div>
+                    <div class="my-2">
+                        <label><span class="file_label">Modified</span>:&nbsp;<span class="item_modified"></span></label>
+                    </div>
 
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .file_label {
+            font-weight: bold;
+        }
         .link {
             font-weight: bold;
         }
@@ -155,6 +197,15 @@
 
         let shareViaWhatsapp = function () {
             window.open('https://api.whatsapp.com/send?phone=&text='+encodeURIComponent(link))
+        }
+
+        let showProperties = function (item){
+            console.log(item)
+            $('.item_name').text(item.name)
+            $('.item_type').text(item.file_type)
+            $('.item_created').text(new Date(item.created_at).toGMTString())
+            $('.item_modified').text(new Date(item.updated_at).toGMTString())
+            $('.item_size').text(item.size)
         }
     </script>
 @endsection

@@ -38,6 +38,7 @@ class FileController extends Controller
         ]);
 
         $fileName = $request->file('image')->getClientOriginalName();
+        $size = $request->file('image')->getSize();
         $fileName = str_replace(' ', '', $fileName);
 
         $authUserId = auth()->user()->getAuthIdentifier();
@@ -45,7 +46,7 @@ class FileController extends Controller
 
         $request->file('image')->storeAs(self::IMAGE_DIR.$user, $fileName, 'public');
 
-        $this->saveFile($fileName, $request);
+        $this->saveFile($fileName, $request, $size);
 
         return redirect()->route('files');
     }
@@ -59,12 +60,13 @@ class FileController extends Controller
         return back();
     }
 
-    private function saveFile($fileName, Request $request)
+    private function saveFile($fileName, Request $request, $size)
     {
         $saveFile = new File();
         $saveFile->name = $fileName;
         $saveFile->file_type = FileType::IMAGE;
         $saveFile->user_id = $request->user()->id;
+        $saveFile->size = $size;
 
         $saveFile->save();
     }
