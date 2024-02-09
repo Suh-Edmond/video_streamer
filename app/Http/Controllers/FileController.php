@@ -99,7 +99,8 @@ class FileController extends Controller
 
         $this->saveFile($fileName, $request, $size, FileType::VIDEO);
 
-        return redirect()->route('files');
+        $data['gridView'] = true;
+        return redirect()->back()->with($data);
     }
 
     public function deleteFile($id)

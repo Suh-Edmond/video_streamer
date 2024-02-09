@@ -77,7 +77,7 @@
                             </li>
                            @if($item->file_type == 'VIDEO')
                                 <li>
-                                    <button class="dropdown-item" type="button" onclick="streamVideo({{$item}})" data-bs-toggle="modal" data-bs-target="#streamVideoModal">
+                                    <button class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#streamVideoModal">
                                         <i class="fa-solid fa-play"></i>&nbsp; Play Video
                                     </button>
                                 </li>
@@ -102,7 +102,7 @@
 
                     <div class="d-flex flex-column ">
                         @if($item->file_type == 'IMAGE')
-                            <img class="h-2 w-full" src={{ asset($item->getFilePath($item->id)) }} alt="" width="150px" height="150px">
+                            <img class="h-2 w-full" src={{ asset($item->getFilePath($item->id, $item->file_type)) }} alt="" width="150px" height="150px">
                         @else
                             <img class="h-2 w-full" src={{ asset('assets/images/bg_video.png') }} alt="" width="150px" height="150px">
                         @endif
@@ -110,6 +110,27 @@
                         <div class=" py-2 text-wrap w-75">{{ $item->name }}</div>
                     </div>
                 </div>
+
+                <!-------------------------------------------------VIDEO STREAM MODAL-------------------------------------------->
+                @if($item->file_type == \App\Constant\FileType::VIDEO)
+                    <div class="modal fade" id="streamVideoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+                        <div class="modal-dialog modal-dialog-centered modal-lg">
+                            <div class="modal-content m-3">
+                                <div class="modal-header">
+                                    <h5 class="modal-title file_label" id="exampleModalLabel">Playing {{$item->name}}</h5>
+                                    <button type="button" class="btn-close"   data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body d-flex justify-content-center">
+                                    <video width="400" height="300" controls>
+                                        <source src="{{asset($item->getFilePath($item->id, $item->file_type))}}" type="video/mp4" id="video">
+                                        Your browser does not support the video tag.
+                                    </video>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endif
+                <!------------------------------------------------END OF VIDEO MODAL---------------------------------------------->
             @empty
                 <p>No items</p>
             @endforelse
@@ -150,7 +171,7 @@
                                     </li>
                                     @if($item->file_type == 'VIDEO')
                                         <li>
-                                            <button class="dropdown-item" type="button" onclick="streamVideo({{$item}})" data-bs-toggle="modal" data-bs-target="#streamVideoModal">
+                                            <button class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#streamVideoModal">
                                                 <i class="fa-solid fa-play"></i>&nbsp; Play Video
                                             </button>
                                         </li>
@@ -172,6 +193,27 @@
                             </div>
                         </td>
                     </tr>
+
+                    <!-------------------------------------------------VIDEO STREAM MODAL-------------------------------------------->
+                    @if($item->file_type == \App\Constant\FileType::VIDEO)
+                        <div class="modal fade" id="streamVideoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+                            <div class="modal-dialog modal-dialog-centered modal-lg">
+                                <div class="modal-content m-3">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title file_label" id="exampleModalLabel">Playing {{$item->name}}</span></h5>
+                                        <button type="button" class="btn-close"   data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body my-3 d-flex justify-content-center">
+                                        <video width="400" height="400"  autoplay controls >
+                                            <source src="{{asset($item->getFilePath($item->id, $item->file_type))}}" type="video/mp4" id="video">
+                                            Your browser does not support the video tag.
+                                        </video>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
+                    <!------------------------------------------------END OF VIDEO MODAL---------------------------------------------->
                 @empty
                     <p>No items</p>
                 @endforelse
@@ -241,25 +283,8 @@
     </div>
     <!-------------------------------------------------------------END OF PROPERTIES MODAL-------------------------->
 
-    <!-------------------------------------------------VIDEO STREAM MODAL-------------------------------------------->
-    <div class="modal fade" id="streamVideoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
-            <div class="modal-content m-3">
-                <div class="modal-header">
-                    <h5 class="modal-title file_label" id="exampleModalLabel">Playing <span id="video_name"></span></h5>
-                    <button type="button" class="btn-close"   data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body my-3 d-flex justify-content-center">
-                    <video width="400" height="400" controls>
-                        <source src="" type="video/mp4" id="video">
-                        Your browser does not support the video tag.
-                    </video>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!------------------------------------------------END OF VIDEO MODAL---------------------------------------------->
     <style>
+
         .file_label {
             font-weight: bold;
         }
@@ -350,25 +375,6 @@
         let changeLayout = function(newLayout) {
             layout = newLayout;
             applyParams(sort, filter, layout);
-        }
-
-        let streamVideo = function(file) {
-            let id = file.id;
-            $('#video_name').text(file.name);
-            $.ajax({
-                url: "{{ route('get_video_path', '__ID__') }}".replace('__ID__', id),
-                type: 'GET',
-                headers: {
-                    'X-CSRF-TOKEN': CSRF_TOKEN
-                },
-                success: function(response) {
-                    console.log(response)
-                    $('#video').attr('src', response.data);
-                },
-                error: function(error) {
-                    console.log(error)
-                }
-            })
         }
 
         $(document).ready(function() {

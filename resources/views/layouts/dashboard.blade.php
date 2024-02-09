@@ -34,15 +34,15 @@
 
     <!----------------------UPLOAD IMAGE MODAL------------------------------------------>
     <div class="modal fade" id="uploadImageModal" tabindex="-1" aria-labelledby="uploadImageModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="uploadImageModalLabel">Upload Image</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body p-2">
-                    <div class="row row-gap-2 m-5">
-                        <img id="image" src="{{asset('assets/images/bg_image.png')}}" class="img_upload" width="150px" height="150px">
+                    <div class="row row-gap-2 m-3">
+                        <img id="image" src="{{asset('assets/images/bg_transparent.jpg')}}" class="img_upload" width="160px" height="160px">
                     </div>
                     <div class="row row-cols-1 mt-3 mx-3 mb-3">
                         <form action="{{ route('upload_files') }}" method="POST" enctype="multipart/form-data">
@@ -67,7 +67,7 @@
 
     <!----------------------UPLOAD IMAGE MODAL------------------------------------------>
     <div class="modal fade" id="uploadVideoModal" tabindex="-1" aria-labelledby="uploadVideoModalLabel" aria-hidden="true"  data-bs-backdrop="static" data-bs-keyboard="false">
-        <div class="modal-dialog" >
+        <div class="modal-dialog modal-dialog-centered" >
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="uploadVideoModalLabel">Upload Video</h5>
