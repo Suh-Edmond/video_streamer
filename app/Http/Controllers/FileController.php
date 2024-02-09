@@ -12,12 +12,37 @@ class FileController extends Controller
 {
     const IMAGE_DIR ='/uploads/images/';
 
-    public function manageFiles()
+    public function manageFiles(Request $request)
     {
-        $files = File::all();
+        $user_id = $this->getUser()->id;
+        $query = File::query()->where('user_id', $user_id);
+
+        $sort = $request->query('sort');
+        $filter = $request->query('filter');
+        $layout = $request->query('layout');
+
+        if(isset($sort)) {
+            switch ($sort) {
+                case 'DATE_ASC':
+                    $query->orderBy('created_at');
+                    break;
+                case 'NAME':
+                    $query->orderBy('name');
+                    break;
+                default:
+                    $query->orderByDesc('created_at');
+                    break;
+            }
+        }
+
+        if (isset($filter)) {
+            $query->where('file_type', $filter);
+        }
+
+        $files = $query->get();
         $data = [
             'items' => $files,
-            'gridView' => true,
+            'gridView' => strtolower($layout) === 'grid',
             'filter' => true
         ];
         return view('dashboard/files')->with('data',$data);
@@ -56,7 +81,8 @@ class FileController extends Controller
         $path = $file->getImageDeletePath($file->user_id, $file->name);
         Storage::delete($path);
         $file->delete();
-        return back();
+
+        return $id;
     }
 
     private function saveFile($fileName, Request $request)

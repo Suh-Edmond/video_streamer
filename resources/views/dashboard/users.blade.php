@@ -1,7 +1,6 @@
 @extends('layouts.dashboard')
 
 @section('title', 'Manage Users')
-@section('action', 'Add User')
 
 @section('dashboard-content')
     <div>
@@ -39,41 +38,47 @@
                     </td>
 
                     <td class="py-2">
+
+                        @if ($user->id != Auth::user()->id)
                             <div class="dropdown">
                                 <button class="btn border btn-outline-secondary" type="button" data-bs-toggle="dropdown"
                                     aria-expanded="false">
                                     <i class="fa-solid fa-ellipsis"></i>
                                 </button>
                                 <ul class="dropdown-menu">
-                                    @if($user->status == \App\Constant\UserStatus::ACTIVE)
-                                    <li>
-                                        <a href="{{ route('users.block', ['id' => $user->id]) }}" onclick="event.preventDefault();
-                                document.getElementById('block-form').submit();"
-                                            class="dropdown-item d-flex gap-2 align-items-center"> <i
-                                                class="fa fa-close"></i> <span>Block</span></a>
-                                        <form id="block-form" action="{{ route('users.block', ['id' => $user->id]) }}"
-                                              method="POST" class="d-none">
-                                            @csrf
-                                        </form>
-                                    </li>
-                                    @endif
-                                    @if($user->status == \App\Constant\UserStatus::IN_ACTIVE)
+                                    @if ($user->status == \App\Constant\UserStatus::ACTIVE)
                                         <li>
-                                            <a href="{{ route('users.unblock', ['id' => $user->id]) }}"  onclick="event.preventDefault();
+                                            <a href="{{ route('users.block', ['id' => $user->id]) }}"
+                                                onclick="event.preventDefault();
+                                document.getElementById('block-form').submit();"
+                                                class="dropdown-item d-flex gap-2 align-items-center"> <i
+                                                    class="fa fa-close"></i> <span>Block</span></a>
+                                            <form id="block-form" action="{{ route('users.block', ['id' => $user->id]) }}"
+                                                method="POST" class="d-none">
+                                                @csrf
+                                            </form>
+                                        </li>
+                                    @endif
+                                    @if ($user->status == \App\Constant\UserStatus::IN_ACTIVE)
+                                        <li>
+                                            <a href="{{ route('users.unblock', ['id' => $user->id]) }}"
+                                                onclick="event.preventDefault();
                                          document.getElementById('delete-form').submit();"
-                                               class="dropdown-item d-flex gap-2 align-items-center"><i
+                                                class="dropdown-item d-flex gap-2 align-items-center"><i
                                                     class="fas fa-close"></i><span class="text-danger">Unblock</span></a>
                                             </a>
 
-                                            <form id="delete-form" action="{{ route('users.unblock', ['id' => $user->id]) }}"
-                                                  method="POST" class="d-none">
+                                            <form id="delete-form"
+                                                action="{{ route('users.unblock', ['id' => $user->id]) }}" method="POST"
+                                                class="d-none">
                                                 @csrf
                                             </form>
                                         </li>
                                     @endif
 
                                     <li>
-                                        <a href="{{ route('users.delete', ['id' => $user->id]) }}"  onclick="event.preventDefault();
+                                        <a href="{{ route('users.delete', ['id' => $user->id]) }}"
+                                            onclick="event.preventDefault();
                                          document.getElementById('delete-form').submit();"
                                             class="dropdown-item d-flex gap-2 align-items-center text-danger"><i
                                                 class="fas fa-trash-can"></i><span class="text-danger">Delete</span></a>
@@ -89,6 +94,7 @@
 
                                 </ul>
                             </div>
+                        @endif
                     </td>
                 </tr>
             @empty

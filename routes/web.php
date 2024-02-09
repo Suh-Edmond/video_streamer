@@ -38,7 +38,7 @@ Route::middleware('auth')->group(function (){
 
     Route::post('/files/upload', [FileController::class, 'uploadFile'])->name('upload_files');
 
-    Route::post('/files/{id}/delete', [FileController::class, 'deleteImage'])->name('delete_file');
+    Route::delete('/files/{id}', [FileController::class, 'deleteImage'])->name('delete_file');
 
     Route::get("files/{id}/get_share_link", [QRCodeController::class, 'generateShareLink'])->name('share_link');
 });
