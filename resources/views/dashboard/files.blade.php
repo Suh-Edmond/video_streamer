@@ -121,7 +121,7 @@
                                     <button type="button" class="btn-close"   data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body d-flex justify-content-center">
-                                    <video width="400" height="300" controls>
+                                    <video width="600" height="350" controls  controlsList="nodownload" oncontextmenu="return false;">
                                         <source src="{{asset($item->getFilePath($item->id, $item->file_type))}}" type="video/mp4" id="video">
                                         Your browser does not support the video tag.
                                     </video>
@@ -204,7 +204,7 @@
                                         <button type="button" class="btn-close"   data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body my-3 d-flex justify-content-center">
-                                        <video width="400" height="400"  autoplay controls >
+                                        <video width="600" height="350" controls  controlsList="nodownload" oncontextmenu="return false;" >
                                             <source src="{{asset($item->getFilePath($item->id, $item->file_type))}}" type="video/mp4" id="video">
                                             Your browser does not support the video tag.
                                         </video>
