@@ -33,21 +33,56 @@
     </div>
 
     <!----------------------UPLOAD IMAGE MODAL------------------------------------------>
-    <div class="modal fade" id="uploadImageModal" tabindex="-1" aria-labelledby="uploadImageModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+    <div class="modal fade" id="uploadImageModal" tabindex="-1" aria-labelledby="uploadImageModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="uploadImageModalLabel">Upload Image</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body p-2">
-                    <div class="row row-gap-2 m-5">
-                        <img id="image" src="{{asset('assets/images/bg_image.png')}}" class="img_upload" width="150px" height="150px">
+                    <div class="row row-gap-2 m-3">
+                        <img id="image" src="{{asset('assets/images/bg_transparent.jpg')}}" class="img_upload" width="160px" height="160px">
                     </div>
                     <div class="row row-cols-1 mt-3 mx-3 mb-3">
                         <form action="{{ route('upload_files') }}" method="POST" enctype="multipart/form-data">
                             @csrf
-                            <input type="file" name="image" class="form-control image_field">
+                            <input type="file" name="image" class="form-control image_field @error('image') is-invalid @enderror">
+
+                            @error('image')
+                            <div class="alert alert-danger">{{ $message }}</div>
+                            @enderror
+
+
+                            <div class="my-3 d-flex justify-content-center">
+                                <button class="btn btn-success w-100" type="submit">Save</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!----------------------END OF UPLOAD IMAGE MODAL----------------------------------->
+
+    <!----------------------UPLOAD IMAGE MODAL------------------------------------------>
+    <div class="modal fade" id="uploadVideoModal" tabindex="-1" aria-labelledby="uploadVideoModalLabel" aria-hidden="true"  data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered" >
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="uploadVideoModalLabel">Upload Video</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-2">
+                    <div class="row row-cols-1 mt-3 mx-3 mb-3">
+                        <form action="{{ route('upload_video_files') }}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            <input type="file" name="video" class="form-control @error('video') is-invalid @enderror" >
+
+                            @error('video')
+                            <div class="alert alert-danger">{{ $message }}</div>
+                            @enderror
+
 
                             <div class="my-3 d-flex justify-content-center">
                                 <button class="btn btn-success w-100" type="submit">Save</button>

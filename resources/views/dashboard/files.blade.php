@@ -1,8 +1,7 @@
 @extends('layouts.dashboard')
 
 @section('title', 'My Files')
-@section('action')
-@endsection
+
 
 @section('layoutToggle')
     <div>
@@ -45,7 +44,7 @@
 
 @section('action')
     <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
-        aria-expanded="false">
+            aria-expanded="false">
         <i class="fa fa-add"></i>Upload New Files
     </button>
     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
@@ -71,15 +70,21 @@
                                     <i class="fa-solid fa-circle-info"></i>&nbsp; Properties
                                 </button></li>
                             <li>
-                                <button class="btn shareBtn-{{$item->id}}"   onclick="generateQRcode({{$item}})">
+                                <button class="dropdown-item" type="button" onclick="generateQRcode({{$item}})">
                                     <i
                                         class="fa-regular fa-share-from-square"></i>&nbsp; Share
                                 </button>
                             </li>
+                           @if($item->file_type == 'VIDEO')
+                                <li>
+                                    <button class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#streamVideoModal">
+                                        <i class="fa-solid fa-play"></i>&nbsp; Play Video
+                                    </button>
+                                </li>
+                           @endif
                             <li>
-                                <button class="btn text-danger">
-                                    <a href="{{route('delete_file', ['id' => $item->id])}}" onclick="event.preventDefault();
-                                         document.getElementById('delete-form').submit();">
+                                <button class="btn text-danger" onclick="deleteFile({{$item}})">
+                                    <a href="{{route('delete_file', ['id' => $item->id])}}" >
                                         <i class="fa-solid fa-trash-can text-danger"></i>
                                     </a>&nbsp; Delete
 
@@ -89,23 +94,43 @@
 
                                     </form>
                                 </button>
+
                             </li>
                         </ul>
                     </div>
-                    @if ($item->file_type === 'VIDEO')
-                        <div class="h-100 w-100 d-flex justify-content-center align-items-center position-absolute start-0 top-0 play-video-wrapper">
-                            <button class="btn" onclick="streamVideo({{$item}})">
-                                <i style="font-size: 72px" class="fa-solid fa-play"></i>
-                            </button>
-                        </div>
-                    @endif
 
-                    <div class="d-flex flex-column align-items-center">
-                        <img class="h-2 w-full" src={{ asset($item->getFilePath($item->id)) }} alt="" width="150px" height="150px">
 
-                        <div class="text-center  py-2">{{ $item->name }}</div>
+                    <div class="d-flex flex-column ">
+                        @if($item->file_type == 'IMAGE')
+                            <img class="h-2 w-full" src={{ asset($item->getFilePath($item->id, $item->file_type)) }} alt="" width="150px" height="150px">
+                        @else
+                            <img class="h-2 w-full" src={{ asset('assets/images/bg_video.png') }} alt="" width="150px" height="150px">
+                        @endif
+
+                        <div class=" py-2 text-wrap w-75">{{ $item->name }}</div>
                     </div>
                 </div>
+
+                <!-------------------------------------------------VIDEO STREAM MODAL-------------------------------------------->
+                @if($item->file_type == \App\Constant\FileType::VIDEO)
+                    <div class="modal fade" id="streamVideoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+                        <div class="modal-dialog modal-dialog-centered modal-lg">
+                            <div class="modal-content m-3">
+                                <div class="modal-header">
+                                    <h5 class="modal-title file_label" id="exampleModalLabel">Playing {{$item->name}}</h5>
+                                    <button type="button" class="btn-close"   data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body d-flex justify-content-center">
+                                    <video width="600" height="350" controls  controlsList="nodownload" oncontextmenu="return false;">
+                                        <source src="{{asset($item->getFilePath($item->id, $item->file_type))}}" type="video/mp4" id="video">
+                                        Your browser does not support the video tag.
+                                    </video>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endif
+                <!------------------------------------------------END OF VIDEO MODAL---------------------------------------------->
             @empty
                 <p>No items</p>
             @endforelse
@@ -139,19 +164,21 @@
                                     <li><button class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#propertiesModal" onclick="showProperties({{$item}})">
                                             <i class="fa-solid fa-circle-info"></i>&nbsp; Properties
                                         </button></li>
-                                    {{--                            <li><button class="dropdown-item" type="button"  >--}}
-                                    {{--                                    <i class="fa-solid fa-crop"></i>&nbsp; Crop--}}
-                                    {{--                                </button></li>--}}
                                     <li>
                                         <button class="btn shareBtn-{{$item->id}}"   onclick="generateQRcode({{$item}})">
-                                            <i
-                                                class="fa-regular fa-share-from-square"></i>&nbsp; Share
+                                            <i class="fa-regular fa-share-from-square"></i>&nbsp; Share
                                         </button>
                                     </li>
+                                    @if($item->file_type == 'VIDEO')
+                                        <li>
+                                            <button class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#streamVideoModal">
+                                                <i class="fa-solid fa-play"></i>&nbsp; Play Video
+                                            </button>
+                                        </li>
+                                    @endif
                                     <li>
-                                        <button class="btn text-danger">
-                                            <a href="{{route('delete_file', ['id' => $item->id])}}" onclick="event.preventDefault();
-                                         document.getElementById('delete-form').submit();">
+                                        <button class="dropdown-item text-danger" onclick="deleteFile({{$item}})">
+                                            <a href="{{route('delete_file', ['id' => $item->id])}}">
                                                 <i class="fa-solid fa-trash-can text-danger"></i>
                                             </a>&nbsp; Delete
 
@@ -166,6 +193,27 @@
                             </div>
                         </td>
                     </tr>
+
+                    <!-------------------------------------------------VIDEO STREAM MODAL-------------------------------------------->
+                    @if($item->file_type == \App\Constant\FileType::VIDEO)
+                        <div class="modal fade" id="streamVideoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+                            <div class="modal-dialog modal-dialog-centered modal-lg">
+                                <div class="modal-content m-3">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title file_label" id="exampleModalLabel">Playing {{$item->name}}</span></h5>
+                                        <button type="button" class="btn-close"   data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body my-3 d-flex justify-content-center">
+                                        <video width="600" height="350" controls  controlsList="nodownload" oncontextmenu="return false;" >
+                                            <source src="{{asset($item->getFilePath($item->id, $item->file_type))}}" type="video/mp4" id="video">
+                                            Your browser does not support the video tag.
+                                        </video>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
+                    <!------------------------------------------------END OF VIDEO MODAL---------------------------------------------->
                 @empty
                     <p>No items</p>
                 @endforelse
@@ -173,6 +221,7 @@
         </div>
     @endif
 
+    <!----------------------------------------QR CODE MODAL---------------------------------------------------->
     <div class="modal fade" id="shareModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
         data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog modal-dialog-centered">
@@ -201,8 +250,9 @@
             </div>
         </div>
     </div>
+    <!-----------------------------------------END OF QR CODE MODAL----------------------------------------------->
 
-
+    <!----------------------------------------------------------------PROPERTIES MODAL----------------------------------->
     <div class="modal fade" id="propertiesModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content m-3">
@@ -231,8 +281,10 @@
             </div>
         </div>
     </div>
+    <!-------------------------------------------------------------END OF PROPERTIES MODAL-------------------------->
 
     <style>
+
         .file_label {
             font-weight: bold;
         }
@@ -290,24 +342,6 @@
             window.open('https://api.whatsapp.com/send?phone=&text=' + encodeURIComponent(link))
         }
 
-        let deleteFile = function(file) {
-            let id = file.id
-            $.ajax({
-                url: "{{ route('delete_file', '__ID__') }}".replace('__ID__', id),
-                type: 'DELETE',
-                headers: {
-                    'X-CSRF-TOKEN': CSRF_TOKEN
-                },
-                success: function(data) {
-                    location.reload()
-                },
-                error: function(error) {
-                    console.log(error)
-                }
-            })
-        }
-
-
         let showProperties = function (item){
             console.log(item)
             $('.item_name').text(item.name)
@@ -343,15 +377,27 @@
             applyParams(sort, filter, layout);
         }
 
-        let streamVideo = function(file) {
-
-            alert('Streaming '+file.name)
-        }
-
         $(document).ready(function() {
             let urlParams = new URLSearchParams(location.search);
             filter = urlParams.get('filter') || '';
             sort = urlParams.get('sort') || '';
         })
+
+        let deleteFile = function(file) {
+            let id = file.id
+            $.ajax({
+                url: "{{ route('delete_file', '__ID__') }}".replace('__ID__', id),
+                type: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': CSRF_TOKEN
+                },
+                success: function(data) {
+                    location.reload()
+                },
+                error: function(error) {
+                    console.log(error)
+                }
+            })
+        }
      </script>
 @endsection
