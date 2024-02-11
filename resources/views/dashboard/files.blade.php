@@ -2,13 +2,24 @@
 
 @section('title', 'My Files')
 @section('action')
+    <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
+        aria-expanded="false">
+        <i class="fa fa-add"></i>Upload New Files
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+        <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#uploadImageModal">Upload
+                Images</a></li>
+        <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#uploadVideoModal">Upload
+                Videos</a></li>
+    </ul>
 @endsection
 
 @section('layoutToggle')
     <div>
         <span>View: </span>
         <div class="btn-group" role="group" aria-label="view">
-            <button onclick="changeLayout('grid')" type="button" class="btn border"><i class="fas fa-th-large"></i></button>
+            <button onclick="changeLayout('grid')" type="button" class="btn border"><i
+                    class="fas fa-th-large"></i></button>
             <button onclick="changeLayout('list')" type="button" class="btn border"><i class="fa fa-list"></i></button>
         </div>
     </div>
@@ -67,24 +78,26 @@
                             <i class="fa-solid fa-ellipsis"></i>
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                            <li><button class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#propertiesModal" onclick="showProperties({{$item}})">
+                            <li><button class="dropdown-item" type="button" data-bs-toggle="modal"
+                                    data-bs-target="#propertiesModal" onclick="showProperties({{ $item }})">
                                     <i class="fa-solid fa-circle-info"></i>&nbsp; Properties
                                 </button></li>
                             <li>
-                                <button class="btn shareBtn-{{$item->id}}"   onclick="generateQRcode({{$item}})">
-                                    <i
-                                        class="fa-regular fa-share-from-square"></i>&nbsp; Share
+                                <button class="btn shareBtn-{{ $item->id }}"
+                                    onclick="generateQRcode({{ $item }})">
+                                    <i class="fa-regular fa-share-from-square"></i>&nbsp; Share
                                 </button>
                             </li>
                             <li>
                                 <button class="btn text-danger">
-                                    <a href="{{route('delete_file', ['id' => $item->id])}}" onclick="event.preventDefault();
+                                    <a href="{{ route('delete_file', ['id' => $item->id]) }}"
+                                        onclick="event.preventDefault();
                                          document.getElementById('delete-form').submit();">
                                         <i class="fa-solid fa-trash-can text-danger"></i>
                                     </a>&nbsp; Delete
 
                                     <form id="delete-form" action="{{ route('delete_file', ['id' => $item->id]) }}"
-                                          method="POST" class="d-none">
+                                        method="POST" class="d-none">
                                         @csrf
 
                                     </form>
@@ -93,15 +106,17 @@
                         </ul>
                     </div>
                     @if ($item->file_type === 'VIDEO')
-                        <div class="h-100 w-100 d-flex justify-content-center align-items-center position-absolute start-0 top-0 play-video-wrapper">
-                            <button class="btn" onclick="streamVideo({{$item}})">
+                        <div
+                            class="h-100 w-100 d-flex justify-content-center align-items-center position-absolute start-0 top-0 play-video-wrapper">
+                            <button class="btn" onclick="streamVideo({{ $item }})">
                                 <i style="font-size: 72px" class="fa-solid fa-play"></i>
                             </button>
                         </div>
                     @endif
 
                     <div class="d-flex flex-column align-items-center">
-                        <img class="h-2 w-full" src={{ asset($item->getFilePath($item->id)) }} alt="" width="150px" height="150px">
+                        <img class="h-2 w-full" src={{ asset($item->getFilePath($item->id)) }} alt=""
+                            width="150px" height="150px">
 
                         <div class="text-center  py-2">{{ $item->name }}</div>
                     </div>
@@ -136,27 +151,31 @@
                                     <i class="fa-solid fa-ellipsis"></i>
                                 </button>
                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                    <li><button class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#propertiesModal" onclick="showProperties({{$item}})">
+                                    <li><button class="dropdown-item" type="button" data-bs-toggle="modal"
+                                            data-bs-target="#propertiesModal"
+                                            onclick="showProperties({{ $item }})">
                                             <i class="fa-solid fa-circle-info"></i>&nbsp; Properties
                                         </button></li>
-                                    {{--                            <li><button class="dropdown-item" type="button"  >--}}
-                                    {{--                                    <i class="fa-solid fa-crop"></i>&nbsp; Crop--}}
-                                    {{--                                </button></li>--}}
+                                    {{--                            <li><button class="dropdown-item" type="button"  > --}}
+                                    {{--                                    <i class="fa-solid fa-crop"></i>&nbsp; Crop --}}
+                                    {{--                                </button></li> --}}
                                     <li>
-                                        <button class="btn shareBtn-{{$item->id}}"   onclick="generateQRcode({{$item}})">
-                                            <i
-                                                class="fa-regular fa-share-from-square"></i>&nbsp; Share
+                                        <button class="btn shareBtn-{{ $item->id }}"
+                                            onclick="generateQRcode({{ $item }})">
+                                            <i class="fa-regular fa-share-from-square"></i>&nbsp; Share
                                         </button>
                                     </li>
                                     <li>
                                         <button class="btn text-danger">
-                                            <a href="{{route('delete_file', ['id' => $item->id])}}" onclick="event.preventDefault();
+                                            <a href="{{ route('delete_file', ['id' => $item->id]) }}"
+                                                onclick="event.preventDefault();
                                          document.getElementById('delete-form').submit();">
                                                 <i class="fa-solid fa-trash-can text-danger"></i>
                                             </a>&nbsp; Delete
 
-                                            <form id="delete-form" action="{{ route('delete_file', ['id' => $item->id]) }}"
-                                                  method="POST" class="d-none">
+                                            <form id="delete-form"
+                                                action="{{ route('delete_file', ['id' => $item->id]) }}" method="POST"
+                                                class="d-none">
                                                 @csrf
 
                                             </form>
@@ -203,12 +222,13 @@
     </div>
 
 
-    <div class="modal fade" id="propertiesModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal fade" id="propertiesModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+        data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content m-3">
                 <div class="modal-header">
                     <h5 class="modal-title file_label" id="exampleModalLabel">File Properties</h5>
-                    <button type="button" class="btn-close"   data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body mb-2">
                     <div class="my-2">
@@ -236,6 +256,7 @@
         .file_label {
             font-weight: bold;
         }
+
         .link {
             font-weight: bold;
         }
@@ -308,7 +329,7 @@
         }
 
 
-        let showProperties = function (item){
+        let showProperties = function(item) {
             console.log(item)
             $('.item_name').text(item.name)
             $('.item_type').text(item.file_type)
@@ -353,5 +374,5 @@
             filter = urlParams.get('filter') || '';
             sort = urlParams.get('sort') || '';
         })
-     </script>
+    </script>
 @endsection
