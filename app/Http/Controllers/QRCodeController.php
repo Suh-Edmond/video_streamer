@@ -13,7 +13,7 @@ class QRCodeController extends Controller
     public function generateQRCode(Request $request, $id)
     {
          $file = File::findOrFail($id);
-         $path = env('APP_URL') . HelperTrait::getFilePath($file->id);
+         $path = env('APP_URL') . HelperTrait::getFilePath($file->id, $file->file_type);
 
         return QrCode::size(300)
             ->generate($path);
@@ -22,7 +22,7 @@ class QRCodeController extends Controller
     public function generateShareLink($id)
     {
         $file = File::findOrFail($id);
-        $path = HelperTrait::getFilePath($file->id);
+        $path = HelperTrait::getFilePath($file->id, $file->file_type);
         $encryptedPath = encrypt($path);
         $link = env('APP_URL') . '/files/'.$id.'/share/code?key='.$encryptedPath;
 

@@ -5,12 +5,17 @@ namespace App\Http\Controllers;
 use App\Constant\FileType;
 use App\Http\Resources\FileResource;
 use App\Models\File;
+use App\Traits\HelperTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class FileController extends Controller
 {
     const IMAGE_DIR ='/uploads/images/';
+    const VIDEO_DIR ='/uploads/videos/';
+
+    use HelperTrait;
 
     public function manageFiles(Request $request)
     {
@@ -42,7 +47,7 @@ class FileController extends Controller
         $files = $query->get();
         $data = [
             'items' => $files,
-            'gridView' => strtolower($layout) === 'grid',
+            'gridView' => strtolower($layout) == 'grid',
             'filter' => true
         ];
         return view('dashboard/files')->with('data',$data);
@@ -71,29 +76,59 @@ class FileController extends Controller
 
         $request->file('image')->storeAs(self::IMAGE_DIR.$user, $fileName, 'public');
 
-        $this->saveFile($fileName, $request, $size);
+        $this->saveFile($fileName, $request, $size, FileType::IMAGE);
 
-        return redirect()->route('files');
+        $data['gridView'] = true;
+        return redirect()->back()->with($data);
     }
 
-    public function deleteImage($id)
+    public function uploadVideo(Request $request)
+    {
+        //video/avi, video/mpeg, video/quicktime,mimetypes
+        $request->validate([
+            'video' => 'required|max:20240'
+        ]);
+
+        $fileName = $request->file('video')->getClientOriginalName();
+        $size = $request->file('video')->getSize();
+
+        $authUserId = auth()->user()->getAuthIdentifier();
+        $user = "USER_".$authUserId;
+
+        $request->file('video')->storeAs(self::VIDEO_DIR.$user, $fileName, 'public');
+
+        $this->saveFile($fileName, $request, $size, FileType::VIDEO);
+
+        $data['gridView'] = true;
+        return redirect()->back()->with($data);
+    }
+
+    public function deleteFile($id)
     {
         $file = File::findOrFail($id);
-        $path = $file->getImageDeletePath($file->user_id, $file->name);
+
+        $path = $file->getFileDeletePath($file->user_id, $file->name, $file->file_type);
         Storage::delete($path);
         $file->delete();
 
-        return $id;
     }
 
-    private function saveFile($fileName, Request $request, $size)
+    private function saveFile($fileName, Request $request, $size, $fileType)
     {
         $saveFile = new File();
         $saveFile->name = $fileName;
-        $saveFile->file_type = FileType::IMAGE;
+        $saveFile->file_type = $fileType;
         $saveFile->user_id = $request->user()->id;
         $saveFile->size = $size;
 
         $saveFile->save();
+    }
+
+    public function getVideoFilePath($id)
+    {
+        $file = File::findOrFail($id);
+        $path = HelperTrait::getFilePath($file->id, $file->file_type);
+
+        return response()->json(['data' => $path]);
     }
 }
