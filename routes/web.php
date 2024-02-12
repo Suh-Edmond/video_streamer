@@ -17,14 +17,10 @@ use App\Http\Controllers\UsersController;
 |
 */
 
-Route::get('/', function () {
-    return view('auth.login');
-});
-
 Auth::routes();
 
 Route::middleware('auth')->group(function (){
-    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    Route::get('/home', [FileController::class, 'manageFiles'])->name('home');
 
     Route::get('/files', [FileController::class, 'manageFiles'])->name('files');
 
@@ -49,5 +45,11 @@ Route::middleware('auth')->group(function (){
 
 Route::middleware('guest')->group(function (){
     Route::get('/files/{id}/share/code', [QRCodeController::class, 'generateQRCode'])->name('scan_qrcode');
+
+    Route::get('/', function () {
+        return view('auth.login');
+    });
 });
 
+
+Route::get('/files/{id}', [FileController::class, 'getFile']) -> name('get_file');
