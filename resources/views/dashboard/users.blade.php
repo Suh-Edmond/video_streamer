@@ -3,7 +3,7 @@
 @section('title', 'Manage Users')
 
 @section('dashboard-content')
-    <div>
+    <div style="overflow-x: scroll;">
         <table class="table table-striped">
             <tr>
                 <th>SN</th>
@@ -16,8 +16,7 @@
             @forelse ($data['items'] as $user)
                 <tr scope="row">
                     <td class="py-2">
-                        <div class="rounded-circle border d-flex justify-content-center align-items-center"
-                            style="width: 30px; height: 30px">
+                        <div class="text-muted">
                             {{ $loop->index + 1 }}
                         </div>
                     </td>
@@ -45,7 +44,7 @@
                                     aria-expanded="false">
                                     <i class="fa-solid fa-ellipsis"></i>
                                 </button>
-                                <ul class="dropdown-menu">
+                                <ul class="dropdown-menu bg-white">
                                     @if ($user->status == \App\Constant\UserStatus::ACTIVE)
                                         <li>
                                             <a href="{{ route('users.block', ['id' => $user->id]) }}"

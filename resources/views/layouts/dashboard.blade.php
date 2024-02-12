@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="py-3">
-        <div class="flex flex-column mx-auto" style="width: 85%">
-            <div class="d-flex shadow-lg rounded flex-column flex-md-row align-items-md-stretch py-5 px-5 bg-white">
+    <div class="py-3 px-lg-5">
+        <div class="flex flex-column mx-auto">
+            <div class="d-flex gap-3 gap-lg-0 rounded-lg flex-column flex-md-row align-items-md-stretch p-3 px-2 py-lg-5 px-lg-5 bgwhite border-bottom">
                 <div>
                     <h2 class="mb-4 h2" class="title">@yield('title')</h2>
 
@@ -13,7 +13,6 @@
                             @yield('sort')
                         </div>
                     @endif
-
                 </div>
 
                 <div class="ms-md-auto d-flex flex-row-reverse flex-md-column justify-content-between align-items-md-end">

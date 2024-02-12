@@ -15,7 +15,7 @@
 @endsection
 
 @section('filters')
-    <div class="dropdown bg-white">
+    <div class="dropdown">
         <button class="btn border btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
             aria-expanded="false">
             All files
@@ -105,8 +105,7 @@
 
                         <div class="d-flex flex-column ">
                             @if($item->file_type ==  \App\Constant\FileType::IMAGE)
-                                <img class="thumbnail" src={{ asset('assets/images/bg_transparent.jpg') }} alt={{$item->name}}>
-                                {{-- <img class="h-2 w-full" src={{ asset($item->getFilePath($item->id, $item->file_type)) }} alt="" width="150px" height="150px"> --}}
+                                <img class="h-2 w-full" src={{ asset($item->getFilePath($item->id, $item->file_type)) }} alt="" width="150px" height="150px">
                             @else
                                 <img class="thumbnail" src={{ asset('assets/images/bg_video.png') }} alt={{$item->name}}>
                             @endif
