@@ -134,10 +134,7 @@ class FileController extends Controller
     }
 
     public function getFile($id) {
-        // id should be the encrypted part
-
         $file = File::findOrFail(1);
-
 
         return view('file')->with(['data'=>$file]);
     }
