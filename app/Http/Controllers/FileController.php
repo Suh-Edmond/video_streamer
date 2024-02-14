@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Iman\Streamer\VideoStreamer;
 
 class FileController extends Controller
 {
@@ -144,20 +145,24 @@ class FileController extends Controller
 
     public function setStreamVideo(Request $request)
     {
-        $fileId = decrypt($request['file']);
-        $file = File::findOrFail($fileId);
-        $path = HelperTrait::getFilePath($file->id, $file->file_type);
-
-        $data['file'] = $file;
-        $data['path'] = $path;
-        $data['title'] = "Streaming Video ".$file->name;
+        $filePath = decrypt($request['file']);
+        $data['path'] = $filePath;
+        $data['title'] = "Streaming Video ".$this->getFileNameFromPath($filePath);
 
         return view('stream.index')->with($data);
     }
 
     public function getStreamVideo(Request $request)
     {
-        $stream = new VideoStream("http://localhost:8000/storage/uploads/videos/USER_4/mov_bbb.mp4");
-        $stream->start();
+        VideoStreamer::streamFile((decrypt($request->query()['file'])));
+    }
+
+
+    private function getFileNameFromPath($path)
+    {
+        $exploded = (explode('/', $path));
+        $length = count($exploded);
+        $index = $length - 1;
+        return $exploded[$index];
     }
 }

@@ -33,7 +33,8 @@ class QRCodeController extends Controller
 
     private function getVideoPath($file)
     {
-        $encryptedFileId = encrypt($file->id);
-        return env('APP_URL'). '/files/videos/set_stream?file='.$encryptedFileId;
+        $encryptedFilePath = encrypt(HelperTrait::getFilePath($file->id, $file->file_type));
+
+        return env('APP_URL'). '/files/videos/set_stream?file='.$encryptedFilePath;
     }
 }
