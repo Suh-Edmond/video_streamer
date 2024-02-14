@@ -44,7 +44,8 @@
 @endsection
 
 @section('action')
-    <button class="btn btn-success shadow py-2 px-3 d-flex align-items-center justify-content-center gap-2 dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
+    <button class="btn btn-success shadow py-2 px-3 d-flex align-items-center justify-content-center gap-2 dropdown-toggle" type="button" id="dropdownMenuButton1"
+            data-bs-toggle="dropdown"
             aria-expanded="false">
             <i class="fa fa-add"></i><span>Upload New Files</span>
     </button>
@@ -107,7 +108,7 @@
                             @if($item->file_type ==  \App\Constant\FileType::IMAGE)
                                 <img class="h-2 w-full" src={{ asset($item->getFilePath($item->id, $item->file_type)) }} alt="" width="150px" height="150px">
                             @else
-                                <img class="thumbnail" src={{ asset('assets/images/bg_video.png') }} alt={{$item->name}}>
+                                <img class="thumbnail w-full" src={{ asset('assets/images/bg_video.png') }} alt={{$item->name}}>
                             @endif
 
                             <div class=" pt-4 text-wrap px-3 text-muted text-xl">{{ $item->name }}</div>
@@ -380,7 +381,6 @@
                         done(URL.createObjectURL(file));
                     } else if (FileReader) {
                         reader = new FileReader();
-                        console.log(reader)
                         reader.onload = function (e) {
                             done(reader.result);
                         };
@@ -397,7 +397,7 @@
 
         }
         .thumbnail {
-            height: 270px;
+            height: 170px;
         }
 
         .file_label {
@@ -439,7 +439,6 @@
                     $('#link').val(response.data)
                     link = response.data
                     $shareModal.modal('show');
-                    console.log(link)
                 }
             })
         }
@@ -458,7 +457,7 @@
         }
 
         let showProperties = function (item){
-            console.log(item)
+
             $('.item_name').text(item.name)
             $('.item_type').text(item.file_type)
             $('.item_created').text(new Date(item.created_at).toGMTString())
@@ -510,7 +509,6 @@
                     location.reload()
                 },
                 error: function(error) {
-                    console.log(error)
                 }
             })
         }

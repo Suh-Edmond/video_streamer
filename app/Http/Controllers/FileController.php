@@ -3,12 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Constant\FileType;
+use App\Helper\VideoStream;
 use App\Http\Resources\FileResource;
 use App\Models\File;
 use App\Traits\HelperTrait;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Iman\Streamer\VideoStreamer;
 
 class FileController extends Controller
 {
@@ -16,6 +19,7 @@ class FileController extends Controller
     const VIDEO_DIR ='/uploads/videos/';
 
     use HelperTrait;
+
 
     public function manageFiles(Request $request)
     {
@@ -134,11 +138,31 @@ class FileController extends Controller
     }
 
     public function getFile($id) {
-        // id should be the encrypted part
-
         $file = File::findOrFail(1);
 
-
         return view('file')->with(['data'=>$file]);
+    }
+
+    public function setStreamVideo(Request $request)
+    {
+        $filePath = decrypt($request['file']);
+        $data['path'] = $filePath;
+        $data['title'] = "Streaming Video ".$this->getFileNameFromPath($filePath);
+
+        return view('stream.index')->with($data);
+    }
+
+    public function getStreamVideo(Request $request)
+    {
+        VideoStreamer::streamFile((decrypt($request->query()['file'])));
+    }
+
+
+    private function getFileNameFromPath($path)
+    {
+        $exploded = (explode('/', $path));
+        $length = count($exploded);
+        $index = $length - 1;
+        return $exploded[$index];
     }
 }
