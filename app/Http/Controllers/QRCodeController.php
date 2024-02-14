@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Constant\FileType;
 use App\Models\File;
 use App\Traits\HelperTrait;
 use Illuminate\Http\Request;
@@ -13,7 +14,7 @@ class QRCodeController extends Controller
     public function generateQRCode(Request $request, $id)
     {
          $file = File::findOrFail($id);
-         $path = env('APP_URL') . HelperTrait::getFilePath($file->id, $file->file_type);
+         $path = $file->file_type == FileType::IMAGE ? env('APP_URL') . HelperTrait::getFilePath($file->id, $file->file_type): $this->getVideoPath($file);
 
         return QrCode::size(300)
             ->generate($path);
@@ -28,6 +29,11 @@ class QRCodeController extends Controller
 
         return response()->json(['data' => $link]);
 
+    }
 
+    private function getVideoPath($file)
+    {
+        $encryptedFileId = encrypt($file->id);
+        return env('APP_URL'). '/files/videos/set_stream?file='.$encryptedFileId;
     }
 }

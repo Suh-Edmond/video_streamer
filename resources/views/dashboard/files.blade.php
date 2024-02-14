@@ -381,7 +381,6 @@
                         done(URL.createObjectURL(file));
                     } else if (FileReader) {
                         reader = new FileReader();
-                        console.log(reader)
                         reader.onload = function (e) {
                             done(reader.result);
                         };
@@ -440,7 +439,6 @@
                     $('#link').val(response.data)
                     link = response.data
                     $shareModal.modal('show');
-                    console.log(link)
                 }
             })
         }
@@ -459,7 +457,7 @@
         }
 
         let showProperties = function (item){
-            console.log(item)
+
             $('.item_name').text(item.name)
             $('.item_type').text(item.file_type)
             $('.item_created').text(new Date(item.created_at).toGMTString())
@@ -511,7 +509,6 @@
                     location.reload()
                 },
                 error: function(error) {
-                    console.log(error)
                 }
             })
         }

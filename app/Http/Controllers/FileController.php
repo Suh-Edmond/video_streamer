@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Constant\FileType;
+use App\Helper\VideoStream;
 use App\Http\Resources\FileResource;
 use App\Models\File;
 use App\Traits\HelperTrait;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
@@ -16,6 +18,7 @@ class FileController extends Controller
     const VIDEO_DIR ='/uploads/videos/';
 
     use HelperTrait;
+
 
     public function manageFiles(Request $request)
     {
@@ -137,5 +140,24 @@ class FileController extends Controller
         $file = File::findOrFail(1);
 
         return view('file')->with(['data'=>$file]);
+    }
+
+    public function setStreamVideo(Request $request)
+    {
+        $fileId = decrypt($request['file']);
+        $file = File::findOrFail($fileId);
+        $path = HelperTrait::getFilePath($file->id, $file->file_type);
+
+        $data['file'] = $file;
+        $data['path'] = $path;
+        $data['title'] = "Streaming Video ".$file->name;
+
+        return view('stream.index')->with($data);
+    }
+
+    public function getStreamVideo(Request $request)
+    {
+        $stream = new VideoStream("http://localhost:8000/storage/uploads/videos/USER_4/mov_bbb.mp4");
+        $stream->start();
     }
 }
