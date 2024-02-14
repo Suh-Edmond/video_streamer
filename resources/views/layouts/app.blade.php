@@ -27,10 +27,10 @@
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm py-3">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
+                    {{ config('app.namm', 'Video Streamer') }}
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
@@ -63,7 +63,7 @@
                                     {{ Auth::user()->name }}
                                 </a>
 
-                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                <div class="dropdown-menu dropdown-menu-end bg-white" aria-labelledby="navbarDropdown">
                                     @if(Auth::user()->role == 'ADMIN')
                                         <a class="dropdown-item" href="{{ route('users') }}">{{ __('Manage Users') }}</a>
                                     @endif
@@ -86,7 +86,7 @@
             </div>
         </nav>
 
-        <main class="py-4 px-4">
+        <main class="py-2 px-2 px-lg-5 py-lg-4">
             @yield('content')
         </main>
     </div>

@@ -25,6 +25,7 @@ class FileController extends Controller
         $sort = $request->query('sort');
         $filter = $request->query('filter');
         $layout = $request->query('layout');
+        $layout ??= 'grid';
 
         if(isset($sort)) {
             switch ($sort) {
@@ -130,5 +131,14 @@ class FileController extends Controller
         $path = HelperTrait::getFilePath($file->id, $file->file_type);
 
         return response()->json(['data' => $path]);
+    }
+
+    public function getFile($id) {
+        // id should be the encrypted part
+
+        $file = File::findOrFail(1);
+
+
+        return view('file')->with(['data'=>$file]);
     }
 }

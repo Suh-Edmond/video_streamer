@@ -7,8 +7,9 @@
     <div>
         <span>View: </span>
         <div class="btn-group" role="group" aria-label="view">
-            <button onclick="changeLayout('grid')" type="button" class="btn border"><i class="fas fa-th-large"></i></button>
-            <button onclick="changeLayout('list')" type="button" class="btn border"><i class="fa fa-list"></i></button>
+            <button onclick="changeLayout('grid')" type="button" class="btn border  {{$data['gridView'] ? ' bg-success text-white': ' bg-white'}}"><i
+                    class="fas fa-th-large"></i></button>
+            <button onclick="changeLayout('list')" type="button" class="btn border  {{$data['gridView'] ? ' bg-white': ' bg-success text-white'}}"><i class="fa fa-list"></i></button>
         </div>
     </div>
 @endsection
@@ -19,7 +20,7 @@
             aria-expanded="false">
             All files
         </button>
-        <ul class="dropdown-menu">
+        <ul class="dropdown-menu shadow py-3 bg-white">
             <li><button class="dropdown-item" onclick="filterBy('')">All files</button></li>
             <li><button onclick="filterBy('IMAGE')" class="dropdown-item">Images only</button></li>
             <li><button onclick="filterBy('VIDEO')" class="dropdown-item">Videos only</button></li>
@@ -34,20 +35,20 @@
                 <i class="fa-solid fa-filter"></i><span>Sort:</span>
             </div>
         </button>
-        <ul class="dropdown-menu">
-            <li> <a onclick="sortBy('DATE_DESC')" class="dropdown-item" href="#">Newest First</a></li>
-            <li><a onclick="sortBy('DATE_ASC')" class="dropdown-item" href="#">Oldest First</a></li>
-            <li><a onclick="sortBy('NAME')" class="dropdown-item" href="#">Name</a></li>
+        <ul class="dropdown-menu bg-white">
+            <li> <a onclick="sortBy('DATE_DESC')" class="dropdown-item">Newest First</a></li>
+            <li><a onclick="sortBy('DATE_ASC')" class="dropdown-item">Oldest First</a></li>
+            <li><a onclick="sortBy('NAME')" class="dropdown-item">Name</a></li>
         </ul>
     </div>
 @endsection
 
 @section('action')
-    <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
+    <button class="btn btn-success shadow py-2 px-3 d-flex align-items-center justify-content-center gap-2 dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
             aria-expanded="false">
-        <i class="fa fa-add"></i>Upload New Files
+            <i class="fa fa-add"></i><span>Upload New Files</span>
     </button>
-    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+    <ul class="dropdown-menu bg-white" aria-labelledby="dropdownMenuButton1">
         <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#uploadImageModal">Upload
                 Images</a></li>
         <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#uploadVideoModal">Upload
@@ -57,57 +58,60 @@
 
 @section('dashboard-content')
     @if ($data['gridView'])
-        <div class="row gap-auto gap-4">
+        <div class="row" style="margin-left: -1.25rem">
             @forelse ($data['items'] as $item)
-                <div class="col-12 col-md-5 col-lg-2 mb-2 pb-4 bg-white rounded position-relative">
-                    <div class="dropdown bg-white position-absolute top-0 end-0" style="z-index: 10">
-                        <button class="btn border btn-outline-secondary" type="button" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                            <i class="fa-solid fa-ellipsis"></i>
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                            <li><button class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#propertiesModal" onclick="showProperties({{$item}})">
-                                    <i class="fa-solid fa-circle-info"></i>&nbsp; Properties
-                                </button></li>
-                            <li>
-                                <button class="dropdown-item" type="button" onclick="generateQRcode({{$item}})">
-                                    <i
-                                        class="fa-regular fa-share-from-square"></i>&nbsp; Share
-                                </button>
-                            </li>
-                           @if($item->file_type == 'VIDEO')
+                <div class="col-12 col-md-6 col-lg-2 mb-2 p-3">
+                    <div class="shadow bg-white rounded position-relative pb-4">
+                        <div class="dropdown bg-white position-absolute top-0 end-0" style="z-index: 10">
+                            <button class="btn border btn-outline-secondary" type="button" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                <i class="fa-solid fa-ellipsis"></i>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                <li><button class="dropdown-item" type="button" data-bs-toggle="modal"
+                                        data-bs-target="#propertiesModal" onclick="showProperties({{ $item }})">
+                                        <i class="fa-solid fa-circle-info"></i>&nbsp; Properties
+                                    </button></li>
                                 <li>
-                                    <button class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#streamVideoModal">
-                                        <i class="fa-solid fa-play"></i>&nbsp; Play Video
+                                    <button class="dropdown-item" type="button" onclick="generateQRcode({{$item}})">
+                                        <i
+                                            class="fa-regular fa-share-from-square"></i>&nbsp; Share
                                     </button>
                                 </li>
-                           @endif
-                            <li>
-                                <button class="btn text-danger" onclick="deleteFile({{$item}})">
-                                    <a href="{{route('delete_file', ['id' => $item->id])}}" >
-                                        <i class="fa-solid fa-trash-can text-danger"></i>
-                                    </a>&nbsp; Delete
+                               @if($item->file_type == 'VIDEO')
+                                    <li>
+                                        <button class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#streamVideoModal">
+                                            <i class="fa-solid fa-play"></i>&nbsp; Play Video
+                                        </button>
+                                    </li>
+                               @endif
+                                <li>
+                                    <button class="btn text-danger" onclick="deleteFile({{$item}})">
+                                        <a href="{{route('delete_file', ['id' => $item->id])}}" >
+                                            <i class="fa-solid fa-trash-can text-danger"></i>
+                                        </a>&nbsp; Delete
 
-                                    <form id="delete-form" action="{{ route('delete_file', ['id' => $item->id]) }}"
-                                          method="POST" class="d-none">
-                                        @csrf
+                                        <form id="delete-form" action="{{ route('delete_file', ['id' => $item->id]) }}"
+                                              method="POST" class="d-none">
+                                            @csrf
 
-                                    </form>
-                                </button>
+                                        </form>
+                                    </button>
 
-                            </li>
-                        </ul>
-                    </div>
+                                </li>
+                            </ul>
+                        </div>
 
 
-                    <div class="d-flex flex-column ">
-                        @if($item->file_type == 'IMAGE')
-                            <img class="h-2 w-full" src={{ asset($item->getFilePath($item->id, $item->file_type)) }} alt="" width="150px" height="150px">
-                        @else
-                            <img class="h-2 w-full" src={{ asset('assets/images/bg_video.png') }} alt="" width="150px" height="150px">
-                        @endif
+                        <div class="d-flex flex-column ">
+                            @if($item->file_type ==  \App\Constant\FileType::IMAGE)
+                                <img class="h-2 w-full" src={{ asset($item->getFilePath($item->id, $item->file_type)) }} alt="" width="150px" height="150px">
+                            @else
+                                <img class="thumbnail" src={{ asset('assets/images/bg_video.png') }} alt={{$item->name}}>
+                            @endif
 
-                        <div class=" py-2 text-wrap w-75">{{ $item->name }}</div>
+                            <div class=" pt-4 text-wrap px-3 text-muted text-xl">{{ $item->name }}</div>
+                        </div>
                     </div>
                 </div>
 
@@ -136,13 +140,19 @@
             @endforelse
         </div>
     @else
-        <div>
+        <div class="pt-3">
             <table class="table table-striped">
+                <tr>
+                    <th>SN</th>
+                    <th>Name</th>
+                    <th>File Type</th>
+                    <th></th>
+                </tr>
                 @forelse ($data['items'] as $item)
                     <tr scope="row">
                         <td class="py-2">
-                            <div class="rounded-circle border d-flex justify-content-center align-items-center"
-                                style="width: 30px; height: 30px">
+                            <div class="text-muted d-flex justify-content-center align-items-center"
+                                >
                                 {{ $loop->index + 1 }}
                             </div>
                         </td>
@@ -161,7 +171,9 @@
                                     <i class="fa-solid fa-ellipsis"></i>
                                 </button>
                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                    <li><button class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#propertiesModal" onclick="showProperties({{$item}})">
+                                    <li><button class="dropdown-item" type="button" data-bs-toggle="modal"
+                                            data-bs-target="#propertiesModal"
+                                            onclick="showProperties({{ $item }})">
                                             <i class="fa-solid fa-circle-info"></i>&nbsp; Properties
                                         </button></li>
                                     <li>
@@ -182,8 +194,9 @@
                                                 <i class="fa-solid fa-trash-can text-danger"></i>
                                             </a>&nbsp; Delete
 
-                                            <form id="delete-form" action="{{ route('delete_file', ['id' => $item->id]) }}"
-                                                  method="POST" class="d-none">
+                                            <form id="delete-form"
+                                                action="{{ route('delete_file', ['id' => $item->id]) }}" method="POST"
+                                                class="d-none">
                                                 @csrf
 
                                             </form>
@@ -283,7 +296,109 @@
     </div>
     <!-------------------------------------------------------------END OF PROPERTIES MODAL-------------------------->
 
+        <!----------------------UPLOAD IMAGE MODAL------------------------------------------>
+        <div class="modal fade" id="uploadImageModal" tabindex="-1" aria-labelledby="uploadImageModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="uploadImageModalLabel">Upload Image</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body p-2">
+                        <div class="row row-gap-2 m-3">
+                            <img id="image" src="{{asset('assets/images/bg_transparent.jpg')}}" class="img_upload" width="160px" height="160px">
+                        </div>
+                        <div class="row row-cols-1 mt-3 mx-3 mb-3">
+                            <form action="{{ route('upload_files') }}" method="POST" enctype="multipart/form-data">
+                                @csrf
+                                <input type="file" name="image" accept="image/*" class="form-control image_field @error('image') is-invalid @enderror">
+
+                                @error('image')
+                                <div class="alert alert-danger">{{ $message }}</div>
+                                @enderror
+
+
+                                <div class="my-3 d-flex justify-content-center">
+                                    <button class="btn btn-success w-100" type="submit">Save</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!----------------------END OF UPLOAD IMAGE MODAL----------------------------------->
+
+        <!----------------------UPLOAD IMAGE MODAL------------------------------------------>
+        <div class="modal fade" id="uploadVideoModal" tabindex="-1" aria-labelledby="uploadVideoModalLabel" aria-hidden="true"  data-bs-backdrop="static" data-bs-keyboard="false">
+            <div class="modal-dialog modal-dialog-centered" >
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="uploadVideoModalLabel">Upload Video</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body p-2">
+                        <div class="row row-cols-1 mt-3 mx-3 mb-3">
+                            <form action="{{ route('upload_video_files') }}" method="POST" enctype="multipart/form-data">
+                                @csrf
+                                <input type="file" name="video" accept="video/*" class="form-control @error('video') is-invalid @enderror" >
+
+                                @error('video')
+                                <div class="alert alert-danger">{{ $message }}</div>
+                                @enderror
+
+
+                                <div class="my-3 d-flex justify-content-center">
+                                    <button class="btn btn-success w-100" type="submit">Save</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!----------------------END OF UPLOAD IMAGE MODAL----------------------------------->
+
+
+        <!--------------------------------SCRIPT SECTION------------------------------------>
+        <script>
+            var $modal = $('#uploadImageModal');
+            var image = document.getElementById('image');
+
+            $(".image_field").on("change", function(e){
+                var files = e.target.files;
+                var done = function (url) {
+                    image.src = url;
+                    $modal.modal('show');
+                };
+                var reader;
+                var file;
+                var url;
+                if (files && files.length > 0) {
+                    file = files[0];
+                    if (URL) {
+                        done(URL.createObjectURL(file));
+                    } else if (FileReader) {
+                        reader = new FileReader();
+                        console.log(reader)
+                        reader.onload = function (e) {
+                            done(reader.result);
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                }
+            });
+        </script>
+        <!--------------------------------END OF SCRIPT SECTION----------------------------->
+
     <style>
+
+        .text-xl {
+
+        }
+        .thumbnail {
+            height: 270px;
+        }
 
         .file_label {
             font-weight: bold;
