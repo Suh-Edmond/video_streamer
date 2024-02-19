@@ -63,7 +63,7 @@
             @forelse ($data['items'] as $item)
                 <div class="col-12 col-md-6 col-lg-2 mb-2 p-3">
                     <div class="shadow bg-white rounded position-relative pb-4">
-                        <div class="dropdown bg-white position-absolute top-0 end-0" style="z-index: 10">
+                        <div class="dropdown bg-white rounded shadow position-absolute top-0 end-0" style="z-index: 10">
                             <button class="btn border btn-outline-secondary" type="button" data-bs-toggle="dropdown"
                                 aria-expanded="false">
                                 <i class="fa-solid fa-ellipsis"></i>
@@ -81,7 +81,7 @@
                                 </li>
                                @if($item->file_type == 'VIDEO')
                                     <li>
-                                        <button class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#streamVideoModal">
+                                        <button class="dropdown-item" type="button" data-bs-toggle="modal"  data-bs-target={{'#streamVideoModal'.str($item->id)}}>
                                             <i class="fa-solid fa-play"></i>&nbsp; Play Video
                                         </button>
                                     </li>
@@ -106,19 +106,22 @@
 
                         <div class="d-flex flex-column ">
                             @if($item->file_type ==  \App\Constant\FileType::IMAGE)
-                                <img class="h-2 w-full" src={{ asset($item->getFilePath($item->id, $item->file_type)) }} alt="" width="150px" height="150px">
+                                <img class="w-full thumbnail" src={{ asset($item->getFilePath($item->id, $item->file_type)) }} alt={{$item->name}}>
                             @else
-                                <img class="thumbnail w-full" src={{ asset('assets/images/bg_video.png') }} alt={{$item->name}}>
+                                <button data-bs-toggle="modal"  data-bs-target={{'#streamVideoModal'.str($item->id)}} class="btn thumbnail" style="font-size: 4rem">
+                                    <i class="fa-solid fa-play shadow rounded-circle pe-4 ps-5 py-4"></i>
+                                </button>
+                                {{-- <img class="thumbnail w-full" src={{ asset('assets/images/bg_video.png') }} alt={{$item->name}}> --}}
                             @endif
 
-                            <div class=" pt-4 text-wrap px-3 text-muted text-xl">{{ $item->name }}</div>
+                            <div class=" pt-4 text-wrap px-3 text-muted text-xl text-break">{{ $item->name }}</div>
                         </div>
                     </div>
                 </div>
 
                 <!-------------------------------------------------VIDEO STREAM MODAL-------------------------------------------->
                 @if($item->file_type == \App\Constant\FileType::VIDEO)
-                    <div class="modal fade" id="streamVideoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+                    <div class="modal fade" id={{'streamVideoModal'.str($item->id)}} tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
                         <div class="modal-dialog modal-dialog-centered modal-lg">
                             <div class="modal-content m-3">
                                 <div class="modal-header">
@@ -397,7 +400,7 @@
 
         }
         .thumbnail {
-            height: 170px;
+            height: 180px;
         }
 
         .file_label {
