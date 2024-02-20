@@ -40,7 +40,7 @@
 
                         @if ($user->id != Auth::user()->id)
                             <div class="dropdown">
-                                <button class="btn border btn-outline-secondary" type="button" data-bs-toggle="dropdown"
+                                <button class="btn border btn-outline-success" type="button" data-bs-toggle="dropdown"
                                     aria-expanded="false">
                                     <i class="fa-solid fa-ellipsis"></i>
                                 </button>
@@ -51,7 +51,7 @@
                                                 onclick="event.preventDefault();
                                 document.getElementById('block-form').submit();"
                                                 class="dropdown-item d-flex gap-2 align-items-center"> <i
-                                                    class="fa fa-close"></i> <span>Block</span></a>
+                                                    class="fa fa-close"></i> <span class="text-black">Block</span></a>
                                             <form id="block-form" action="{{ route('users.block', ['id' => $user->id]) }}"
                                                 method="POST" class="d-none">
                                                 @csrf
@@ -64,7 +64,7 @@
                                                 onclick="event.preventDefault();
                                          document.getElementById('delete-form').submit();"
                                                 class="dropdown-item d-flex gap-2 align-items-center"><i
-                                                    class="fas fa-close"></i><span class="text-danger">Unblock</span></a>
+                                                    class="fas fa-close"></i><span class="text-black">Unblock</span></a>
                                             </a>
 
                                             <form id="delete-form"
