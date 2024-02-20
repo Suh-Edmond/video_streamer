@@ -46,13 +46,13 @@
                     <ul class="navbar-nav ms-auto">
                         <!-- Authentication Links -->
                         @guest
-                            @if (Route::has('login') && ! \Illuminate\Support\Facades\Route::currentRouteNamed("set_stream_video"))
+                            @if (Route::has('login') && ! \Illuminate\Support\Facades\Route::currentRouteNamed("set_stream_video") && ! \Illuminate\Support\Facades\Route::currentRouteNamed('view_share_image'))
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
                                 </li>
                             @endif
 
-                            @if (Route::has('register') && ! \Illuminate\Support\Facades\Route::currentRouteNamed("set_stream_video"))
+                            @if (Route::has('register') && ! \Illuminate\Support\Facades\Route::currentRouteNamed("set_stream_video") && ! \Illuminate\Support\Facades\Route::currentRouteNamed('view_share_image'))
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
                                 </li>

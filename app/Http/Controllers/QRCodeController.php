@@ -14,7 +14,7 @@ class QRCodeController extends Controller
     public function generateQRCode(Request $request, $id)
     {
          $file = File::findOrFail($id);
-         $path = $file->file_type == FileType::IMAGE ? env('APP_URL') . HelperTrait::getFilePath($file->id, $file->file_type): $this->getVideoPath($file);
+         $path = $file->file_type == FileType::IMAGE ? $this->getImagePath($file): $this->getVideoPath($file);
 
         return QrCode::size(300)
             ->generate($path);
@@ -36,5 +36,12 @@ class QRCodeController extends Controller
         $encryptedFilePath = encrypt(HelperTrait::getFilePath($file->id, $file->file_type));
 
         return env('APP_URL'). '/files/videos/set_stream?file='.$encryptedFilePath;
+    }
+
+    private function getImagePath($file)
+    {
+        $encryptedFilePath = encrypt(HelperTrait::getFilePath($file->id, $file->file_type));
+
+        return env('APP_URL'). '/files/images/'.$file->name.'?file='.$encryptedFilePath;
     }
 }
