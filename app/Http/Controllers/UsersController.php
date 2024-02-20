@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Constant\UserStatus;
 use App\Models\User;
+use Illuminate\Support\Facades\Session;
 
 class UsersController extends Controller
 {
@@ -17,7 +18,6 @@ class UsersController extends Controller
             'filter' => false,
             'gridView'=> false
         ];
-
         return view('dashboard.users')->with('data',$data);
     }
 
@@ -26,6 +26,7 @@ class UsersController extends Controller
         User::findOrFail($id)->update([
             'status' => UserStatus::IN_ACTIVE
         ]);
+        Session::put('success', 'User account has been blocked successfully');
         return redirect()->back();
     }
 
@@ -34,18 +35,14 @@ class UsersController extends Controller
         User::findOrFail($id)->update([
             'status' => UserStatus::ACTIVE
         ]);
+        Session::put('success', 'User account has been blocked successfully');
         return redirect()->route('users');
     }
 
     public function deleteUser($id)
     {
         User::findOrFail($id)->delete();
+        Session::put('success', 'User account has been deleted successfully');
         return redirect()->route('users');
-    }
-
-    private function getUser() {
-        if(auth()->check()) {
-            return auth()->user();
-        }
     }
 }

@@ -407,7 +407,6 @@
 
 
     <style>
-
         .text-xl {
 
         }
@@ -435,6 +434,35 @@
             padding: 1px;
             background-color: black;
             margin: 5px;
+        }
+
+        .pagination > li > a
+        {
+            background-color: white;
+            color: darkgreen;
+        }
+
+        .pagination > li > a:focus,
+        .pagination > li > a:hover,
+        .pagination > li > span:focus,
+        .pagination > li > span:hover
+        {
+            color: darkgreen;
+            background-color: #eee;
+            border-color: #ddd;
+        }
+
+        .pagination > .active > a
+        {
+            color: white;
+            background-color: darkgreen;
+            border: solid 1px darkgreen;
+        }
+
+        .pagination > .active > a:hover
+        {
+            background-color: darkgreen;
+            border: solid 1px darkgreen;
         }
     </style>
 
