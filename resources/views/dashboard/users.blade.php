@@ -101,5 +101,28 @@
             @endforelse
         </table>
 
+        <div class="d-flex justify-content-sm-end">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                    <li   class="{{$data['items']->currentPage() == 1 ? 'page-item disabled':'page-item'}}">
+                        <a class="page-link" href="#" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    @for($i = 1; $i <= $data['items']->lastPage(); $i++)
+                        <li class="{{$data['items']->currentPage() == $i ? 'page-item active':'page-item'}}">
+                            <a class="page-link" href="{{route('users', ['page' => $i])}}">{{$i}}</a>
+                        </li>
+                    @endfor
+                    <li class="{{$data['items']->currentPage() == $data['items']->lastPage() ? 'page-item disabled': 'page-item'}}">
+                        <a class="page-link" href="{{route('users', ['page' => $data['items']->currentPage() + 1])}}">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
     </div>
+
+
 @endsection

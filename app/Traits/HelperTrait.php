@@ -7,7 +7,7 @@ use App\Models\File;
 
 trait HelperTrait {
     private static string $imgDir ='/storage/uploads/images/';
-    private static string $videoDir ='/storage/uploads/videos/';
+    private static string $videoDir ='storage/uploads/videos/';
 
     public static function getFilePath($fileId, $fileType)
     {

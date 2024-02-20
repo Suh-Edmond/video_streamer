@@ -11,7 +11,7 @@ class File extends Model
     use HasFactory;
 
     const IMAGE_DIR ='/storage/uploads/images/';
-    const VIDEO_DIR ='/storage/uploads/videos/';
+    const VIDEO_DIR ='storage/uploads/videos/';
     protected $fillable = [
         'name',
         'file_type',

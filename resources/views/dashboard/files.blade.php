@@ -142,6 +142,28 @@
             @empty
                 <p>No items</p>
             @endforelse
+
+            <div class="d-flex justify-content-sm-end">
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination">
+                            <li   class="{{$data['items']->currentPage() == 1 ? 'page-item disabled':'page-item'}}">
+                                <a class="page-link" href="#" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            @for($i = 1; $i <= $data['items']->lastPage(); $i++)
+                                <li class="{{$data['items']->currentPage() == $i ? 'page-item active':'page-item'}}">
+                                    <a class="page-link" href="{{route('files', ['page' => $i])}}">{{$i}}</a>
+                                </li>
+                            @endfor
+                            <li class="{{$data['items']->currentPage() == $data['items']->lastPage() ? 'page-item disabled': 'page-item'}}">
+                                <a class="page-link" href="{{route('files', ['page' => $data['items']->currentPage() + 1])}}">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
         </div>
     @else
         <div class="pt-3">
@@ -221,9 +243,8 @@
                                         <button type="button" class="btn-close"   data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body my-3 d-flex justify-content-center">
-                                        <video width="600" height="350" controls  controlsList="nodownload" oncontextmenu="return false;" >
-                                            <source src="{{asset($item->getFilePath($item->id, $item->file_type))}}" type="video/mp4" id="video">
-                                            Your browser does not support the video tag.
+                                        <video src="{{route('get_stream_video', ['path' => $item->getFilePath($item->id, $item->file_type)])}}" width="600" height="350" controls  controlsList="nodownload"
+                                               oncontextmenu="return false;" id="video" type="video/mp4">
                                         </video>
                                     </div>
                                 </div>
@@ -235,6 +256,29 @@
                     <p>No items</p>
                 @endforelse
             </table>
+
+            <div class="d-flex justify-content-sm-end">
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                        <li   class="{{$data['items']->currentPage() == 1 ? 'page-item disabled':'page-item'}}">
+                            <a class="page-link" href="#" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        @for($i = 1; $i <= $data['items']->lastPage(); $i++)
+                            <li class="{{$data['items']->currentPage() == $i ? 'page-item active':'page-item'}}">
+                                <a class="page-link" href="{{route('files', ['page' => $i])}}">{{$i}}</a>
+                            </li>
+                        @endfor
+                        <li class="{{$data['items']->currentPage() == $data['items']->lastPage() ? 'page-item disabled': 'page-item'}}">
+                            <a class="page-link" href="{{route('files', ['page' => $data['items']->currentPage() + 1])}}">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+
         </div>
     @endif
 
@@ -298,68 +342,68 @@
     </div>
     <!-------------------------------------------------------------END OF PROPERTIES MODAL-------------------------->
 
-        <!----------------------UPLOAD IMAGE MODAL------------------------------------------>
-        <div class="modal fade" id="uploadImageModal" tabindex="-1" aria-labelledby="uploadImageModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="uploadImageModalLabel">Upload Image</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <!----------------------UPLOAD IMAGE MODAL------------------------------------------>
+    <div class="modal fade" id="uploadImageModal" tabindex="-1" aria-labelledby="uploadImageModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="uploadImageModalLabel">Upload Image</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-2">
+                    <div class="row row-gap-2 m-3">
+                        <img id="image" src="{{asset('assets/images/bg_transparent.jpg')}}" class="img_upload" width="160px" height="160px">
                     </div>
-                    <div class="modal-body p-2">
-                        <div class="row row-gap-2 m-3">
-                            <img id="image" src="{{asset('assets/images/bg_transparent.jpg')}}" class="img_upload" width="160px" height="160px">
-                        </div>
-                        <div class="row row-cols-1 mt-3 mx-3 mb-3">
-                            <form action="{{ route('upload_files') }}" method="POST" enctype="multipart/form-data">
-                                @csrf
-                                <input type="file" name="image" accept="image/*" class="form-control image_field @error('image') is-invalid @enderror">
+                    <div class="row row-cols-1 mt-3 mx-3 mb-3">
+                        <form action="{{ route('upload_files') }}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            <input type="file" name="image" accept="image/*" class="form-control image_field @error('image') is-invalid @enderror">
 
-                                @error('image')
-                                <div class="alert alert-danger">{{ $message }}</div>
-                                @enderror
+                            @error('image')
+                            <div class="alert alert-danger">{{ $message }}</div>
+                            @enderror
 
 
-                                <div class="my-3 d-flex justify-content-center">
-                                    <button class="btn btn-success w-100" type="submit">Save</button>
-                                </div>
-                            </form>
-                        </div>
+                            <div class="my-3 d-flex justify-content-center">
+                                <button class="btn btn-success w-100" type="submit">Save</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
-        <!----------------------END OF UPLOAD IMAGE MODAL----------------------------------->
+    </div>
+    <!----------------------END OF UPLOAD IMAGE MODAL----------------------------------->
 
-        <!----------------------UPLOAD IMAGE MODAL------------------------------------------>
-        <div class="modal fade" id="uploadVideoModal" tabindex="-1" aria-labelledby="uploadVideoModalLabel" aria-hidden="true"  data-bs-backdrop="static" data-bs-keyboard="false">
-            <div class="modal-dialog modal-dialog-centered" >
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="uploadVideoModalLabel">Upload Video</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body p-2">
-                        <div class="row row-cols-1 mt-3 mx-3 mb-3">
-                            <form action="{{ route('upload_video_files') }}" method="POST" enctype="multipart/form-data">
-                                @csrf
-                                <input type="file" name="video" accept="video/*" class="form-control @error('video') is-invalid @enderror" >
+    <!----------------------UPLOAD IMAGE MODAL------------------------------------------>
+    <div class="modal fade" id="uploadVideoModal" tabindex="-1" aria-labelledby="uploadVideoModalLabel" aria-hidden="true"  data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered" >
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="uploadVideoModalLabel">Upload Video</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-2">
+                    <div class="row row-cols-1 mt-3 mx-3 mb-3">
+                        <form action="{{ route('upload_video_files') }}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            <input type="file" name="video" accept="video/*" class="form-control @error('video') is-invalid @enderror" >
 
-                                @error('video')
-                                <div class="alert alert-danger">{{ $message }}</div>
-                                @enderror
+                            @error('video')
+                            <div class="alert alert-danger">{{ $message }}</div>
+                            @enderror
 
 
-                                <div class="my-3 d-flex justify-content-center">
-                                    <button class="btn btn-success w-100" type="submit">Save</button>
-                                </div>
-                            </form>
-                        </div>
+                            <div class="my-3 d-flex justify-content-center">
+                                <button class="btn btn-success w-100" type="submit">Save</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
-        <!----------------------END OF UPLOAD IMAGE MODAL----------------------------------->
+    </div>
+    <!----------------------END OF UPLOAD IMAGE MODAL----------------------------------->
 
 
     <style>

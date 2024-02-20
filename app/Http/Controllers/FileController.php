@@ -49,7 +49,7 @@ class FileController extends Controller
             $query->where('file_type', $filter);
         }
 
-        $files = $query->get();
+        $files = $query->paginate(10);
         $data = [
             'items' => $files,
             'gridView' => strtolower($layout) == 'grid',
@@ -154,7 +154,7 @@ class FileController extends Controller
 
     public function getStreamVideo(Request $request)
     {
-        VideoStreamer::streamFile((decrypt($request->query()['file'])));
+        VideoStreamer::streamFile($request['path']);
     }
 
     public function viewSharedImage(Request $request, $name)
