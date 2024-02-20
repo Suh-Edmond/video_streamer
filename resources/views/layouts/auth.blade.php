@@ -401,8 +401,8 @@
         integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous">
     </script>
     <div class="d-flex px-4 px-lg-0" style="height: 100vh">
-        <div class="col d-none d-lg-block">
-            <img src="{{ asset('assets/images/bg_image.png') }}" alt="background image" class="img-fluid" width="100%"
+        <div class="col d-none d-lg-block d-flex justify-content-center align-items-center">
+            <img src="{{ asset('assets/images/bg_auth.jpg') }}" alt="background image" class="rounded img-flud" width="100%"
                 height="100%">
         </div>
         <div class="col d-flex flex-column bg-white h-100 justify-content-center align-items-stretch align-items-lg-center">
