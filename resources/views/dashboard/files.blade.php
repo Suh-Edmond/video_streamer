@@ -64,7 +64,7 @@
                 <div class="col-12 col-md-6 col-lg-2 mb-2 p-3">
                     <div class="shadow bg-white rounded position-relative pb-4">
                         <div class="dropdown bg-white rounded shadow position-absolute top-0 end-0" style="z-index: 10">
-                            <button class="btn border btn-outline-secondary" type="button" data-bs-toggle="dropdown"
+                            <button class="btn border btn-outline-success" type="button" data-bs-toggle="dropdown"
                                 aria-expanded="false">
                                 <i class="fa-solid fa-ellipsis"></i>
                             </button>
@@ -355,14 +355,16 @@
                         <img id="image" src="{{asset('assets/images/bg_transparent.jpg')}}" class="img_upload" width="160px" height="160px">
                     </div>
                     <div class="row row-cols-1 mt-3 mx-3 mb-3">
-                        <form action="{{ route('upload_files') }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('upload_files') }}" method="POST" enctype="multipart/form-data" id="fileUploadForm">
                             @csrf
                             <input type="file" name="image" accept="image/*" class="form-control image_field @error('image') is-invalid @enderror">
 
                             @error('image')
                             <div class="alert alert-danger">{{ $message }}</div>
                             @enderror
-
+                            <div class="progress mt-3" id="upload-progress">
+                                <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
+                            </div>
 
                             <div class="my-3 d-flex justify-content-center">
                                 <button class="btn btn-success w-100" type="submit">Save</button>
@@ -375,7 +377,7 @@
     </div>
     <!----------------------END OF UPLOAD IMAGE MODAL----------------------------------->
 
-    <!----------------------UPLOAD IMAGE MODAL------------------------------------------>
+    <!----------------------UPLOAD VIDEO MODAL------------------------------------------>
     <div class="modal fade" id="uploadVideoModal" tabindex="-1" aria-labelledby="uploadVideoModalLabel" aria-hidden="true"  data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog modal-dialog-centered" >
             <div class="modal-content">
@@ -385,14 +387,16 @@
                 </div>
                 <div class="modal-body p-2">
                     <div class="row row-cols-1 mt-3 mx-3 mb-3">
-                        <form action="{{ route('upload_video_files') }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('upload_video_files') }}" method="POST" enctype="multipart/form-data" id="fileUploadForm">
                             @csrf
                             <input type="file" name="video" accept="video/*" class="form-control @error('video') is-invalid @enderror" >
 
                             @error('video')
                             <div class="alert alert-danger">{{ $message }}</div>
                             @enderror
-
+                            <div class="progress mt-3">
+                                <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
+                            </div>
 
                             <div class="my-3 d-flex justify-content-center">
                                 <button class="btn btn-success w-100" type="submit">Save</button>
@@ -403,7 +407,7 @@
             </div>
         </div>
     </div>
-    <!----------------------END OF UPLOAD IMAGE MODAL----------------------------------->
+    <!----------------------END OF VIDEO IMAGE MODAL----------------------------------->
 
 
     <style>
@@ -581,5 +585,28 @@
                 }
             })
         }
+
+        $(function () {
+            $(document).ready(function () {
+
+                 $('#fileUploadForm').ajaxForm({
+                    beforeSend: function () {
+                        var percentage = '0';
+                    },
+                    uploadProgress: function (event, position, total, percentComplete) {
+
+                        var percentage = percentComplete;
+                        $('.progress .progress-bar').css("width", percentage+'%', function() {
+                            return $(this).attr("aria-valuenow", percentage) + "%";
+                        })
+
+                    },
+                    complete: function (xhr) {
+                        $modal.modal('hide');
+                        window.location.reload();
+                    }
+                });
+            });
+        });
      </script>
 @endsection
