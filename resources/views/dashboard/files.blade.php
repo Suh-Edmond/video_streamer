@@ -250,12 +250,10 @@
                 </div>
                 <div class="modal-body">
                     <div class="row row-gap-0 d-flex justify-content-sm-around">
-                        <div class="col-8 col-sm-8 col-md-8">
-                            <input class="form-control form-control-md" type="text" disabled id="link">
-                        </div>
-                        <div class="col-2 col-md-2 col-sm-2">
-                            <button type="button" class="btn btn-primary" id="copy"
-                                onclick="copyToClipboard()">Copy</button>
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control form-control-md" aria-describedby="button-addon2" disabled id="link">
+                            <button class="btn btn-success" type="button" id="copy"
+                                    onclick="copyToClipboard()">Copy</button>
                         </div>
                     </div>
                     <div class="divider my-3">OR</div>
