@@ -51,7 +51,7 @@ Route::middleware('guest')->group(function (){
 
     Route::get('/files/videos/get_stream', [FileController::class, 'getStreamVideo'])->name("get_stream_video");
 
-
+    Route::get('/files/images/{name}', [FileController::class, 'viewSharedImage'])->name('view_share_image');
     Route::get('/', function () {
         return view('auth.login');
     });

@@ -30,7 +30,7 @@
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm py-3">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.namm', 'Video Streamer') }}
+                    {{ config('app.name', 'File Manager') }}
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
@@ -46,13 +46,13 @@
                     <ul class="navbar-nav ms-auto">
                         <!-- Authentication Links -->
                         @guest
-                            @if (Route::has('login') && ! \Illuminate\Support\Facades\Route::currentRouteNamed("set_stream_video"))
+                            @if (Route::has('login') && ! \Illuminate\Support\Facades\Route::currentRouteNamed("set_stream_video") && ! \Illuminate\Support\Facades\Route::currentRouteNamed('view_share_image'))
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
                                 </li>
                             @endif
 
-                            @if (Route::has('register') && ! \Illuminate\Support\Facades\Route::currentRouteNamed("set_stream_video"))
+                            @if (Route::has('register') && ! \Illuminate\Support\Facades\Route::currentRouteNamed("set_stream_video") && ! \Illuminate\Support\Facades\Route::currentRouteNamed('view_share_image'))
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
                                 </li>

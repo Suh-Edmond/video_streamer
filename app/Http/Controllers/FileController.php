@@ -157,6 +157,14 @@ class FileController extends Controller
         VideoStreamer::streamFile((decrypt($request->query()['file'])));
     }
 
+    public function viewSharedImage(Request $request, $name)
+    {
+        $filePath = decrypt($request['file']);
+        $data['path']  = $filePath;
+        $data['title']  = $name;
+
+        return view('stream.index-image')->with($data);
+    }
 
     private function getFileNameFromPath($path)
     {

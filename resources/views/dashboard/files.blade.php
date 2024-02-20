@@ -250,12 +250,10 @@
                 </div>
                 <div class="modal-body">
                     <div class="row row-gap-0 d-flex justify-content-sm-around">
-                        <div class="col-8 col-sm-8 col-md-8">
-                            <input class="form-control form-control-md" type="text" disabled id="link">
-                        </div>
-                        <div class="col-2 col-md-2 col-sm-2">
-                            <button type="button" class="btn btn-primary" id="copy"
-                                onclick="copyToClipboard()">Copy</button>
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control form-control-md" aria-describedby="button-addon2" disabled id="link">
+                            <button class="btn btn-success" type="button" id="copy"
+                                    onclick="copyToClipboard()">Copy</button>
                         </div>
                     </div>
                     <div class="divider my-3">OR</div>
@@ -364,36 +362,6 @@
         <!----------------------END OF UPLOAD IMAGE MODAL----------------------------------->
 
 
-        <!--------------------------------SCRIPT SECTION------------------------------------>
-        <script>
-            var $modal = $('#uploadImageModal');
-            var image = document.getElementById('image');
-
-            $(".image_field").on("change", function(e){
-                var files = e.target.files;
-                var done = function (url) {
-                    image.src = url;
-                    $modal.modal('show');
-                };
-                var reader;
-                var file;
-                var url;
-                if (files && files.length > 0) {
-                    file = files[0];
-                    if (URL) {
-                        done(URL.createObjectURL(file));
-                    } else if (FileReader) {
-                        reader = new FileReader();
-                        reader.onload = function (e) {
-                            done(reader.result);
-                        };
-                        reader.readAsDataURL(file);
-                    }
-                }
-            });
-        </script>
-        <!--------------------------------END OF SCRIPT SECTION----------------------------->
-
     <style>
 
         .text-xl {
@@ -431,6 +399,32 @@
         var $shareModal = $('#shareModal');
         let link = '';
         let layout = 'grid';
+        var $modal = $('#uploadImageModal');
+        var image = document.getElementById('image');
+
+        $(".image_field").on("change", function(e){
+            var files = e.target.files;
+            var done = function (url) {
+                image.src = url;
+                $modal.modal('show');
+            };
+            var reader;
+            var file;
+            var url;
+            if (files && files.length > 0) {
+                file = files[0];
+                if (URL) {
+                    done(URL.createObjectURL(file));
+                } else if (FileReader) {
+                    reader = new FileReader();
+                    reader.onload = function (e) {
+                        done(reader.result);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            }
+        });
+
 
         let generateQRcode = function(data) {
             let id = data.id;
