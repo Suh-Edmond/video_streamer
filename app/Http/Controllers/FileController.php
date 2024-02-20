@@ -3,14 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Constant\FileType;
-use App\Helper\VideoStream;
-use App\Http\Resources\FileResource;
 use App\Models\File;
 use App\Traits\HelperTrait;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Route;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Validator;
 use Iman\Streamer\VideoStreamer;
 
 class FileController extends Controller
@@ -53,7 +50,7 @@ class FileController extends Controller
         $data = [
             'items' => $files,
             'gridView' => strtolower($layout) == 'grid',
-            'filter' => true
+            'filter' => true,
         ];
         return view('dashboard/files')->with('data',$data);
     }
@@ -84,6 +81,7 @@ class FileController extends Controller
         $this->saveFile($fileName, $request, $size, FileType::IMAGE);
 
         $data['gridView'] = true;
+
         return redirect()->back()->with($data);
     }
 
