@@ -82,14 +82,14 @@ class FileController extends Controller
 
         $data['gridView'] = true;
 
-        return redirect()->back()->with($data);
+        return redirect()->route('files')->with($data);
     }
 
     public function uploadVideo(Request $request)
     {
         //video/avi, video/mpeg, video/quicktime,mimetypes
         $request->validate([
-            'video' => 'required|max:20240'
+            'video' => 'required|max:50240'
         ]);
 
         $fileName = $request->file('video')->getClientOriginalName();
