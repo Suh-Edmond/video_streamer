@@ -364,36 +364,6 @@
         <!----------------------END OF UPLOAD IMAGE MODAL----------------------------------->
 
 
-        <!--------------------------------SCRIPT SECTION------------------------------------>
-        <script>
-            var $modal = $('#uploadImageModal');
-            var image = document.getElementById('image');
-
-            $(".image_field").on("change", function(e){
-                var files = e.target.files;
-                var done = function (url) {
-                    image.src = url;
-                    $modal.modal('show');
-                };
-                var reader;
-                var file;
-                var url;
-                if (files && files.length > 0) {
-                    file = files[0];
-                    if (URL) {
-                        done(URL.createObjectURL(file));
-                    } else if (FileReader) {
-                        reader = new FileReader();
-                        reader.onload = function (e) {
-                            done(reader.result);
-                        };
-                        reader.readAsDataURL(file);
-                    }
-                }
-            });
-        </script>
-        <!--------------------------------END OF SCRIPT SECTION----------------------------->
-
     <style>
 
         .text-xl {
@@ -431,6 +401,32 @@
         var $shareModal = $('#shareModal');
         let link = '';
         let layout = 'grid';
+        var $modal = $('#uploadImageModal');
+        var image = document.getElementById('image');
+
+        $(".image_field").on("change", function(e){
+            var files = e.target.files;
+            var done = function (url) {
+                image.src = url;
+                $modal.modal('show');
+            };
+            var reader;
+            var file;
+            var url;
+            if (files && files.length > 0) {
+                file = files[0];
+                if (URL) {
+                    done(URL.createObjectURL(file));
+                } else if (FileReader) {
+                    reader = new FileReader();
+                    reader.onload = function (e) {
+                        done(reader.result);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            }
+        });
+
 
         let generateQRcode = function(data) {
             let id = data.id;
