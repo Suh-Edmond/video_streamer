@@ -49,7 +49,7 @@ class FileController extends Controller
             $query->where('file_type', $filter);
         }
 
-        $files = $query->get();
+        $files = $query->paginate(10);
         $data = [
             'items' => $files,
             'gridView' => strtolower($layout) == 'grid',
