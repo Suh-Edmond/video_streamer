@@ -221,9 +221,8 @@
                                         <button type="button" class="btn-close"   data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body my-3 d-flex justify-content-center">
-                                        <video width="600" height="350" controls  controlsList="nodownload" oncontextmenu="return false;" >
-                                            <source src="{{asset($item->getFilePath($item->id, $item->file_type))}}" type="video/mp4" id="video">
-                                            Your browser does not support the video tag.
+                                        <video src="{{route('get_stream_video', ['path' => $item->getFilePath($item->id, $item->file_type)])}}" width="600" height="350" controls  controlsList="nodownload"
+                                               oncontextmenu="return false;" id="video" type="video/mp4">
                                         </video>
                                     </div>
                                 </div>

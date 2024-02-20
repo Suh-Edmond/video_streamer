@@ -154,7 +154,7 @@ class FileController extends Controller
 
     public function getStreamVideo(Request $request)
     {
-        VideoStreamer::streamFile((decrypt($request->query()['file'])));
+        VideoStreamer::streamFile($request['path']);
     }
 
     public function viewSharedImage(Request $request, $name)
