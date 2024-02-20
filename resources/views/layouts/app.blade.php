@@ -28,15 +28,18 @@
 
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+
+    <style type="text/css">
+        .dropdown-menu > a:active {
+            background-color: green;
+            color: white;
+        }
+    </style>
 </head>
-<style>
-    .dropdown-menu > a:active {
-        background-color: green;
-        color: white;
-    }
-</style>
+
 <body>
-    <div id="app">
+    <div id="app" class="container-fluid">
+
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm py-3">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
@@ -95,7 +98,6 @@
                 </div>
             </div>
         </nav>
-
         <main class="py-2 px-2 px-lg-5 py-lg-4">
             @yield('content')
         </main>
