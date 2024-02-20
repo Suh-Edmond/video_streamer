@@ -29,6 +29,12 @@
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
+<style>
+    .dropdown-menu > a:active {
+        background-color: green;
+        color: white;
+    }
+</style>
 <body>
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm py-3">

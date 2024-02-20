@@ -16,29 +16,29 @@
 
 @section('filters')
     <div class="dropdown">
-        <button class="btn border btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+        <button class="btn border btn-outline-success dropdown-toggle" type="button" data-bs-toggle="dropdown"
             aria-expanded="false">
             All files
         </button>
         <ul class="dropdown-menu shadow py-3 bg-white">
-            <li><button class="dropdown-item" onclick="filterBy('')">All files</button></li>
-            <li><button onclick="filterBy('IMAGE')" class="dropdown-item">Images only</button></li>
-            <li><button onclick="filterBy('VIDEO')" class="dropdown-item">Videos only</button></li>
+            <li><a class="dropdown-item date_filter" onclick="filterBy('')">All files</a></li>
+            <li><a onclick="filterBy('IMAGE')" class="dropdown-item date_filter">Images only</a></li>
+            <li><a onclick="filterBy('VIDEO')" class="dropdown-item date_filter">Videos only</a></li>
         </ul>
     </div>
 @endsection
 
 @section('sort')
     <div class="dropdown">
-        <button class="btn border btn-outline-secondary" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <button class="btn border btn-outline-success" type="button" data-bs-toggle="dropdown" aria-expanded="false">
             <div class="d-flex gap-1 align-items-center">
                 <i class="fa-solid fa-filter"></i><span>Sort:</span>
             </div>
         </button>
         <ul class="dropdown-menu bg-white">
-            <li> <a onclick="sortBy('DATE_DESC')" class="dropdown-item">Newest First</a></li>
-            <li><a onclick="sortBy('DATE_ASC')" class="dropdown-item">Oldest First</a></li>
-            <li><a onclick="sortBy('NAME')" class="dropdown-item">Name</a></li>
+            <li> <a onclick="sortBy('DATE_DESC')" class="dropdown-item date_filter">Newest First</a></li>
+            <li><a onclick="sortBy('DATE_ASC')" class="dropdown-item date_filter">Oldest First</a></li>
+            <li><a onclick="sortBy('NAME')" class="dropdown-item date_filter">Name</a></li>
         </ul>
     </div>
 @endsection
@@ -50,7 +50,7 @@
             <i class="fa fa-add"></i><span>Upload New Files</span>
     </button>
     <ul class="dropdown-menu bg-white" aria-labelledby="dropdownMenuButton1">
-        <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#uploadImageModal">Upload
+        <li><a class="dropdown-item upload" href="#" data-bs-toggle="modal" data-bs-target="#uploadImageModal">Upload
                 Images</a></li>
         <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#uploadVideoModal">Upload
                 Videos</a></li>
@@ -69,36 +69,31 @@
                                 <i class="fa-solid fa-ellipsis"></i>
                             </button>
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                <li><button class="dropdown-item" type="button" data-bs-toggle="modal"
+                                <li><a class="dropdown-item date_filter" type="button" data-bs-toggle="modal"
                                         data-bs-target="#propertiesModal" onclick="showProperties({{ $item }})">
-                                        <i class="fa-solid fa-circle-info"></i>&nbsp; Properties
-                                    </button></li>
+                                        <i class="fa-solid fa-circle-info"></i>&nbsp;Properties
+                                    </a></li>
                                 <li>
-                                    <button class="dropdown-item" type="button" onclick="generateQRcode({{$item}})">
-                                        <i
-                                            class="fa-regular fa-share-from-square"></i>&nbsp; Share
-                                    </button>
+                                    <a class="dropdown-item date_filter" type="button" onclick="generateQRcode({{$item}})">
+                                        <i class="fa-regular fa-share-from-square"></i>&nbsp;Share
+                                    </a>
                                 </li>
                                @if($item->file_type == 'VIDEO')
                                     <li>
-                                        <button class="dropdown-item" type="button" data-bs-toggle="modal"  data-bs-target={{'#streamVideoModal'.str($item->id)}}>
-                                            <i class="fa-solid fa-play"></i>&nbsp; Play Video
-                                        </button>
+                                        <a class="dropdown-item date_filter" type="button" data-bs-toggle="modal"  data-bs-target={{'#streamVideoModal'.str($item->id)}}>
+                                            <i class="fa-solid fa-play"></i>&nbsp;Play Video
+                                        </a>
                                     </li>
                                @endif
                                 <li>
-                                    <button class="btn text-danger" onclick="deleteFile({{$item}})">
-                                        <a href="{{route('delete_file', ['id' => $item->id])}}" >
-                                            <i class="fa-solid fa-trash-can text-danger"></i>
-                                        </a>&nbsp; Delete
+                                    <a class="btn"  href="{{route('delete_file', ['id' => $item->id])}}" onclick="deleteFile({{$item}})">
+                                        <i class="fa-solid fa-trash-can text-danger"></i>&nbsp;Delete
+                                    </a>
 
-                                        <form id="delete-form" action="{{ route('delete_file', ['id' => $item->id]) }}"
-                                              method="POST" class="d-none">
-                                            @csrf
-
-                                        </form>
-                                    </button>
-
+                                    <form id="delete-form" action="{{ route('delete_file', ['id' => $item->id]) }}"
+                                          method="POST" class="d-none">
+                                        @csrf
+                                    </form>
                                 </li>
                             </ul>
                         </div>
@@ -192,41 +187,37 @@
 
                         <td class="py-2">
                             <div class="dropdown">
-                                <button class="btn border btn-outline-secondary" type="button" data-bs-toggle="dropdown"
+                                <button class="btn border btn-outline-success" type="button" data-bs-toggle="dropdown"
                                     aria-expanded="false">
                                     <i class="fa-solid fa-ellipsis"></i>
                                 </button>
                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                    <li><button class="dropdown-item" type="button" data-bs-toggle="modal"
+                                    <li><a class="dropdown-item date_filter" type="button" data-bs-toggle="modal"
                                             data-bs-target="#propertiesModal"
                                             onclick="showProperties({{ $item }})">
-                                            <i class="fa-solid fa-circle-info"></i>&nbsp; Properties
-                                        </button></li>
+                                            <i class="fa-solid fa-circle-info"></i>&nbsp;Properties
+                                        </a></li>
                                     <li>
-                                        <button class="btn shareBtn-{{$item->id}}"   onclick="generateQRcode({{$item}})">
-                                            <i class="fa-regular fa-share-from-square"></i>&nbsp; Share
-                                        </button>
+                                        <a class="dropdown-item date_filter"   onclick="generateQRcode({{$item}})">
+                                            <i class="fa-regular fa-share-from-square"></i>&nbsp;Share
+                                        </a>
                                     </li>
                                     @if($item->file_type == 'VIDEO')
                                         <li>
-                                            <button class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#streamVideoModal">
-                                                <i class="fa-solid fa-play"></i>&nbsp; Play Video
-                                            </button>
+                                            <a class="dropdown-item date_filter" type="button" data-bs-toggle="modal" data-bs-target="#streamVideoModal">
+                                                <i class="fa-solid fa-play"></i>&nbsp;Play Video
+                                            </a>
                                         </li>
                                     @endif
                                     <li>
-                                        <button class="dropdown-item text-danger" onclick="deleteFile({{$item}})">
-                                            <a href="{{route('delete_file', ['id' => $item->id])}}">
-                                                <i class="fa-solid fa-trash-can text-danger"></i>
-                                            </a>&nbsp; Delete
+                                        <a class="btn"  href="{{route('delete_file', ['id' => $item->id])}}" onclick="deleteFile({{$item}})">
+                                            <i class="fa-solid fa-trash-can text-danger"></i>&nbsp;Delete
+                                        </a>
 
-                                            <form id="delete-form"
-                                                action="{{ route('delete_file', ['id' => $item->id]) }}" method="POST"
-                                                class="d-none">
-                                                @csrf
-
-                                            </form>
-                                        </button>
+                                        <form id="delete-form" action="{{ route('delete_file', ['id' => $item->id]) }}"
+                                              method="POST" class="d-none">
+                                            @csrf
+                                        </form>
                                     </li>
                                 </ul>
                             </div>
@@ -239,7 +230,7 @@
                             <div class="modal-dialog modal-dialog-centered modal-lg">
                                 <div class="modal-content m-3">
                                     <div class="modal-header">
-                                        <h5 class="modal-title file_label" id="exampleModalLabel">Playing {{$item->name}}</span></h5>
+                                        <h5 class="modal-title file_label" id="exampleModalLabel">Playing {{$item->name}} </h5>
                                         <button type="button" class="btn-close"   data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body my-3 d-flex justify-content-center">
@@ -411,6 +402,17 @@
 
 
     <style>
+        .dropdown-menu > dropdown-item:active {
+            background-color: green;
+            color: white;
+        }
+        .dropdown-menu > li > a:active {
+            background-color: green;
+            color: white;
+        }
+        .date_filter {
+            cursor: pointer;
+        }
         .text-xl {
 
         }
