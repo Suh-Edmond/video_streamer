@@ -387,8 +387,23 @@
     </style>
 
     <style>
+        .img-bg {
+            background-color: rgba(25,135,84, .5);
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            z-index: 1;
+        }
+        .rotate-180-x {
+            transform: rotateX(180deg)
+        }
+
         body {
             font-family: 'Nunito', sans-serif;
+        }
+
+        .nav-link.active {
+            background: #198754 !important;
         }
     </style>
 </head>
@@ -402,10 +417,17 @@
     </script>
     <div class="d-flex px-4 px-lg-0" style="height: 100vh">
         <div class="col d-none d-lg-block d-flex justify-content-center align-items-center">
-            <img src="{{ asset('assets/images/bg_auth.jpg') }}" alt="background image" class="rounded img-flud" width="100%"
-                height="100%">
+
+
+            <div class="position-relative">
+                <div class="img-bg"></div>
+                <img src="{{ asset('assets/images/bg_auth2.jpg') }}" alt="background image"
+                class="rounded img-flud" width="100%" height="100%">
+            </div>
+
         </div>
-        <div class="col d-flex flex-column bg-white h-100 justify-content-center align-items-stretch align-items-lg-center">
+        <div
+            class="col d-flex flex-column bg-white h-100 justify-content-center align-items-stretch align-items-lg-center">
             {{-- <div class="col d-flex flex-column bg-white h-100 justify-content-center align-items-center"> --}}
             <div class="col-12 col-lg-5">
                 <nav class="nav nav-pills nav-fill nav-justified" id="pills-tab" role="tablist">

@@ -43,7 +43,7 @@
 
                         <div class="row mb-0 mt-4">
                             <div class="col-md-12">
-                                <button type="submit" class="btn btn-primary w-100">
+                                <button type="submit" class="btn btn-success w-100">
                                     {{ __('Continue') }}
                                 </button>
                             </div>
@@ -120,7 +120,7 @@
 
                         <div class="row mb-0 mt-4">
                             <div class="col-md-12">
-                                <button type="submit" class="btn btn-primary w-100">
+                                <button type="submit" class="btn btn-success w-100">
                                     {{ __('Continue') }}
                                 </button>
                             </div>

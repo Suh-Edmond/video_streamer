@@ -406,11 +406,11 @@
 
     <style>
         .dropdown-menu > dropdown-item:active {
-            background-color: #5cb85c;
+            background-color: #198754;
             color: white;
         }
         .dropdown-menu > li > a:active {
-            background-color: #5cb85c;
+            background-color: #198754;
             color: white;
         }
         .date_filter {
