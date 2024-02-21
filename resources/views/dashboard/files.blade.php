@@ -163,12 +163,15 @@
     @else
         <div class="pt-3">
             <table class="table table-striped">
-                <tr>
+                @if (count($data['items']) !== 0)
+                    <tr>
                     <th>SN</th>
                     <th>Name</th>
                     <th>File Type</th>
                     <th></th>
-                </tr>
+                    </tr>
+                @endif
+
                 @forelse ($data['items'] as $item)
                     <tr scope="row">
                         <td class="py-2">
@@ -403,11 +406,11 @@
 
     <style>
         .dropdown-menu > dropdown-item:active {
-            background-color: green;
+            background-color: #198754;
             color: white;
         }
         .dropdown-menu > li > a:active {
-            background-color: green;
+            background-color: #198754;
             color: white;
         }
         .date_filter {
