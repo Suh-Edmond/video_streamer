@@ -37,8 +37,7 @@
                     </td>
 
                     <td class="py-2">
-
-                        @if ($user->id != Auth::user()->id)
+                        @if ($user->role !== 'ADMIN' )
                             <div class="dropdown">
                                 <button class="btn border btn-outline-success" type="button" data-bs-toggle="dropdown"
                                     aria-expanded="false">
@@ -47,12 +46,12 @@
                                 <ul class="dropdown-menu bg-white">
                                     @if ($user->status == \App\Constant\UserStatus::ACTIVE)
                                         <li>
-                                            <a href="{{ route('users.block', ['id' => $user->id]) }}"
+                                            <a href="{{ route('users.block', ['user' => $user]) }}"
                                                 onclick="event.preventDefault();
                                 document.getElementById('block-form').submit();"
                                                 class="dropdown-item d-flex gap-2 align-items-center"> <i
                                                     class="fa fa-close"></i> <span class="text-black">Block</span></a>
-                                            <form id="block-form" action="{{ route('users.block', ['id' => $user->id]) }}"
+                                            <form id="block-form" action="{{ route('users.block', ['user' => $user]) }}"
                                                 method="POST" class="d-none">
                                                 @csrf
                                             </form>
@@ -60,15 +59,13 @@
                                     @endif
                                     @if ($user->status == \App\Constant\UserStatus::IN_ACTIVE)
                                         <li>
-                                            <a href="{{ route('users.unblock', ['id' => $user->id]) }}"
-                                                onclick="event.preventDefault();
-                                         document.getElementById('delete-form').submit();"
+                                            <a href="{{ route('users.unblock', ['user' => $user]) }}" onclick="event.preventDefault();document.getElementById('unblock-form').submit();"
                                                 class="dropdown-item d-flex gap-2 align-items-center"><i
                                                     class="fas fa-close"></i><span class="text-black">Unblock</span></a>
                                             </a>
 
-                                            <form id="delete-form"
-                                                action="{{ route('users.unblock', ['id' => $user->id]) }}" method="POST"
+                                            <form id="unblock-form"
+                                                action="{{ route('users.unblock', ['user' => $user]) }}" method="POST"
                                                 class="d-none">
                                                 @csrf
                                             </form>
@@ -76,14 +73,14 @@
                                     @endif
 
                                     <li>
-                                        <a href="{{ route('users.delete', ['id' => $user->id]) }}"
+                                        <a href="{{ route('users.delete', ['user' => $user]) }}"
                                             onclick="event.preventDefault();
                                          document.getElementById('delete-form').submit();"
                                             class="dropdown-item d-flex gap-2 align-items-center text-danger"><i
                                                 class="fas fa-trash-can"></i><span class="text-danger">Delete</span></a>
                                         </a>
 
-                                        <form id="delete-form" action="{{ route('users.delete', ['id' => $user->id]) }}"
+                                        <form id="delete-form" action="{{ route('users.delete', ['user' => $user]) }}"
                                             method="POST" class="d-none">
                                             @csrf
                                         </form>

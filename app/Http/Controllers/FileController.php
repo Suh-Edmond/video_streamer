@@ -52,6 +52,7 @@ class FileController extends Controller
             'gridView' => strtolower($layout) == 'grid',
             'filter' => true,
         ];
+
         return view('dashboard/files')->with('data',$data);
     }
 

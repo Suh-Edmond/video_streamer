@@ -26,11 +26,11 @@ Route::middleware('auth')->group(function (){
 
     Route::get('/users', [UsersController::class, 'manageUsers'])->name('users');
 
-    Route::post('/users/{id}/block', [UsersController::class, 'blockUser'])->name('users.block');
+    Route::post('/users/{user}/block', [UsersController::class, 'blockUser'])->name('users.block');
 
-    Route::post('/users/{id}/unblock', [UsersController::class, 'unBlockUser'])->name('users.unblock');
+    Route::post('/users/{user}/unblock', [UsersController::class, 'unBlockUser'])->name('users.unblock');
 
-    Route::post('/users/{id}/delete', [UsersController::class, 'deleteUser'])->name('users.delete');
+    Route::post('/users/{user}/delete', [UsersController::class, 'deleteUser'])->name('users.delete');
 
     Route::post('/files/upload', [FileController::class, 'uploadFile'])->name('upload_files');
 
