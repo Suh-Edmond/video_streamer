@@ -86,7 +86,8 @@
                                     </li>
                                @endif
                                 <li>
-                                    <a class="btn"  href="{{route('delete_file', ['id' => $item->id])}}" onclick="deleteFile({{$item}})">
+                                    <a class="btn"  href="{{route('delete_file', ['id' => $item->id])}}" onclick="event.preventDefault();
+                                document.getElementById('delete-form').submit();">
                                         <i class="fa-solid fa-trash-can text-danger"></i>&nbsp;Delete
                                     </a>
 
@@ -213,7 +214,8 @@
                                         </li>
                                     @endif
                                     <li>
-                                        <a class="btn"  href="{{route('delete_file', ['id' => $item->id])}}" onclick="deleteFile({{$item}})">
+                                        <a class="btn"  href="{{route('delete_file', ['id' => $item->id])}}" onclick="event.preventDefault();
+                                document.getElementById('delete-form').submit();">
                                             <i class="fa-solid fa-trash-can text-danger"></i>&nbsp;Delete
                                         </a>
 
@@ -574,22 +576,6 @@
             filter = urlParams.get('filter') || '';
             sort = urlParams.get('sort') || '';
         })
-
-        let deleteFile = function(file) {
-            let id = file.id
-            $.ajax({
-                url: "{{ route('delete_file', '__ID__') }}".replace('__ID__', id),
-                type: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': CSRF_TOKEN
-                },
-                success: function(data) {
-                    location.reload()
-                },
-                error: function(error) {
-                }
-            })
-        }
 
         // $(function () {
         //     $(document).ready(function () {
