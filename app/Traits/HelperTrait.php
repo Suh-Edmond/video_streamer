@@ -3,7 +3,9 @@
 namespace App\Traits;
 
 use App\Constant\FileType;
+use App\Constant\UserRole;
 use App\Models\File;
+use App\Models\User;
 
 trait HelperTrait {
     private static string $imgDir ='/storage/uploads/images/';
@@ -25,5 +27,10 @@ trait HelperTrait {
     {
         $user = "USER_".$userId;
         return "uploads/images/".$user."/".$fileName;
+    }
+
+    public static function getAdminInfo()
+    {
+        return User::where('role', UserRole::ADMIN)->first();
     }
 }

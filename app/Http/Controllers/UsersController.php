@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Constant\UserStatus;
 use App\Models\User;
+use App\Traits\HelperTrait;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Session;
 
@@ -17,7 +18,8 @@ class UsersController extends Controller
         $data = [
             'items' => $users,
             'filter' => false,
-            'gridView'=> false
+            'gridView'=> false,
+            'admin'   => HelperTrait::getAdminInfo()
         ];
         return view('dashboard.users')->with('data',$data);
     }
