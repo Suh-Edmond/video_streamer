@@ -65,55 +65,89 @@ class FileController extends Controller
 
     public function uploadFile(Request $request)
     {
-        $request->validate([
-            'image' => 'required|image|mimes:jpg,jpeg,png'
-        ]);
-
-        $fileName = $request->file('image')->getClientOriginalName();
-        $size = $request->file('image')->getSize();
-        $fileName = str_replace(' ', '', $fileName);
-
-        $authUserId = auth()->user()->getAuthIdentifier();
-        $user = "USER_".$authUserId;
-
-        $request->file('image')->storeAs(self::IMAGE_DIR.$user, $fileName, 'public');
-
-        $this->saveFile($fileName, $request, $size, FileType::IMAGE);
-
         $data['gridView'] = true;
+        try {
+            $request->validate([
+                'image' => 'required|image|mimes:jpg,jpeg,png'
+            ]);
 
-        return redirect()->route('files')->with($data);
+            $fileName = $request->file('image')->getClientOriginalName();
+            $size = $request->file('image')->getSize();
+            $fileName = str_replace(' ', '', $fileName);
+
+            $authUserId = auth()->user()->getAuthIdentifier();
+            $user = "USER_".$authUserId;
+
+            $request->file('image')->storeAs(self::IMAGE_DIR.$user, $fileName, 'public');
+
+            $this->saveFile($fileName, $request, $size, FileType::IMAGE);
+
+            $notification = array(
+                'message' => 'Image uploaded successfully',
+                'alert-type' => 'success'
+            );
+        }catch (\Exception $exception){
+            $notification = array(
+                'message' => 'An error occurred!'. ' '.$exception->getMessage(),
+                'alert-type' => 'error'
+            );
+        }
+
+        return redirect()->route('files')->with($data)->with($notification);
     }
 
     public function uploadVideo(Request $request)
     {
         //video/avi, video/mpeg, video/quicktime,mimetypes
-        $request->validate([
-            'video' => 'required|max:50240'
-        ]);
+        try {
+            $request->validate([
+                'video' => 'required|max:50240'
+            ]);
 
-        $fileName = $request->file('video')->getClientOriginalName();
-        $size = $request->file('video')->getSize();
+            $fileName = $request->file('video')->getClientOriginalName();
+            $size = $request->file('video')->getSize();
 
-        $authUserId = auth()->user()->getAuthIdentifier();
-        $user = "USER_".$authUserId;
+            $authUserId = auth()->user()->getAuthIdentifier();
+            $user = "USER_".$authUserId;
 
-        $request->file('video')->storeAs(self::VIDEO_DIR.$user, $fileName, 'public');
+            $request->file('video')->storeAs(self::VIDEO_DIR.$user, $fileName, 'public');
 
-        $this->saveFile($fileName, $request, $size, FileType::VIDEO);
+            $this->saveFile($fileName, $request, $size, FileType::VIDEO);
 
-        $data['gridView'] = true;
-        return redirect()->back()->with($data);
+            $data['gridView'] = true;
+
+            $notification = array(
+                'message' => 'Video uploaded successfully',
+                'alert-type' => 'success'
+            );
+        }catch (\Exception $exception){
+            $notification = array(
+                'message' => 'An error occurred!'.' '.$exception->getMessage(),
+                'alert-type' => 'error'
+            );
+        }
+
+        return redirect()->back()->with($data)->with($notification);
     }
 
-    public function deleteFile($id)
+    public function deleteFile(File $file)
     {
-        $file = File::findOrFail($id);
+        try {
+            $path = $file->getFileDeletePath($file->user_id, $file->name, $file->file_type);
+            Storage::delete($path);
+            $file->delete();
 
-        $path = $file->getFileDeletePath($file->user_id, $file->name, $file->file_type);
-        Storage::delete($path);
-        $file->delete();
-
+            $notification = array(
+                'message' => 'File deleted successfully',
+                'alert-type' => 'success'
+            );
+        }catch (\Exception $exception){
+            $notification = array(
+                'message' => 'An error occurred!'.' '.$exception->getMessage(),
+                'alert-type' => 'error'
+            );
+        }
+        return redirect()->back()->with($notification);
     }
 
     private function saveFile($fileName, Request $request, $size, $fileType)
