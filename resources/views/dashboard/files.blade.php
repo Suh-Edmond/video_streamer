@@ -299,7 +299,7 @@
                         <img id="image" src="{{asset('assets/images/bg_transparent.jpg')}}" class="img_upload" width="160px" height="160px">
                     </div>
                     <div class="row row-cols-1 mt-3 mx-3 mb-3">
-                        <form action="{{ route('upload_files') }}" method="POST" enctype="multipart/form-data" id="fileUploadForm">
+                        <form action="{{ route('upload_files') }}" method="POST" enctype="multipart/form-data" id="imageUploadForm">
                             @csrf
                             <input type="file" name="image" accept="image/*" class="form-control image_field @error('image') is-invalid @enderror">
 
@@ -331,7 +331,7 @@
                 </div>
                 <div class="modal-body p-2">
                     <div class="row row-cols-1 mt-3 mx-3 mb-3">
-                        <form action="{{ route('upload_video_files') }}" method="POST" enctype="multipart/form-data" id="fileUploadForm">
+                        <form action="{{ route('upload_video_files') }}" method="POST" enctype="multipart/form-data" id="videoUploadForm">
                             @csrf
                             <input type="file" name="video" accept="video/*" class="form-control @error('video') is-invalid @enderror" >
 
@@ -457,6 +457,7 @@
         let link = '';
         let layout = 'grid';
         var $modal = $('#uploadImageModal');
+        var $uploadVideoModal = $('#uploadVideoModal');
         var image = document.getElementById('image');
 
         $(".image_field").on("change", function(e){
@@ -567,27 +568,49 @@
             })
         }
 
-        // $(function () {
-        //     $(document).ready(function () {
-        //
-        //          $('#fileUploadForm').ajaxForm({
-        //             beforeSend: function () {
-        //                 var percentage = '0';
-        //             },
-        //             uploadProgress: function (event, position, total, percentComplete) {
-        //
-        //                 var percentage = percentComplete;
-        //                 $('.progress .progress-bar').css("width", percentage+'%', function() {
-        //                     return $(this).attr("aria-valuenow", percentage) + "%";
-        //                 })
-        //
-        //             },
-        //             complete: function (xhr) {
-        //                 $modal.modal('hide');
-        //                 window.location.reload();
-        //             }
-        //         });
-        //     });
-        // });
+        $(function () {
+            $(document).ready(function () {
+
+                 $('#imageUploadForm').ajaxForm({
+                    beforeSend: function () {
+                        var percentage = '0';
+                    },
+                    uploadProgress: function (event, position, total, percentComplete) {
+
+                        var percentage = percentComplete;
+                        $('.progress .progress-bar').css("width", percentage+'%', function() {
+                            return $(this).attr("aria-valuenow", percentage) + "%";
+                        })
+
+                    },
+                    complete: function (xhr) {
+                        $modal.modal('hide');
+                        window.location.reload();
+                    }
+                });
+            });
+        });
+        $(function () {
+            $(document).ready(function () {
+
+                $('#videoUploadForm').ajaxForm({
+                    beforeSend: function () {
+                        var percentage = '0';
+                    },
+                    uploadProgress: function (event, position, total, percentComplete) {
+
+                        var percentage = percentComplete;
+                        $('.progress .progress-bar').css("width", percentage+'%', function() {
+                            return $(this).attr("aria-valuenow", percentage) + "%";
+                        })
+
+                    },
+                    complete: function (xhr) {
+                        $uploadVideoModal.modal('hide');
+                        window.location.reload();
+                    }
+                });
+            });
+        });
      </script>
 @endsection
