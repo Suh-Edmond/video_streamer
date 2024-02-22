@@ -68,10 +68,17 @@ class UsersController extends Controller
                 'alert-type' => 'success'
             );
         }catch (\Exception $e){
-            $notification = array(
-                'message' => 'An error occurred! Could not delete user account',
-                'alert-type' => 'success'
-            );
+            if($e->getCode() == 23000){
+                $notification = array(
+                    'message' => 'Cannot delete user account. This account has files',
+                    'alert-type' => 'error'
+                );
+            }else{
+                $notification = array(
+                    'message' => 'An error occurred! Could not delete user account',
+                    'alert-type' => 'error'
+                );
+            }
         }
 
         return redirect()->back()->with($notification);

@@ -85,29 +85,21 @@
                                         </a>
                                     </li>
                                @endif
-                                <li>
-                                    <a class="btn"  href="{{route('delete_file', ['id' => $item->id])}}" onclick="event.preventDefault();
-                                document.getElementById('delete-form').submit();">
+                                <li class="delete_file_btn">
+                                    <a href="{{route('delete_file', ['file' => $item])}}" >
                                         <i class="fa-solid fa-trash-can text-danger"></i>&nbsp;Delete
                                     </a>
-
-                                    <form id="delete-form" action="{{ route('delete_file', ['id' => $item->id]) }}"
-                                          method="POST" class="d-none">
-                                        @csrf
-                                    </form>
                                 </li>
                             </ul>
                         </div>
 
-
                         <div class="d-flex flex-column ">
                             @if($item->file_type ==  \App\Constant\FileType::IMAGE)
                                 <img class="w-full thumbnail" src={{ asset($item->getFilePath($item->id, $item->file_type)) }} alt={{$item->name}}>
-                            @else
+                            @elseif($item->file_type == \App\Constant\FileType::VIDEO)
                                 <button data-bs-toggle="modal"  data-bs-target={{'#streamVideoModal'.str($item->id)}} class="btn thumbnail" style="font-size: 4rem">
                                     <i class="fa-solid fa-play shadow rounded-circle pe-4 ps-5 py-4"></i>
                                 </button>
-                                {{-- <img class="thumbnail w-full" src={{ asset('assets/images/bg_video.png') }} alt={{$item->name}}> --}}
                             @endif
 
                             <div class=" pt-4 text-wrap px-3 text-muted text-xl text-break">{{ $item->name }}</div>
@@ -139,27 +131,29 @@
                 <p>No items</p>
             @endforelse
 
-            <div class="d-flex justify-content-sm-end">
-                    <nav aria-label="Page navigation example">
-                        <ul class="pagination">
-                            <li   class="{{$data['items']->currentPage() == 1 ? 'page-item disabled':'page-item'}}">
-                                <a class="page-link" href="#" aria-label="Previous">
-                                    <span aria-hidden="true">&laquo;</span>
-                                </a>
-                            </li>
-                            @for($i = 1; $i <= $data['items']->lastPage(); $i++)
-                                <li class="{{$data['items']->currentPage() == $i ? 'page-item active':'page-item'}}">
-                                    <a class="page-link" href="{{route('files', ['page' => $i])}}">{{$i}}</a>
+            @if($data['items']->lastPage() != $data['items']->currentPage())
+                    <div class="d-flex justify-content-sm-end">
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination">
+                                <li   class="{{$data['items']->currentPage() == 1 ? 'page-item disabled':'page-item'}}">
+                                    <a class="page-link" href="#" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
                                 </li>
-                            @endfor
-                            <li class="{{$data['items']->currentPage() == $data['items']->lastPage() ? 'page-item disabled': 'page-item'}}">
-                                <a class="page-link" href="{{route('files', ['page' => $data['items']->currentPage() + 1])}}">
-                                    <span aria-hidden="true">&raquo;</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
+                                @for($i = 1; $i <= $data['items']->lastPage(); $i++)
+                                    <li class="{{$data['items']->currentPage() == $i ? 'page-item active':'page-item'}}">
+                                        <a class="page-link" href="{{route('files', ['page' => $i])}}">{{$i}}</a>
+                                    </li>
+                                @endfor
+                                <li class="{{$data['items']->currentPage() == $data['items']->lastPage() ? 'page-item disabled': 'page-item'}}">
+                                    <a class="page-link" href="{{route('files', ['page' => $data['items']->currentPage() + 1])}}">
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+            @endif
         </div>
     @else
         <div class="pt-3">
@@ -213,16 +207,10 @@
                                             </a>
                                         </li>
                                     @endif
-                                    <li>
-                                        <a class="btn"  href="{{route('delete_file', ['id' => $item->id])}}" onclick="event.preventDefault();
-                                document.getElementById('delete-form').submit();">
+                                    <li class="delete_file_btn">
+                                        <a href="{{route('delete_file', ['file' => $item])}}" >
                                             <i class="fa-solid fa-trash-can text-danger"></i>&nbsp;Delete
                                         </a>
-
-                                        <form id="delete-form" action="{{ route('delete_file', ['id' => $item->id]) }}"
-                                              method="POST" class="d-none">
-                                            @csrf
-                                        </form>
                                     </li>
                                 </ul>
                             </div>
@@ -253,27 +241,29 @@
                 @endforelse
             </table>
 
-            <div class="d-flex justify-content-sm-end">
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination">
-                        <li   class="{{$data['items']->currentPage() == 1 ? 'page-item disabled':'page-item'}}">
-                            <a class="page-link" href="#" aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                            </a>
-                        </li>
-                        @for($i = 1; $i <= $data['items']->lastPage(); $i++)
-                            <li class="{{$data['items']->currentPage() == $i ? 'page-item active':'page-item'}}">
-                                <a class="page-link" href="{{route('files', ['page' => $i])}}">{{$i}}</a>
+            @if($data['items']->lastPage() != $data['items']->currentPage())
+                <div class="d-flex justify-content-sm-end">
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination">
+                            <li   class="{{$data['items']->currentPage() == 1 ? 'page-item disabled':'page-item'}}">
+                                <a class="page-link" href="#" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
                             </li>
-                        @endfor
-                        <li class="{{$data['items']->currentPage() == $data['items']->lastPage() ? 'page-item disabled': 'page-item'}}">
-                            <a class="page-link" href="{{route('files', ['page' => $data['items']->currentPage() + 1])}}">
-                                <span aria-hidden="true">&raquo;</span>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
+                            @for($i = 1; $i <= $data['items']->lastPage(); $i++)
+                                <li class="{{$data['items']->currentPage() == $i ? 'page-item active':'page-item'}}">
+                                    <a class="page-link" href="{{route('files', ['page' => $i])}}">{{$i}}</a>
+                                </li>
+                            @endfor
+                            <li class="{{$data['items']->currentPage() == $data['items']->lastPage() ? 'page-item disabled': 'page-item'}}">
+                                <a class="page-link" href="{{route('files', ['page' => $data['items']->currentPage() + 1])}}">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            @endif
 
         </div>
     @endif
@@ -407,6 +397,14 @@
 
 
     <style>
+        .delete_file_btn > a{
+            text-decoration: none;
+            color: red;
+            padding-left: 17px;
+        }
+        .delete_file_btn:hover {
+            color: black;
+        }
         .dropdown-menu > dropdown-item:active {
             background-color: #198754;
             color: white;

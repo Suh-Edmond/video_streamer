@@ -52,7 +52,6 @@ class FileController extends Controller
             'gridView' => strtolower($layout) == 'grid',
             'filter' => true,
         ];
-
         return view('dashboard/files')->with('data',$data);
     }
 
@@ -66,6 +65,7 @@ class FileController extends Controller
 
     public function uploadFile(Request $request)
     {
+        $data['gridView'] = true;
         try {
             $request->validate([
                 'image' => 'required|image|mimes:jpg,jpeg,png'
@@ -81,8 +81,6 @@ class FileController extends Controller
             $request->file('image')->storeAs(self::IMAGE_DIR.$user, $fileName, 'public');
 
             $this->saveFile($fileName, $request, $size, FileType::IMAGE);
-
-            $data['gridView'] = true;
 
             $notification = array(
                 'message' => 'Image uploaded successfully',
@@ -132,11 +130,9 @@ class FileController extends Controller
         return redirect()->back()->with($data)->with($notification);
     }
 
-    public function deleteFile($id)
+    public function deleteFile(File $file)
     {
         try {
-            $file = File::findOrFail($id);
-
             $path = $file->getFileDeletePath($file->user_id, $file->name, $file->file_type);
             Storage::delete($path);
             $file->delete();

@@ -47,43 +47,25 @@
                                     @if ($user->status == \App\Constant\UserStatus::ACTIVE)
                                         <li>
                                             <a href="{{ route('users.block', ['user' => $user]) }}"
-                                                onclick="event.preventDefault();
-                                document.getElementById('block-form').submit();"
                                                 class="dropdown-item d-flex gap-2 align-items-center"> <i
                                                     class="fa fa-close"></i> <span class="text-black">Block</span></a>
-                                            <form id="block-form" action="{{ route('users.block', ['user' => $user]) }}"
-                                                method="POST" class="d-none">
-                                                @csrf
-                                            </form>
                                         </li>
                                     @endif
                                     @if ($user->status == \App\Constant\UserStatus::IN_ACTIVE)
                                         <li>
-                                            <a href="{{ route('users.unblock', ['user' => $user]) }}" onclick="event.preventDefault();document.getElementById('unblock-form').submit();"
+                                            <a href="{{ route('users.unblock', ['user' => $user]) }}"
                                                 class="dropdown-item d-flex gap-2 align-items-center"><i
                                                     class="fas fa-close"></i><span class="text-black">Unblock</span></a>
                                             </a>
-
-                                            <form id="unblock-form"
-                                                action="{{ route('users.unblock', ['user' => $user]) }}" method="POST"
-                                                class="d-none">
-                                                @csrf
-                                            </form>
                                         </li>
                                     @endif
 
                                     <li>
                                         <a href="{{ route('users.delete', ['user' => $user]) }}"
-                                            onclick="event.preventDefault();
-                                         document.getElementById('delete-form').submit();"
                                             class="dropdown-item d-flex gap-2 align-items-center text-danger"><i
                                                 class="fas fa-trash-can"></i><span class="text-danger">Delete</span></a>
                                         </a>
 
-                                        <form id="delete-form" action="{{ route('users.delete', ['user' => $user]) }}"
-                                            method="POST" class="d-none">
-                                            @csrf
-                                        </form>
                                     </li>
 
 
@@ -98,34 +80,37 @@
             @endforelse
         </table>
 
-        <div class="d-flex justify-content-sm-end">
-            <nav aria-label="Page navigation example">
-                <ul class="pagination">
-                    <li   class="{{$data['items']->currentPage() == 1 ? 'page-item disabled':'page-item'}}">
-                        <a class="page-link" href="#" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
-                    </li>
-                    @for($i = 1; $i <= $data['items']->lastPage(); $i++)
-                        <li class="{{$data['items']->currentPage() == $i ? 'page-item active':'page-item'}}">
-                            <a class="page-link" href="{{route('users', ['page' => $i])}}">{{$i}}</a>
+        @if($data['items']->currentPage() != $data['items']->lastPage())
+            <div class="d-flex justify-content-sm-end">
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                        <li   class="{{$data['items']->currentPage() == 1 ? 'page-item disabled':'page-item'}}">
+                            <a class="page-link" href="#" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
                         </li>
-                    @endfor
-                    <li class="{{$data['items']->currentPage() == $data['items']->lastPage() ? 'page-item disabled': 'page-item'}}">
-                        <a class="page-link" href="{{route('users', ['page' => $data['items']->currentPage() + 1])}}">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
+                        @for($i = 1; $i <= $data['items']->lastPage(); $i++)
+                            <li class="{{$data['items']->currentPage() == $i ? 'page-item active':'page-item'}}">
+                                <a class="page-link" href="{{route('users', ['page' => $i])}}">{{$i}}</a>
+                            </li>
+                        @endfor
+                        <li class="{{$data['items']->currentPage() == $data['items']->lastPage() ? 'page-item disabled': 'page-item'}}">
+                            <a class="page-link" href="{{route('users', ['page' => $data['items']->currentPage() + 1])}}">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        @endif
+
     </div>
 
     <style>
         .pagination > li > a
         {
             background-color: white;
-            color: darkgreen;
+            color: #198754;
         }
 
         .pagination > li > a:focus,
@@ -133,7 +118,7 @@
         .pagination > li > span:focus,
         .pagination > li > span:hover
         {
-            color: darkgreen;
+            color: #198754;
             background-color: #eee;
             border-color: #ddd;
         }
@@ -141,14 +126,23 @@
         .pagination > .active > a
         {
             color: white;
-            background-color: darkgreen;
-            border: solid 1px darkgreen;
+            background-color: #198754;
+            border: solid 1px #198754;
         }
 
         .pagination > .active > a:hover
         {
-            background-color: darkgreen;
-            border: solid 1px darkgreen;
+            background-color: #198754;
+            border: solid 1px #198754;
+        }
+
+        .dropdown-menu > dropdown-item:active {
+            background-color: #198754;
+            color: white;
+        }
+        .dropdown-menu > li > a:active {
+            background-color: #198754;
+            color: white;
         }
     </style>
 @endsection
