@@ -80,7 +80,7 @@
                                 </li>
                                @if($item->file_type == 'VIDEO')
                                     <li>
-                                        <a class="dropdown-item date_filter" type="button" data-bs-toggle="modal"  data-bs-target={{'#streamVideoModal'.str($item->id)}}>
+                                        <a class="dropdown-item date_filter" type="button"  onclick="playVideo({{$item}})">
                                             <i class="fa-solid fa-play"></i>&nbsp;Play Video
                                         </a>
                                     </li>
@@ -97,7 +97,7 @@
                             @if($item->file_type ==  \App\Constant\FileType::IMAGE)
                                 <img class="w-full thumbnail" src={{ asset($item->getFilePath($item->id, $item->file_type)) }} alt={{$item->name}}>
                             @elseif($item->file_type == \App\Constant\FileType::VIDEO)
-                                <button data-bs-toggle="modal"  data-bs-target={{'#streamVideoModal'.str($item->id)}} class="btn thumbnail" style="font-size: 4rem">
+                                <button data-bs-toggle="modal"  onclick="playVideo({{$item}})" class="btn thumbnail" style="font-size: 4rem">
                                     <i class="fa-solid fa-play shadow rounded-circle pe-4 ps-5 py-4"></i>
                                 </button>
                             @endif
@@ -106,27 +106,6 @@
                         </div>
                     </div>
                 </div>
-
-                <!-------------------------------------------------VIDEO STREAM MODAL-------------------------------------------->
-                @if($item->file_type == \App\Constant\FileType::VIDEO)
-                    <div class="modal fade" id={{'streamVideoModal'.str($item->id)}} tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
-                        <div class="modal-dialog modal-dialog-centered modal-lg">
-                            <div class="modal-content m-3">
-                                <div class="modal-header">
-                                    <h5 class="modal-title file_label" id="exampleModalLabel">Playing {{$item->name}}</h5>
-                                    <button type="button" class="btn-close"   data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body d-flex justify-content-center">
-                                    <video width="600" height="350" controls  controlsList="nodownload" oncontextmenu="return false;">
-                                        <source src="{{asset($item->getFilePath($item->id, $item->file_type))}}" type="video/mp4" id="video">
-                                        Your browser does not support the video tag.
-                                    </video>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                @endif
-                <!------------------------------------------------END OF VIDEO MODAL---------------------------------------------->
             @empty
                 <p>No items</p>
             @endforelse
@@ -202,7 +181,7 @@
                                     </li>
                                     @if($item->file_type == 'VIDEO')
                                         <li>
-                                            <a class="dropdown-item date_filter" type="button" data-bs-toggle="modal" data-bs-target="#streamVideoModal">
+                                            <a class="dropdown-item date_filter" type="button" onclick="playVideo({{$item}})">
                                                 <i class="fa-solid fa-play"></i>&nbsp;Play Video
                                             </a>
                                         </li>
@@ -215,27 +194,6 @@
                                 </ul>
                             </div>
                         </td>
-                    </tr>
-
-                    <!-------------------------------------------------VIDEO STREAM MODAL-------------------------------------------->
-                    @if($item->file_type == \App\Constant\FileType::VIDEO)
-                        <div class="modal fade" id="streamVideoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
-                            <div class="modal-dialog modal-dialog-centered modal-lg">
-                                <div class="modal-content m-3">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title file_label" id="exampleModalLabel">Playing {{$item->name}} </h5>
-                                        <button type="button" class="btn-close"   data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body my-3 d-flex justify-content-center">
-                                        <video src="{{route('get_stream_video', ['path' => $item->getFilePath($item->id, $item->file_type)])}}" width="600" height="350" controls  controlsList="nodownload"
-                                               oncontextmenu="return false;" id="video" type="video/mp4">
-                                        </video>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    @endif
-                    <!------------------------------------------------END OF VIDEO MODAL---------------------------------------------->
                 @empty
                     <p>No items</p>
                 @endforelse
@@ -395,6 +353,23 @@
     </div>
     <!----------------------END OF VIDEO IMAGE MODAL----------------------------------->
 
+    <!-------------------------------------------------VIDEO STREAM MODAL-------------------------------------------->
+    <div class="modal fade" id="streamVideoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content m-3">
+                <div class="modal-header">
+                    <h5 class="modal-title file_label" id="exampleModalLabel">Playing <span class="video_title"></span></h5>
+                    <button type="button" class="btn-close"   data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body d-flex justify-content-center">
+                    <video src="" width="600" height="350" controls  controlsList="nodownload"
+                           oncontextmenu="return false;" id="play_video" type="video/mp4">
+                    </video>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!------------------------------------------------END OF VIDEO STREAM MODAL---------------------------------------------->
 
     <style>
         .delete_file_btn > a{
@@ -478,6 +453,7 @@
     <script>
         const CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
         var $shareModal = $('#shareModal');
+        var $streamModal = $('#streamVideoModal');
         let link = '';
         let layout = 'grid';
         var $modal = $('#uploadImageModal');
@@ -573,7 +549,23 @@
             let urlParams = new URLSearchParams(location.search);
             filter = urlParams.get('filter') || '';
             sort = urlParams.get('sort') || '';
+
         })
+
+        let playVideo = function (item) {
+            $('.video_title').text(item.name);
+            let id = item.id;
+            let route = "{{ route('get_video_path', '__ID__') }}".replace('__ID__', id);
+            $.ajax({
+                method: 'GET',
+                url: route,
+                success: function(response) {
+                    let path = $('#baseUrl').val()+'/files/videos/play?path='+response.data;
+                    $('#play_video').attr("src", path)
+                    $streamModal.modal('show')
+                }
+            })
+        }
 
         // $(function () {
         //     $(document).ready(function () {
