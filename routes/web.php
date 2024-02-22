@@ -26,9 +26,9 @@ Route::middleware('auth')->group(function (){
 
     Route::get('/users', [UsersController::class, 'manageUsers'])->name('users');
 
-    Route::post('/users/{user}/block', [UsersController::class, 'blockUser'])->name('users.block');
+    Route::get('/users/{user}/block', [UsersController::class, 'blockUser'])->name('users.block');
 
-    Route::post('/users/{user}/unblock', [UsersController::class, 'unBlockUser'])->name('users.unblock');
+    Route::get('/users/{user}/unblock', [UsersController::class, 'unBlockUser'])->name('users.unblock');
 
     Route::get('/users/{user}/delete', [UsersController::class, 'deleteUser'])->name('users.delete');
 

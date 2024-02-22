@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Constant\FileType;
+use App\Constant\UserRole;
 use App\Models\File;
+use App\Models\User;
 use App\Traits\HelperTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -51,10 +53,10 @@ class FileController extends Controller
             'items' => $files,
             'gridView' => strtolower($layout) == 'grid',
             'filter' => true,
+            'admin'   => HelperTrait::getAdminInfo()
         ];
         return view('dashboard/files')->with('data',$data);
     }
-
 
     private function getUser() {
         if(auth()->check()) {
