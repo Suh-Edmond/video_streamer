@@ -42,6 +42,8 @@ Route::middleware('auth')->group(function (){
 
     Route::get('files/videos/{id}/get_path', [FileController::class, 'getVideoFilePath'])->name('get_video_path');
 
+    Route::get('files/videos/play', [FileController::class, 'playVideo'])->name('play_video');
+
 });
 
 Route::middleware('guest')->group(function (){

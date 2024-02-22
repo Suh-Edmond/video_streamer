@@ -184,6 +184,22 @@ class FileController extends Controller
         return view('stream.index')->with($data);
     }
 
+    /**
+     * @param Request $request
+     * @throws \Exception
+     * This end is used by an upload to play his/her uploaded video
+     */
+    public function playVideo(Request $request)
+    {
+        VideoStreamer::streamFile($request['path']);
+    }
+
+    /**
+     * @param Request $request
+     * @return void
+     * @throws \Exception
+     * This function is use stream a shared video
+     */
     public function getStreamVideo(Request $request)
     {
         VideoStreamer::streamFile($request['path']);
