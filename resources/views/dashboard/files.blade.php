@@ -612,5 +612,12 @@
                 });
             });
         });
+
+
+        $(document).ready(function(){
+            $(document).on('contextmenu', function(){
+                return false;
+            })
+        })
      </script>
 @endsection
