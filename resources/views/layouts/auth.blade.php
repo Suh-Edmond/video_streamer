@@ -12,6 +12,10 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <!-- Styles -->
     <style>
@@ -384,6 +388,13 @@
                 color: rgb(107 114 128 / var(--tw-text-opacity))
             }
         }
+
+        .nav-pills > a:hover {
+            color: #198754;
+        }
+        .nav-pills >  a {
+            color: #198754;
+        }
     </style>
 
     <style>
@@ -405,6 +416,8 @@
         .nav-link.active {
             background: #198754 !important;
         }
+
+
     </style>
 </head>
 
@@ -415,6 +428,8 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
         integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous">
     </script>
+    @include('notification');
+
     <div class="d-flex px-4 px-lg-0" style="height: 100vh">
         <div class="col d-none d-lg-block d-flex justify-content-center align-items-center">
 
@@ -428,17 +443,25 @@
         </div>
         <div
             class="col d-flex flex-column bg-white h-100 justify-content-center align-items-stretch align-items-lg-center">
-            {{-- <div class="col d-flex flex-column bg-white h-100 justify-content-center align-items-center"> --}}
             <div class="col-12 col-lg-5">
                 <nav class="nav nav-pills nav-fill nav-justified" id="pills-tab" role="tablist">
-                    <a class="nav-link active" href="{{ route('login') }}" id="pills-login-tab" data-bs-toggle="pill"
+                    <a class="nav-link active fw-bold" href="{{ route('login') }}" id="pills-login-tab" data-bs-toggle="pill"
                         data-bs-target="#pills-login" role="tab" aria-controls="pills-login"
                         aria-selected="true">LOGIN</a>
-                    <a class="nav-link" href="{{ route('register') }}" id="pills-register-tab" data-bs-toggle="pill"
+                    <a class="nav-link fw-bold" href="{{ route('register') }}" id="pills-register-tab" data-bs-toggle="pill"
                         data-bs-target="#pills-register" role="tab" aria-controls="pills-register"
                         aria-selected="true">REGISTER</a>
                 </nav>
                 <div class="border p-4 py-lg-4 rounded">
+                    @if(count($errors) > 0)
+                        @foreach( $errors->all() as $message )
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                 {{ $message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        @endforeach
+                    @endif
+
                     @yield('content')
                 </div>
             </div>

@@ -29,6 +29,5 @@
                 return false;
             })
         })
-
     </script>
 @endsection
