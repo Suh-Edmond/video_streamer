@@ -303,9 +303,14 @@
                             @csrf
                             <input type="file" name="image" accept="image/*" class="form-control image_field @error('image') is-invalid @enderror">
 
-                            @error('image')
-                            <div class="alert alert-danger">{{ $message }}</div>
-                            @enderror
+                            @if(count($errors) > 0)
+                                @foreach( $errors->all() as $message )
+                                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                        {{ $message }}
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    </div>
+                                @endforeach
+                            @endif
                             <div class="progress mt-3" id="upload-progress">
                                 <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
                             </div>

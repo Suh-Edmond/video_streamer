@@ -70,7 +70,7 @@ class FileController extends Controller
         $data['gridView'] = true;
         try {
             $request->validate([
-                'image' => 'required|image|mimes:jpg,jpeg,png'
+                'image' => 'required|image|mimes:jpg,jpeg,png|max:1048'
             ]);
 
             $fileName = $request->file('image')->getClientOriginalName();
