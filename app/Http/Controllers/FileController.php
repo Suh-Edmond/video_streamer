@@ -95,7 +95,7 @@ class FileController extends Controller
             );
         }
 
-        return redirect()->route('files')->with($data)->with($notification);
+        return redirect()->back()->with($data)->with($notification);
     }
 
     public function uploadVideo(Request $request)
@@ -193,7 +193,9 @@ class FileController extends Controller
      */
     public function playVideo(Request $request)
     {
-        VideoStreamer::streamFile($request['path']);
+        $file = File::findOrFail($request['path']);
+        $path = HelperTrait::getFilePath($file->id, $file->file_type);
+        VideoStreamer::streamFile($path);
     }
 
     /**

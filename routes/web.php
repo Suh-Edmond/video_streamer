@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\FileSharedLinkController;
 use App\Http\Controllers\QRCodeController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -43,6 +44,14 @@ Route::middleware('auth')->group(function (){
     Route::get('files/videos/{id}/get_path', [FileController::class, 'getVideoFilePath'])->name('get_video_path');
 
     Route::get('files/videos/play', [FileController::class, 'playVideo'])->name('play_video');
+
+    Route::get('files/links/sharer/{fileId}', [FileSharedLinkController::class, 'getFileSharedLinks'])->name('file_shared_links');
+
+    Route::get('files/links/sharer/{fileSharedLink}/delete', [FileSharedLinkController::class, 'deleteFileLink'])->name('delete_file_shared_links');
+
+    Route::post('files/links/sharer/{fileSharedLink}/update', [FileSharedLinkController::class, 'updateFileLink'])->name('update_file_shared_links');
+
+    Route::post('files/{fileId}/links/sharer/create', [FileSharedLinkController::class, 'createFileSharedLink'])->name('create_file_shared_link');
 
 });
 

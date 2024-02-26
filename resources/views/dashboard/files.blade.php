@@ -78,6 +78,11 @@
                                         <i class="fa-regular fa-share-from-square"></i>&nbsp;Share
                                     </a>
                                 </li>
+                                <li>
+                                    <a class="dropdown-item date_filter" type="button" href="{{route('file_shared_links', ['fileId' => $item->id])}}">
+                                        <i class="fa-regular fa-share-from-square"></i>&nbsp;Manage Share Links
+                                    </a>
+                                </li>
                                @if($item->file_type == 'VIDEO')
                                     <li>
                                         <a class="dropdown-item date_filter" type="button"  onclick="playVideo({{$item}})">
@@ -177,6 +182,11 @@
                                     <li>
                                         <a class="dropdown-item date_filter"   onclick="generateQRcode({{$item}})">
                                             <i class="fa-regular fa-share-from-square"></i>&nbsp;Share
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item date_filter" type="button" href="{{route('file_shared_links', ['fileId' => $item->id])}}">
+                                            <i class="fa-regular fa-share-from-square"></i>&nbsp;Manage Share Links
                                         </a>
                                     </li>
                                     @if($item->file_type == 'VIDEO')
@@ -562,13 +572,14 @@
             $('.video_title').text(item.name);
             let id = item.id;
             let route = "{{ route('get_video_path', '__ID__') }}".replace('__ID__', id);
+            $streamModal.modal('show')
             $.ajax({
                 method: 'GET',
                 url: route,
                 success: function(response) {
-                    let path = $('#baseUrl').val()+'/files/videos/play?path='+response.data;
+                    // let path = $('#baseUrl').val()+'/files/videos/play?path='+response.data;
+                    let path = $('#baseUrl').val()+'/files/videos/play?path='+id;
                     $('#play_video').attr("src", path)
-                    $streamModal.modal('show')
                 }
             })
         }
@@ -619,10 +630,6 @@
         });
 
 
-        $(document).ready(function(){
-            $(document).on('contextmenu', function(){
-                return false;
-            })
-        })
+
      </script>
 @endsection

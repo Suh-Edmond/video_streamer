@@ -19,6 +19,16 @@ class File extends Model
         'size'
     ];
 
+    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function fileLinks()
+    {
+        return $this->hasMany(FileSharedLink::class);
+    }
+
 
     public function getFilePath($fileId, $fileType)
     {
@@ -41,5 +51,10 @@ class File extends Model
             $path = "uploads/videos/".$user."/".$fileName;
         }
         return $path;
+    }
+
+    public function generateFileShareLink($file, $sharedCode, $key)
+    {
+        return env('APP_URL') . '/files/'.$file->id.'/sharer/'.$sharedCode.'/code?key='.$key;
     }
 }

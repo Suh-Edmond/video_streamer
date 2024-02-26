@@ -33,4 +33,9 @@ trait HelperTrait {
     {
         return User::where('role', UserRole::ADMIN)->first();
     }
+
+    public static function generateFileShareLink($file, $sharedCode, $key)
+    {
+        return env('APP_URL') . '/files/'.$file->id.'/sharer/'.$sharedCode.'/code?key='.$key;
+    }
 }

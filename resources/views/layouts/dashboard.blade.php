@@ -7,7 +7,7 @@
             @if(Auth::user()->status == \App\Constant\UserStatus::ACTIVE)
                 <div class="d-flex gap-3 gap-lg-0 rounded-lg flex-column flex-md-row align-items-md-stretch p-3 px-2 py-lg-5 px-lg-5 bgwhite border-bottom">
                     <div>
-                        <h2 class="mb-4 h2" class="title">@yield('title')</h2>
+                        <h2 class="mb-4 h4" class="title">@yield('title')</h2>
 
                         @if ($data['filter'])
                             <div class="d-flex relative gap-2">
