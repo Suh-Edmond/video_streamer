@@ -225,7 +225,7 @@
             </div>
         </div>
     </div>
-    <!----------------------END OF EDIT LINK MODAL----------------------------------->
+    <!----------------------END OF GENERATE LINK MODAL----------------------------------->
 
     <!----------------------QR CODE LINK MODAL------------------------------------------>
     <div class="modal fade" id="qrcodeModal" tabindex="-1" aria-labelledby="grcodeModalLabel" aria-hidden="true" data-bs-backdrop="static"  data-bs-keyboard="false">
@@ -369,11 +369,7 @@
         let sortBy = function(newSort) {
             applyParams(newSort);
         }
-        $(document).ready(function (){
-            if($('#expire_at').val() !== " "){
-                $('#generateCodeBtn').css({'disabled': false})
-            }
-        })
+
         let generateSharedLink = function (file){
             let route = "{{ route('create_file_shared_link', '__fileId__') }}".replace('__fileId__', file.id);
             let expire_at = $('#expire_at').val();
