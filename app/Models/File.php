@@ -52,9 +52,4 @@ class File extends Model
         }
         return $path;
     }
-
-    public function generateFileShareLink($file, $sharedCode, $key)
-    {
-        return env('APP_URL') . '/files/'.$file->id.'/sharer/'.$sharedCode.'/code?key='.$key;
-    }
 }

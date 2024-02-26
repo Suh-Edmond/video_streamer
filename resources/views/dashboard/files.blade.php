@@ -456,14 +456,6 @@
         .delete_file_btn:hover {
             color: black;
         }
-        .dropdown-menu > dropdown-item:active {
-            background-color: #198754;
-            color: white;
-        }
-        .dropdown-menu > li > a:active {
-            background-color: #198754;
-            color: white;
-        }
         .date_filter {
             cursor: pointer;
         }
@@ -480,22 +472,6 @@
         .link {
             font-weight: bold;
         }
-
-        .divider {
-            font-size: 20px;
-            display: flex;
-            align-items: center;
-        }
-
-        .divider::before,
-        .divider::after {
-            flex: 1;
-            content: '';
-            padding: 1px;
-            background-color: black;
-            margin: 5px;
-        }
-
         .pagination > li > a
         {
             background-color: white;

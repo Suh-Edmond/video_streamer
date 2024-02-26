@@ -77,6 +77,11 @@
                                 <i class="fa-solid fa-ellipsis"></i>
                             </button>
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                <li><a class="dropdown-item date_filter" type="button" onclick="viewQRCode({{$item}})"
+                                    >
+                                        <i class="fa-solid fa-circle-info"></i>&nbsp;View QR Code
+                                    </a>
+                                </li>
                                 <li><a class="dropdown-item date_filter" type="button" data-bs-toggle="modal"
                                        data-bs-target="#editModal{{$item->id}}"
                                         >
@@ -251,7 +256,7 @@
                             </label>
                         </div>
                         <div class="input-group d-flex justify-content-center mb-3">
-                            <input type="text" class="form-control form-control-md" aria-describedby="button-addon2" disabled id="generatedLink">
+                            <input type="text" class="form-control form-control-md" aria-describedby="button-addon2" disabled id="link">
                             <button class="btn btn-success" type="button" id="copy"
                                     onclick="copyToClipboard()">Copy</button>
                         </div>
@@ -269,6 +274,30 @@
     <!----------------------END OF QR CODE LINK MODAL----------------------------------->
 
 
+    <!----------------------VIEW QR CODE LINK MODAL------------------------------------------>
+    <div class="modal fade" id="viewQRCodeModal" tabindex="-1" aria-labelledby="viewQRCodeModalLabel" aria-hidden="true" data-bs-backdrop="static"  data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="uploadVideoModalLabel">QR Code for <span>{{$data['file']->name}}</span></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-3">
+                    <div class="row row-cols-1 mb-4">
+                        <div class="mb-3">
+                            <label for="exampleFormControlInput1" class="form-label d-flex justify-content-center">
+                            </label>
+                            <div id="view_qr_code" class="d-flex justify-content-center">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!----------------------END OF VIEW QR CODE LINK MODAL----------------------------------->
+
+
 
 
     <style>
@@ -280,19 +309,8 @@
         .delete_file_btn:hover {
             color: black;
         }
-        .dropdown-menu > dropdown-item:active {
-            background-color: #198754;
-            color: white;
-        }
-        .dropdown-menu > li > a:active {
-            background-color: #198754;
-            color: white;
-        }
         .date_filter {
             cursor: pointer;
-        }
-        .text-xl {
-
         }
         .thumbnail {
             height: 180px;
@@ -356,6 +374,7 @@
         var $generateLinkModal = $('#generateLinkModal');
         var $qrcodeModal = $('#qrcodeModal');
         var sharedLinkResponse;
+        var $viewQRCodeModal = $('#viewQRCodeModal');
 
         let applyParams = function(sort) {
             let url = new URL(location.href);
@@ -370,6 +389,13 @@
             applyParams(newSort);
         }
 
+        let viewQRCode = function (item) {
+            $('#fileName').text(item.name)
+            generateQRCode(item.file_link, 'view_qr_code')
+            $viewQRCodeModal.modal('show');
+
+        }
+
         let generateSharedLink = function (file){
             let route = "{{ route('create_file_shared_link', '__fileId__') }}".replace('__fileId__', file.id);
             let expire_at = $('#expire_at').val();
@@ -379,8 +405,8 @@
                 data: {_token: CSRF_TOKEN, 'expire_at':expire_at},
                 dataType: "json",
                 success: function(response) {
-                    $('#generatedLink').val(response.data)
-                    generateQRCode(response.data)
+                    $('#link').val(response.data)
+                    generateQRCode(response.data, "qr_code")
                     $generateLinkModal.modal('hide')
                     $qrcodeModal.modal('show');
                     sharedLinkResponse = response;
@@ -404,12 +430,18 @@
             $('#copy').html('Copied')
         }
 
-        let generateQRCode = function (url){
-            var qrcode = new QRCode(document.getElementById('qr_code'),{
+        let generateQRCode = function (url, docEle){
+            var qrcode = new QRCode(document.getElementById(docEle),{
                 width:250,
                 height:250
             });
             qrcode.makeCode(url);
+
+            $('#view_qr_code').css({'pointer-events': 'none'})
+
+            $('#qr_code').css({'pointer-events':'none'});
         }
+
+
     </script>
 @endsection

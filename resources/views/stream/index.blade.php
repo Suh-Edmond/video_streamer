@@ -3,17 +3,42 @@
 @section('content')
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header d-flex justify-content-center header">{{ $title }}</div>
-
-                    <div class="card-body d-flex justify-content-center m-4">
-                        <video src="{{route('get_stream_video', ['path' => $path])}}" width="600" height="350" controls  controlsList="nodownload"
-                               oncontextmenu="return false;">
-                        </video>
+            @if($hasExpired)
+                <div class=" col-md-12">
+                    <div class="alert alert-info alert-dismissible fade show" role="alert">
+                        File link has expired. Please Contact the Administrator of the application for more info. <b>Email:
+                            <span>
+                        <a class="alert-link" href="mailto:{{$admin->email}}">{{$admin->email}}</a>
+                    </span>
+                        </b>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                 </div>
-            </div>
+            @else
+                @if($file->file_type == \App\Constant\FileType::VIDEO)
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-center header">{{ $title }}</div>
+
+                            <div class="card-body d-flex justify-content-center m-4">
+                                <video src="{{route('get_stream_video', ['fileId' => $file->id])}}" width="600" height="350" controls  controlsList="nodownload"
+                                       oncontextmenu="return false;">
+                                </video>
+                            </div>
+                        </div>
+                    </div>
+                @else
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-center header">{{ $title }}</div>
+
+                            <div class="card-body d-flex justify-content-center m-4">
+                                <img src="{{$file->getFilePath($file->id, $file->file_type)}}" alt="" style="width: 500px; height: 300px;">
+                            </div>
+                        </div>
+                    </div>
+                @endif
+            @endif
         </div>
     </div>
 
@@ -22,12 +47,4 @@
             font-weight: bold;
         }
     </style>
-
-    <script>
-        $(document).ready(function(){
-            $(document).on('contextmenu', function(){
-                return false;
-            })
-        })
-    </script>
 @endsection

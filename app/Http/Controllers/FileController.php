@@ -3,12 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Constant\FileType;
-use App\Constant\UserRole;
 use App\Models\File;
-use App\Models\User;
+use App\Models\FileSharedLink;
 use App\Traits\HelperTrait;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Iman\Streamer\VideoStreamer;
 
@@ -177,11 +176,17 @@ class FileController extends Controller
         return view('file')->with(['data'=>$file]);
     }
 
-    public function setStreamVideo(Request $request)
+    public function setStreamVideo($id, $sharedCode)
     {
-        $filePath = decrypt($request['file']);
-        $data['path'] = $filePath;
-        $data['title'] = "Streaming Video ".$this->getFileNameFromPath($filePath);
+        $data['hasExpired'] = false;
+        $sharedLink = FileSharedLink::where('shared_code', $sharedCode)->firstOrFail();
+        if(Carbon::now()->greaterThan($sharedLink->expire_at)){
+            $data['hasExpired'] = true;
+            $data['admin'] = HelperTrait::getAdminInfo();
+        }
+        $file = File::findOrFail($id);
+        $data['file'] = $file;
+        $data['title'] = "Streaming Video ".$file->name;
 
         return view('stream.index')->with($data);
     }
@@ -206,23 +211,10 @@ class FileController extends Controller
      */
     public function getStreamVideo(Request $request)
     {
-        VideoStreamer::streamFile($request['path']);
+        $file = File::find($request['fileId']);
+        $path = HelperTrait::getFilePath($file->id, $file->file_type);
+        VideoStreamer::streamFile($path);
     }
 
-    public function viewSharedImage(Request $request, $name)
-    {
-        $filePath = decrypt($request['file']);
-        $data['path']  = $filePath;
-        $data['title']  = $name;
 
-        return view('stream.index-image')->with($data);
-    }
-
-    private function getFileNameFromPath($path)
-    {
-        $exploded = (explode('/', $path));
-        $length = count($exploded);
-        $index = $length - 1;
-        return $exploded[$index];
-    }
 }
