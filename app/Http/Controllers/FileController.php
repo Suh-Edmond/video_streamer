@@ -192,7 +192,7 @@ class FileController extends Controller
             $data['notAvailable'] = true;
         }else {
             $data['file'] = $file;
-            $data['title'] = "Streaming Video ".$file->name;
+            $data['title'] = $file->file_type == FileType::VIDEO? "Streaming Video ".$file->name: $file->name;
         }
 
         return view('stream.index')->with($data);
