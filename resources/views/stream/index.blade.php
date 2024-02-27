@@ -6,11 +6,18 @@
             @if($hasExpired)
                 <div class=" col-md-12">
                     <div class="alert alert-info alert-dismissible fade show" role="alert">
-                        File link has expired. Please Contact the file owner for a new link. <b>Email:
+                        The File link has expired. Please Contact the file owner for a new link. <b>Email:
                             <span>
                         <a class="alert-link" href="mailto:{{$file->user->email}}">{{$file->user->email}}</a>
                     </span>
                         </b>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                </div>
+            @elseif($notAvailable)
+                <div class=" col-md-12">
+                    <div class="alert alert-info alert-dismissible fade show" role="alert">
+                        The File Resource is not longer available
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                 </div>

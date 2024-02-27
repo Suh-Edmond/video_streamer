@@ -179,13 +179,18 @@ class FileController extends Controller
     public function setStreamVideo($id, $sharedCode)
     {
         $data['hasExpired'] = false;
+        $data['notAvailable'] = false;
         $sharedLink = FileSharedLink::where('shared_code', $sharedCode)->firstOrFail();
         if(Carbon::now()->greaterThan($sharedLink->expire_at)){
             $data['hasExpired'] = true;
         }
-        $file = File::findOrFail($id);
-        $data['file'] = $file;
-        $data['title'] = "Streaming Video ".$file->name;
+        $file = File::find($id);
+        if(!isset($file)){
+            $data['notAvailable'] = true;
+        }else {
+            $data['file'] = $file;
+            $data['title'] = "Streaming Video ".$file->name;
+        }
 
         return view('stream.index')->with($data);
     }

@@ -456,6 +456,11 @@
         .delete_file_btn:hover {
             color: black;
         }
+
+        .delete_file_btn:active {
+            background-color: #198754;
+            color: white;
+        }
         .dropdown-menu > dropdown-item:active {
             background-color: #198754;
             color: white;
