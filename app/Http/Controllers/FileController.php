@@ -182,7 +182,6 @@ class FileController extends Controller
         $sharedLink = FileSharedLink::where('shared_code', $sharedCode)->firstOrFail();
         if(Carbon::now()->greaterThan($sharedLink->expire_at)){
             $data['hasExpired'] = true;
-            $data['admin'] = HelperTrait::getAdminInfo();
         }
         $file = File::findOrFail($id);
         $data['file'] = $file;

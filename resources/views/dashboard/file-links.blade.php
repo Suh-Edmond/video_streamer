@@ -144,7 +144,7 @@
                                             </div>
 
                                             <div class="my-4 d-flex justify-content-end">
-                                                <button class="btn btn-success " type="submit" >Save</button>
+                                                <button class="btn btn-success  editBtn" onclick="updateLink()" type="submit" >Save</button>
                                             </div>
                                         </form>
                                     </div>
@@ -386,6 +386,11 @@
             generateQRCode(item.file_link, 'view_qr_code')
             $viewQRCodeModal.modal('show');
 
+        }
+
+        let updateLink = function (){
+            $('.editBtn').text('')
+            $(".editBtn").prepend('<i class="fa fa-spinner fa-spin"></i>');
         }
 
         let generateSharedLink = function (file){
