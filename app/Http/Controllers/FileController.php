@@ -180,16 +180,19 @@ class FileController extends Controller
     {
         $data['hasExpired'] = false;
         $data['notAvailable'] = false;
-        $sharedLink = FileSharedLink::where('shared_code', $sharedCode)->firstOrFail();
-        if(Carbon::now()->greaterThan($sharedLink->expire_at)){
+        $sharedLink = FileSharedLink::where('shared_code', $sharedCode)->first();
+        $file = File::find($id);
+        if(!isset($sharedLink)){
+            $data['notAvailable'] = true;
+        }
+        if(isset($sharedLink) && Carbon::now()->greaterThan($sharedLink->expire_at)){
             $data['hasExpired'] = true;
         }
-        $file = File::find($id);
         if(!isset($file)){
             $data['notAvailable'] = true;
         }else {
             $data['file'] = $file;
-            $data['title'] = "Streaming Video ".$file->name;
+            $data['title'] = $file->file_type == FileType::VIDEO? "Streaming Video ".$file->name: $file->name;
         }
 
         return view('stream.index')->with($data);
