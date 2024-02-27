@@ -5,7 +5,7 @@
         <div class="tab-content" id="pills-tabContent">
             <div class="tab-pane fade show active" id="pills-login" role="tabpanel" aria-labelledby="pills-login-tab">
                 <div class="my-4">
-                    <form method="POST" action="{{ route('login') }}">
+                    <form method="POST" action="{{ route('login') }}" id="loginForm">
                         @csrf
 
                         <div class="row mb-3">
@@ -51,8 +51,8 @@
 
                         <div class="row mb-0 mt-4">
                             <div class="col-md-12">
-                                <button type="submit" class="btn btn-success w-100 fw-bold">
-                                    {{ __('Continue') }}
+                                <button type="submit" class="btn btn-success w-100 fw-bold" id="loginBtn" onclick="submitLogin()">
+                                    {{ __('Continue') }} <span class="p-1"><i class="fa-solid fa-arrow-right"></i></span>
                                 </button>
                             </div>
                         </div>
@@ -106,7 +106,7 @@
                                     <span class="fw-bold">Password</span>
                                 </label>
                                 <div class="input-group"  id="show_hide_password">
-                                    <input id="password" type="password"
+                                    <input id="confirm_password" type="password"
                                            class="form-control form-control-md @error('password') is-invalid @enderror"
                                            name="password" required aria-describedby="basic-addon2">
                                     <a class="input-group-text" id="basic-addon2"><i class="fa-solid fa-eye-slash" aria-hidden="true"></i></a>
@@ -144,8 +144,8 @@
 
                         <div class="row mb-0 mt-4">
                             <div class="col-md-12">
-                                <button type="submit" class="btn btn-success w-100 fw-bold">
-                                    {{ __('Continue') }}
+                                <button type="submit" class="btn btn-success w-100 fw-bold" id="registerBtn" onclick="submitRegister()">
+                                    {{ __('Continue') }} <span class="p-1"><i class="fa-solid fa-arrow-right"></i></span>
                                 </button>
                             </div>
                         </div>
@@ -196,5 +196,16 @@
                 }
             });
         });
+
+        let submitLogin = function (){
+            $('#loginBtn').text('')
+            $("#loginBtn").prepend('<i class="fa fa-spinner fa-spin"></i>');
+        }
+
+        let submitRegister = function (){
+            $('#registerBtn').text('')
+            $("#registerBtn").prepend('<i class="fa fa-spinner fa-spin"></i>');
+        }
+
     </script>
 @endsection
