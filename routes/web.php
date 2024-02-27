@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\QRCodeController;
+use App\Http\Controllers\FileSharedLinkController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FileController;
@@ -38,22 +38,27 @@ Route::middleware('auth')->group(function (){
 
     Route::get('/files/{file}/delete', [FileController::class, 'deleteFile'])->name('delete_file');
 
-    Route::get("files/{id}/get_share_link", [QRCodeController::class, 'generateShareLink'])->name('share_link');
-
     Route::get('files/videos/{id}/get_path', [FileController::class, 'getVideoFilePath'])->name('get_video_path');
 
     Route::get('files/videos/play', [FileController::class, 'playVideo'])->name('play_video');
 
+    Route::get('files/links/sharer/{fileId}', [FileSharedLinkController::class, 'getFileSharedLinks'])->name('file_shared_links');
+
+    Route::get('files/links/sharer/{fileSharedLink}/delete', [FileSharedLinkController::class, 'deleteFileLink'])->name('delete_file_shared_links');
+
+    Route::post('files/links/sharer/{fileSharedLink}/update', [FileSharedLinkController::class, 'updateFileLink'])->name('update_file_shared_links');
+
+    Route::post('files/{fileId}/links/sharer/create', [FileSharedLinkController::class, 'createFileSharedLink'])->name('create_file_shared_link');
+
 });
 
 Route::middleware('guest')->group(function (){
-    Route::get('/files/{id}/share/code', [QRCodeController::class, 'generateQRCode'])->name('scan_qrcode');
-
-    Route::get('/files/videos/set_stream', [FileController::class, 'setStreamVideo'])->name("set_stream_video");
+    Route::get('/files/{id}/sharer/{sharedCode}/code', [FileController::class, 'setStreamVideo'])->name("set_stream_video");
 
     Route::get('/files/videos/get_stream', [FileController::class, 'getStreamVideo'])->name("get_stream_video");
 
-    Route::get('/files/images/{name}', [FileController::class, 'viewSharedImage'])->name('view_share_image');
+    Route::get('/files/{id}/view_image', [FileController::class, 'viewSharedImage'])->name('view_share_image');
+
     Route::get('/', function () {
         return view('auth.login');
     });

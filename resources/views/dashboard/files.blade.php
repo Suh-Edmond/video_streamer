@@ -74,8 +74,13 @@
                                         <i class="fa-solid fa-circle-info"></i>&nbsp;Properties
                                     </a></li>
                                 <li>
-                                    <a class="dropdown-item date_filter" type="button" onclick="generateQRcode({{$item}})">
+                                    <a class="dropdown-item date_filter" type="button" onclick="openSharedLink({{$item}})">
                                         <i class="fa-regular fa-share-from-square"></i>&nbsp;Share
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item date_filter" type="button" href="{{route('file_shared_links', ['fileId' => $item->id])}}">
+                                        <i class="fa-solid fa-list-check"></i>&nbsp;Manage Share Links
                                     </a>
                                 </li>
                                @if($item->file_type == 'VIDEO')
@@ -175,8 +180,13 @@
                                             <i class="fa-solid fa-circle-info"></i>&nbsp;Properties
                                         </a></li>
                                     <li>
-                                        <a class="dropdown-item date_filter"   onclick="generateQRcode({{$item}})">
+                                        <a class="dropdown-item date_filter"   onclick="openSharedLink({{$item}})">
                                             <i class="fa-regular fa-share-from-square"></i>&nbsp;Share
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item date_filter" type="button" href="{{route('file_shared_links', ['fileId' => $item->id])}}">
+                                            <i class="fa-solid fa-list-check"></i>&nbsp;Manage Share Links
                                         </a>
                                     </li>
                                     @if($item->file_type == 'VIDEO')
@@ -226,34 +236,7 @@
         </div>
     @endif
 
-    <!----------------------------------------QR CODE MODAL---------------------------------------------------->
-    <div class="modal fade" id="shareModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
-        data-bs-backdrop="static" data-bs-keyboard="false">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content m-3">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Copy the QR Code link to share this file</h5>
-                    <button type="button" class="btn-close" onclick="closeModal()" data-bs-dismiss="modal"
-                        aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row row-gap-0 d-flex justify-content-sm-around">
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control form-control-md" aria-describedby="button-addon2" disabled id="link">
-                            <button class="btn btn-success" type="button" id="copy"
-                                    onclick="copyToClipboard()">Copy</button>
-                        </div>
-                    </div>
-                    <div class="divider my-3">OR</div>
-                    <div class="d-flex justify-content-center mt-3 mb-3">
-                        <button type="button" class="btn btn-success w-100" onclick="shareViaWhatsapp()"
-                            data-bs-dismiss="modal">Share via WhatsApp</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-----------------------------------------END OF QR CODE MODAL----------------------------------------------->
+
 
     <!----------------------------------------------------------------PROPERTIES MODAL----------------------------------->
     <div class="modal fade" id="propertiesModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
@@ -376,6 +359,94 @@
     </div>
     <!------------------------------------------------END OF VIDEO STREAM MODAL---------------------------------------------->
 
+    <!----------------------GENERATE LINK MODAL------------------------------------------>
+    <div class="modal fade" id="generateLinkModal" tabindex="-1" aria-labelledby="generateLinkModalLabel" aria-hidden="true"  data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered" >
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="uploadVideoModalLabel">Generate File Shared Link</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-2">
+                    <div class="row row-cols-1 mt-3 mx-3 mb-3">
+                        <div class="mb-3">
+                            <label for="exampleFormControlInput1" class="form-label">
+                                <span class="fw-bold">File</span>
+                            </label>
+                            <div>
+                                <input type="text" name="file_name"  class="form-control" value="" id="file_generate_link" disabled>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="exampleFormControlInput1" class="form-label">
+                                <span class="fw-bold">Expiration Date</span>
+                            </label>
+                            <div>
+                                <input type="datetime-local" name="expire_at" id="expire_at" class="form-control @error('expire_at') is-invalid @enderror" value="{{old('expire_at')}}" >
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            @error('expire_at')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                        </div>
+
+                        <div class="my-4 d-flex justify-content-end">
+                            <button class="btn btn-success"  id="generateCodeBtn" type="submit" onclick="generateSharedLink()">Generate</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!----------------------END OF GENERATE LINK MODAL----------------------------------->
+
+    <!----------------------QR CODE LINK MODAL------------------------------------------>
+    <div class="modal fade" id="qrcodeModal" tabindex="-1" aria-labelledby="grcodeModalLabel" aria-hidden="true" data-bs-backdrop="static"  data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="uploadVideoModalLabel">Generated File Shared Link</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-2">
+                    <div class="row row-cols-1 mb-3">
+                        <div class="mb-3">
+                            <label for="exampleFormControlInput1" class="form-label d-flex justify-content-center">
+                                <span class="fw-bold">Scan QR Code to access the Link</span>
+                            </label>
+                            <div id="qr_code" class="d-flex justify-content-center">
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-center mt-2">
+                            <label for="exampleFormControlInput1" class="form-label">
+                                <span class="fw-bold">Sharable Link after Scanning QR Code</span>
+                            </label>
+                        </div>
+                        <div class="input-group d-flex justify-content-center mb-3">
+                            <input type="text" class="form-control form-control-md" aria-describedby="button-addon2" disabled id="generatedLink">
+                            <button class="btn btn-success" type="button" id="copy"
+                                    onclick="copyToClipboard()">Copy</button>
+                        </div>
+
+                        <form>
+                            <div class="my-4 d-flex justify-content-center">
+                                <button class="btn btn-success w-100" type="submit" onclick="saveQRCode()">Save</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!----------------------END OF QR CODE LINK MODAL----------------------------------->
+
+
+
     <style>
         .delete_file_btn > a{
             text-decoration: none;
@@ -384,6 +455,11 @@
         }
         .delete_file_btn:hover {
             color: black;
+        }
+
+        .delete_file_btn:active {
+            background-color: #198754;
+            color: white;
         }
         .dropdown-menu > dropdown-item:active {
             background-color: #198754;
@@ -408,21 +484,6 @@
         }
         .link {
             font-weight: bold;
-        }
-
-        .divider {
-            font-size: 20px;
-            display: flex;
-            align-items: center;
-        }
-
-        .divider::before,
-        .divider::after {
-            flex: 1;
-            content: '';
-            padding: 1px;
-            background-color: black;
-            margin: 5px;
         }
 
         .pagination > li > a
@@ -457,13 +518,16 @@
 
     <script>
         const CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
-        var $shareModal = $('#shareModal');
+        var $generateLinkModal = $('#generateLinkModal');
         var $streamModal = $('#streamVideoModal');
         let link = '';
         let layout = 'grid';
         var $modal = $('#uploadImageModal');
         var $uploadVideoModal = $('#uploadVideoModal');
         var image = document.getElementById('image');
+        var $qrcodeModal = $('#qrcodeModal');
+        var sharedLinkResponse;
+        var sharedFile;
 
         $(".image_field").on("change", function(e){
             var files = e.target.files;
@@ -488,20 +552,59 @@
             }
         });
 
+        let openSharedLink = function (data){
+            sharedFile = data;
+            $('#file_generate_link').val(data.name)
+            $generateLinkModal.modal('show')
+        }
 
-        let generateQRcode = function(data) {
-            let id = data.id;
-            let route = "{{ route('share_link', '__ID__') }}".replace('__ID__', id);
+        let generateSharedLink = function (){
+            let route = "{{ route('create_file_shared_link', '__fileId__') }}".replace('__fileId__', sharedFile.id);
+            let expire_at = $('#expire_at').val();
+
+            $('#generateCodeBtn').text('')
+            $("#generateCodeBtn").prepend('<i class="fa fa-spinner fa-spin"></i>');
+            $("#generateCodeBtn").attr("disabled", 'disabled');
             $.ajax({
-                method: 'GET',
+                method: 'POST',
                 url: route,
+                data: {_token: CSRF_TOKEN, 'expire_at':expire_at},
+                dataType: "json",
                 success: function(response) {
-                    $('#link').val(response.data)
-                    link = response.data
-                    $shareModal.modal('show');
+                    $('#generatedLink').val(response.data)
+                    generateQRCode(response.data)
+                    $generateLinkModal.modal('hide')
+                    $qrcodeModal.modal('show');
+                    sharedLinkResponse = response;
+
+                    $("#generateCodeBtn").find(".fa-spinner").remove();
+                    $("#generateCodeBtn").removeAttr("disabled");
+                },
+                error:function (error){
+                    $("#generateCodeBtn").find(".fa-spinner").remove();
+                    $("#generateCodeBtn").removeAttr("disabled");
+
+                    sharedLinkResponse = error;
                 }
             })
         }
+
+        let saveQRCode = function (){
+            if(sharedLinkResponse){
+                toastr.success("File Shared link created successfully");
+            }else {
+                toastr.error("Fail! Unable to generate Shared link for this file");
+            }
+        }
+
+        let generateQRCode = function (url){
+            var qrcode = new QRCode(document.getElementById('qr_code'),{
+                width:250,
+                height:250
+            });
+            qrcode.makeCode(url);
+        }
+
         let closeModal = function() {
             $('#copy').html('Copy');
             $('#link').val('')
@@ -512,12 +615,7 @@
             $('#copy').html('Copied')
         }
 
-        let shareViaWhatsapp = function() {
-            window.open('https://api.whatsapp.com/send?phone=&text=' + encodeURIComponent(link))
-        }
-
         let showProperties = function (item){
-
             $('.item_name').text(item.name)
             $('.item_type').text(item.file_type)
             $('.item_created').text(new Date(item.created_at).toGMTString())
@@ -562,13 +660,14 @@
             $('.video_title').text(item.name);
             let id = item.id;
             let route = "{{ route('get_video_path', '__ID__') }}".replace('__ID__', id);
+            $streamModal.modal('show')
             $.ajax({
                 method: 'GET',
                 url: route,
-                success: function(response) {
-                    let path = $('#baseUrl').val()+'/files/videos/play?path='+response.data;
+                success: function() {
+
+                    let path = $('#baseUrl').val()+'/files/videos/play?path='+id;
                     $('#play_video').attr("src", path)
-                    $streamModal.modal('show')
                 }
             })
         }
@@ -619,10 +718,6 @@
         });
 
 
-        $(document).ready(function(){
-            $(document).on('contextmenu', function(){
-                return false;
-            })
-        })
+
      </script>
 @endsection

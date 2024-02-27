@@ -19,6 +19,16 @@ class File extends Model
         'size'
     ];
 
+    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function fileLinks()
+    {
+        return $this->hasMany(FileSharedLink::class);
+    }
+
 
     public function getFilePath($fileId, $fileType)
     {
