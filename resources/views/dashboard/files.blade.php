@@ -80,7 +80,7 @@
                                 </li>
                                 <li>
                                     <a class="dropdown-item date_filter" type="button" href="{{route('file_shared_links', ['fileId' => $item->id])}}">
-                                        <i class="fa-regular fa-share-from-square"></i>&nbsp;Manage Share Links
+                                        <i class="fa-solid fa-list-check"></i>&nbsp;Manage Share Links
                                     </a>
                                 </li>
                                @if($item->file_type == 'VIDEO')
@@ -186,7 +186,7 @@
                                     </li>
                                     <li>
                                         <a class="dropdown-item date_filter" type="button" href="{{route('file_shared_links', ['fileId' => $item->id])}}">
-                                            <i class="fa-regular fa-share-from-square"></i>&nbsp;Manage Share Links
+                                            <i class="fa-solid fa-list-check"></i>&nbsp;Manage Share Links
                                         </a>
                                     </li>
                                     @if($item->file_type == 'VIDEO')
@@ -456,6 +456,14 @@
         .delete_file_btn:hover {
             color: black;
         }
+        .dropdown-menu > dropdown-item:active {
+            background-color: #198754;
+            color: white;
+        }
+        .dropdown-menu > li > a:active {
+            background-color: #198754;
+            color: white;
+        }
         .date_filter {
             cursor: pointer;
         }
@@ -472,6 +480,7 @@
         .link {
             font-weight: bold;
         }
+
         .pagination > li > a
         {
             background-color: white;
@@ -548,6 +557,9 @@
             let route = "{{ route('create_file_shared_link', '__fileId__') }}".replace('__fileId__', sharedFile.id);
             let expire_at = $('#expire_at').val();
 
+            $('#generateCodeBtn').text('')
+            $("#generateCodeBtn").prepend('<i class="fa fa-spinner fa-spin"></i>');
+            $("#generateCodeBtn").attr("disabled", 'disabled');
             $.ajax({
                 method: 'POST',
                 url: route,
@@ -559,8 +571,14 @@
                     $generateLinkModal.modal('hide')
                     $qrcodeModal.modal('show');
                     sharedLinkResponse = response;
+
+                    $("#generateCodeBtn").find(".fa-spinner").remove();
+                    $("#generateCodeBtn").removeAttr("disabled");
                 },
                 error:function (error){
+                    $("#generateCodeBtn").find(".fa-spinner").remove();
+                    $("#generateCodeBtn").removeAttr("disabled");
+
                     sharedLinkResponse = error;
                 }
             })
@@ -641,8 +659,8 @@
             $.ajax({
                 method: 'GET',
                 url: route,
-                success: function(response) {
-                    // let path = $('#baseUrl').val()+'/files/videos/play?path='+response.data;
+                success: function() {
+
                     let path = $('#baseUrl').val()+'/files/videos/play?path='+id;
                     $('#play_video').attr("src", path)
                 }

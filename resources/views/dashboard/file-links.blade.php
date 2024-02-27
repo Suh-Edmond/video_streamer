@@ -79,13 +79,13 @@
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                 <li><a class="dropdown-item date_filter" type="button" onclick="viewQRCode({{$item}})"
                                     >
-                                        <i class="fa-solid fa-circle-info"></i>&nbsp;View QR Code
+                                        <i class="fa-solid fa-eye"></i>&nbsp;View QR Code
                                     </a>
                                 </li>
                                 <li><a class="dropdown-item date_filter" type="button" data-bs-toggle="modal"
                                        data-bs-target="#editModal{{$item->id}}"
                                         >
-                                        <i class="fa-solid fa-circle-info"></i>&nbsp;Edit
+                                        <i class="fa-solid fa-pen"></i>&nbsp;Edit
                                     </a>
                                 </li>
                                 <li class="delete_file_btn">
@@ -312,30 +312,22 @@
         .date_filter {
             cursor: pointer;
         }
-        .thumbnail {
-            height: 180px;
-        }
 
-        .file_label {
-            font-weight: bold;
+        .delete_file_btn:active{
+            background-color: #198754;
+            color: white;
         }
         .link {
             font-weight: bold;
         }
 
-        .divider {
-            font-size: 20px;
-            display: flex;
-            align-items: center;
+        .dropdown-menu > dropdown-item:active {
+            background-color: #198754;
+            color: white;
         }
-
-        .divider::before,
-        .divider::after {
-            flex: 1;
-            content: '';
-            padding: 1px;
-            background-color: black;
-            margin: 5px;
+        .dropdown-menu > li > a:active {
+            background-color: #198754;
+            color: white;
         }
 
         .pagination > li > a
@@ -399,6 +391,9 @@
         let generateSharedLink = function (file){
             let route = "{{ route('create_file_shared_link', '__fileId__') }}".replace('__fileId__', file.id);
             let expire_at = $('#expire_at').val();
+            $('#generateCodeBtn').text('')
+            $("#generateCodeBtn").prepend('<i class="fa fa-spinner fa-spin"></i>');
+            $("#generateCodeBtn").attr("disabled", 'disabled');
             $.ajax({
                 method: 'POST',
                 url: route,
@@ -410,8 +405,13 @@
                     $generateLinkModal.modal('hide')
                     $qrcodeModal.modal('show');
                     sharedLinkResponse = response;
+
+                    $("#generateCodeBtn").find(".fa-spinner").remove();
+                    $("#generateCodeBtn").removeAttr("disabled");
                 },
                 error:function (error){
+                    $("#generateCodeBtn").find(".fa-spinner").remove();
+                    $("#generateCodeBtn").removeAttr("disabled");
                     sharedLinkResponse = error;
                 }
             })
