@@ -79,7 +79,7 @@
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                 <li><a class="dropdown-item date_filter" type="button" onclick="viewQRCode({{$item}})"
                                     >
-                                        <i class="fa-solid fa-eye"></i>&nbsp;View QR Code
+                                        <i class="fa-solid fa-qrcode"></i>&nbsp;View QR Code
                                     </a>
                                 </li>
                                 <li><a class="dropdown-item date_filter" type="button" data-bs-toggle="modal"
@@ -280,10 +280,10 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="uploadVideoModalLabel">QR Code for <span>{{$data['file']->name}}</span></h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="closeViewModal()"></button>
                 </div>
                 <div class="modal-body p-3">
-                    <div class="row row-cols-1 mb-4">
+                    <div class="row row-cols-1 mb-4 mx-3">
                         <div class="mb-3">
                             <label for="exampleFormControlInput1" class="form-label d-flex justify-content-center">
                             </label>
@@ -382,10 +382,15 @@
         }
 
         let viewQRCode = function (item) {
-            $('#fileName').text(item.name)
+            $('#fileName').text(item.name);
+            $('#view_qr_code').css({'pointer-events': 'none'})
             generateQRCode(item.file_link, 'view_qr_code')
             $viewQRCodeModal.modal('show');
 
+        }
+
+        let closeViewModal = function (){
+            $('#view_qr_code').html("")
         }
 
         let updateLink = function (){

@@ -28,9 +28,15 @@
                         {{ $user->email }}
                     </td>
 
-                    <td class="py-2">
-                        {{ $user->status }}
-                    </td>
+                    @if($user->status == \App\Constant\UserStatus::ACTIVE)
+                        <td class="py-2 text-success">
+                            {{ $user->status }}
+                        </td>
+                    @else
+                        <td class="py-2 text-danger">
+                            {{ $user->status }}
+                        </td>
+                    @endif
 
                     <td class="py-2">
                         {{ $user->role }}
