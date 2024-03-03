@@ -408,41 +408,27 @@
     <div class="modal fade" id="qrcodeModal" tabindex="-1" aria-labelledby="grcodeModalLabel" aria-hidden="true" data-bs-backdrop="static"  data-bs-keyboard="false">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-header" style="padding-top: 35px">
+                <div class="modal-header" style="padding-top: 35px;padding-right: 35px;padding-left: 35px">
                     <h5 class="modal-title" id="uploadVideoModalLabel">Generated File Shared Link</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="closeQRCodeModal()"></button>
                 </div>
                 <div class="modal-body p-2">
                     <div class="row row-cols-1 mb-3">
-                        <div class="mb-3">
-                            <label for="exampleFormControlInput1" class="form-label d-flex justify-content-center">
+                        <div class="mb-3" style="padding-left: 35px">
+                            <label for="exampleFormControlInput1" class="form-label d-flex justify-content-start">
                                 <span class="fw-bold">Scan QR Code to access the Link</span>
                             </label>
                             <div id="qr_code" class="d-flex justify-content-center">
                             </div>
                         </div>
 
-                        <div class="d-flex justify-content-center mt-2">
-                            <label for="exampleFormControlInput1" class="form-label">
-                                <span class="fw-bold">Sharable Link after Scanning QR Code</span>
-                            </label>
+                        <div class="divider" style="padding-right: 35px;padding-left: 35px">OR</div>
+                        <div class="d-flex justify-content-between my-3" style="padding-left: 35px;padding-right: 35px">
+                            <button class="btn btn-success" type="button" id="copy"
+                                    onclick="copyToClipboard()">Copy Link</button>
+                            <button class="btn btn-success" type="button" id="copy"
+                                    onclick="shareViaWhatsapp()">Share Link via Whatsapp</button>
                         </div>
-                        <div class="d-flex justify-content-between mb-3">
-                            <div class="">
-                                <button class="btn btn-secondary" type="button" id="copy"
-                                        onclick="copyToClipboard()">Copy Link</button>
-                            </div>
-                            <div>
-                                <button class="btn btn-success" type="button" id="copy"
-                                        onclick="copyToClipboard()">Share via Whatsapp</button>
-                            </div>
-                        </div>
-
-                        <form>
-                            <div class="my-3 d-flex justify-content-end">
-                                <button class="btn btn-success" type="submit" onclick="saveQRCode()">Save</button>
-                            </div>
-                        </form>
                     </div>
                 </div>
             </div>
@@ -453,6 +439,20 @@
 
 
     <style>
+        .divider {
+            font-size: 15px;
+            display: flex;
+            font-weight: bold;
+            align-items: center;
+        }
+
+        .divider::before, .divider::after {
+            flex: 1;
+            content: '';
+            padding: 1px;
+            background-color: black;
+            margin: 5px;
+        }
         .delete_file_btn > a{
             text-decoration: none;
             color: red;
@@ -525,14 +525,13 @@
         const CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
         var $generateLinkModal = $('#generateLinkModal');
         var $streamModal = $('#streamVideoModal');
-        let link = '';
         let layout = 'grid';
         var $modal = $('#uploadImageModal');
         var $uploadVideoModal = $('#uploadVideoModal');
         var image = document.getElementById('image');
         var $qrcodeModal = $('#qrcodeModal');
-        var sharedLinkResponse;
         var sharedFile;
+        var qrcodeLink =''
 
         $(".image_field").on("change", function(e){
             var files = e.target.files;
@@ -576,30 +575,31 @@
                 data: {_token: CSRF_TOKEN, 'expire_at':expire_at},
                 dataType: "json",
                 success: function(response) {
-                    $('#generatedLink').val(response.data)
+                    qrcodeLink = response.data;
+                    console.log(response)
                     generateQRCode(response.data)
                     $generateLinkModal.modal('hide')
                     $qrcodeModal.modal('show');
-                    sharedLinkResponse = response;
 
                     $("#generateCodeBtn").find(".fa-spinner").remove();
                     $("#generateCodeBtn").removeAttr("disabled");
+
+                    toastr.success("File shared link generated successfully");
                 },
                 error:function (error){
                     $("#generateCodeBtn").find(".fa-spinner").remove();
                     $("#generateCodeBtn").removeAttr("disabled");
-
-                    sharedLinkResponse = error;
                 }
             })
         }
 
-        let saveQRCode = function (){
-            if(sharedLinkResponse){
-                toastr.success("File Shared link created successfully");
-            }else {
-                toastr.error("Fail! Unable to generate Shared link for this file");
-            }
+        let shareViaWhatsapp = function() {
+            window.open('https://api.whatsapp.com/send?phone=&text=' + encodeURIComponent(qrcodeLink));
+        }
+
+        let closeQRCodeModal = function (){
+            $qrcodeModal.modal('hide');
+            window.location.reload();
         }
 
         let generateQRCode = function (url){
@@ -616,7 +616,7 @@
         }
 
         let copyToClipboard = function() {
-            navigator.clipboard.writeText(($('#link').val()))
+            navigator.clipboard.writeText(qrcodeLink)
             $('#copy').html('Copied')
         }
 

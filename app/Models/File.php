@@ -52,4 +52,9 @@ class File extends Model
         }
         return $path;
     }
+
+    public function reduceFileNameLength($fileName)
+        {
+
+        }
 }
