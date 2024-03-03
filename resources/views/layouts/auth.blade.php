@@ -395,9 +395,7 @@
         .nav-pills >  a {
             color: #198754;
         }
-    </style>
 
-    <style>
         .img-bg {
             background-color: rgba(25,135,84, .5);
             position: absolute;
@@ -419,6 +417,8 @@
 
 
     </style>
+
+
 </head>
 
 <body class="antialiased">
@@ -428,7 +428,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
         integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous">
     </script>
-    @include('notification');
+{{--    @include('notification');--}}
 
     <div class="d-flex px-4 px-lg-0" style="height: 100vh">
         <div class="col d-none d-lg-block d-flex justify-content-center align-items-center">

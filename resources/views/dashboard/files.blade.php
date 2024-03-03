@@ -71,28 +71,28 @@
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                 <li><a class="dropdown-item date_filter" type="button" data-bs-toggle="modal"
                                         data-bs-target="#propertiesModal" onclick="showProperties({{ $item }})">
-                                        <i class="fa-solid fa-circle-info"></i>&nbsp;Properties
+                                        <i class="fa-solid fa-circle-info"></i><span style="padding-left: 20px">Properties</span>
                                     </a></li>
                                 <li>
                                     <a class="dropdown-item date_filter" type="button" onclick="openSharedLink({{$item}})">
-                                        <i class="fa-regular fa-share-from-square"></i>&nbsp;Share
+                                        <i class="fa-regular fa-share-from-square"></i><span style="padding-left: 20px">Share</span>
                                     </a>
                                 </li>
                                 <li>
                                     <a class="dropdown-item date_filter" type="button" href="{{route('file_shared_links', ['fileId' => $item->id])}}">
-                                        <i class="fa-solid fa-list-check"></i>&nbsp;Manage Share Links
+                                        <i class="fa-solid fa-list-check"></i><span style="padding-left: 20px">Manage Shared Links</span>
                                     </a>
                                 </li>
                                @if($item->file_type == 'VIDEO')
                                     <li>
                                         <a class="dropdown-item date_filter" type="button"  onclick="playVideo({{$item}})">
-                                            <i class="fa-solid fa-play"></i>&nbsp;Play Video
+                                            <i class="fa-solid fa-play"></i><span style="padding-left: 20px">Play Video</span>
                                         </a>
                                     </li>
                                @endif
                                 <li class="delete_file_btn">
                                     <a href="{{route('delete_file', ['file' => $item])}}" >
-                                        <i class="fa-solid fa-trash-can text-danger"></i>&nbsp;Delete
+                                        <i class="fa-solid fa-trash-can text-danger"></i><span style="padding-left: 20px">Delete</span>
                                     </a>
                                 </li>
                             </ul>
@@ -177,28 +177,28 @@
                                     <li><a class="dropdown-item date_filter" type="button" data-bs-toggle="modal"
                                             data-bs-target="#propertiesModal"
                                             onclick="showProperties({{ $item }})">
-                                            <i class="fa-solid fa-circle-info"></i>&nbsp;Properties
+                                            <i class="fa-solid fa-circle-info"></i><span style="padding-left: 20px">Properties</span>
                                         </a></li>
                                     <li>
                                         <a class="dropdown-item date_filter"   onclick="openSharedLink({{$item}})">
-                                            <i class="fa-regular fa-share-from-square"></i>&nbsp;Share
+                                            <i class="fa-regular fa-share-from-square"></i><span style="padding-left: 20px">Share</span>
                                         </a>
                                     </li>
                                     <li>
                                         <a class="dropdown-item date_filter" type="button" href="{{route('file_shared_links', ['fileId' => $item->id])}}">
-                                            <i class="fa-solid fa-list-check"></i>&nbsp;Manage Share Links
+                                            <i class="fa-solid fa-list-check"></i><span style="padding-left: 20px">Manage Share Links</span>
                                         </a>
                                     </li>
                                     @if($item->file_type == 'VIDEO')
                                         <li>
                                             <a class="dropdown-item date_filter" type="button" onclick="playVideo({{$item}})">
-                                                <i class="fa-solid fa-play"></i>&nbsp;Play Video
+                                                <i class="fa-solid fa-play"></i><span style="padding-left: 20px">Play Video</span>
                                             </a>
                                         </li>
                                     @endif
                                     <li class="delete_file_btn">
                                         <a href="{{route('delete_file', ['file' => $item])}}" >
-                                            <i class="fa-solid fa-trash-can text-danger"></i>&nbsp;Delete
+                                            <i class="fa-solid fa-trash-can text-danger"></i><span style="padding-left: 20px">Delete</span>
                                         </a>
                                     </li>
                                 </ul>
@@ -273,7 +273,7 @@
     <div class="modal fade" id="uploadImageModal" tabindex="-1" aria-labelledby="uploadImageModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-header">
+                <div class="modal-header" style="padding-left:35px;padding-right: 35px;padding-top: 35px">
                     <h5 class="modal-title" id="uploadImageModalLabel">Upload Image</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
@@ -298,8 +298,8 @@
                                 <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
                             </div>
 
-                            <div class="my-3 d-flex justify-content-center">
-                                <button class="btn btn-success w-100" type="submit">Save</button>
+                            <div class="my-3 d-flex justify-content-end">
+                                <button class="btn btn-success " type="submit">Save</button>
                             </div>
                         </form>
                     </div>
@@ -313,7 +313,7 @@
     <div class="modal fade" id="uploadVideoModal" tabindex="-1" aria-labelledby="uploadVideoModalLabel" aria-hidden="true"  data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog modal-dialog-centered" >
             <div class="modal-content">
-                <div class="modal-header">
+                <div class="modal-header" style="padding-left:35px;padding-right: 37px;padding-top: 35px">
                     <h5 class="modal-title" id="uploadVideoModalLabel">Upload Video</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
@@ -330,8 +330,8 @@
                                 <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
                             </div>
 
-                            <div class="my-3 d-flex justify-content-center">
-                                <button class="btn btn-success w-100" type="submit">Save</button>
+                            <div class="my-3 d-flex justify-content-end">
+                                <button class="btn btn-success" type="submit">Save</button>
                             </div>
                         </form>
                     </div>
@@ -363,7 +363,7 @@
     <div class="modal fade" id="generateLinkModal" tabindex="-1" aria-labelledby="generateLinkModalLabel" aria-hidden="true"  data-bs-keyboard="false">
         <div class="modal-dialog modal-dialog-centered" >
             <div class="modal-content">
-                <div class="modal-header">
+                <div class="modal-header" style="padding-left:35px;padding-right: 35px;padding-top: 35px">
                     <h5 class="modal-title" id="uploadVideoModalLabel">Generate File Shared Link</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
@@ -383,7 +383,7 @@
                                 <span class="fw-bold">Expiration Date</span>
                             </label>
                             <div>
-                                <input type="datetime-local" name="expire_at" id="expire_at" class="form-control @error('expire_at') is-invalid @enderror" value="{{old('expire_at')}}" >
+                                <input type="datetime-local" name="expire_at" id="expire_at" class="form-control @error('expire_at') is-invalid @enderror" value="{{old('expire_at')}}" required>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -408,7 +408,7 @@
     <div class="modal fade" id="qrcodeModal" tabindex="-1" aria-labelledby="grcodeModalLabel" aria-hidden="true" data-bs-backdrop="static"  data-bs-keyboard="false">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-header">
+                <div class="modal-header" style="padding-top: 35px">
                     <h5 class="modal-title" id="uploadVideoModalLabel">Generated File Shared Link</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
@@ -427,15 +427,20 @@
                                 <span class="fw-bold">Sharable Link after Scanning QR Code</span>
                             </label>
                         </div>
-                        <div class="input-group d-flex justify-content-center mb-3">
-                            <input type="text" class="form-control form-control-md" aria-describedby="button-addon2" disabled id="generatedLink">
-                            <button class="btn btn-success" type="button" id="copy"
-                                    onclick="copyToClipboard()">Copy</button>
+                        <div class="d-flex justify-content-between mb-3">
+                            <div class="">
+                                <button class="btn btn-secondary" type="button" id="copy"
+                                        onclick="copyToClipboard()">Copy Link</button>
+                            </div>
+                            <div>
+                                <button class="btn btn-success" type="button" id="copy"
+                                        onclick="copyToClipboard()">Share via Whatsapp</button>
+                            </div>
                         </div>
 
                         <form>
-                            <div class="my-4 d-flex justify-content-center">
-                                <button class="btn btn-success w-100" type="submit" onclick="saveQRCode()">Save</button>
+                            <div class="my-3 d-flex justify-content-end">
+                                <button class="btn btn-success" type="submit" onclick="saveQRCode()">Save</button>
                             </div>
                         </form>
                     </div>

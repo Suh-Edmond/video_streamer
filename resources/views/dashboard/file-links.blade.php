@@ -79,18 +79,23 @@
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                 <li><a class="dropdown-item date_filter" type="button" onclick="viewQRCode({{$item}})"
                                     >
-                                        <i class="fa-solid fa-qrcode"></i>&nbsp;View QR Code
+                                        <i class="fa-solid fa-qrcode"></i><span style="padding-left: 20px">View QR Code</span>
+                                    </a>
+                                </li>
+                                <li><a class="dropdown-item date_filter" type="button" onclick="copy({{$item}})"
+                                    >
+                                        <i class="fa-solid fa-copy"></i><span style="padding-left: 20px">Copy</span>
                                     </a>
                                 </li>
                                 <li><a class="dropdown-item date_filter" type="button" data-bs-toggle="modal"
                                        data-bs-target="#editModal{{$item->id}}"
                                         >
-                                        <i class="fa-solid fa-pen"></i>&nbsp;Edit
+                                        <i class="fa-solid fa-pen"></i><span style="padding-left: 20px">Edit</span>
                                     </a>
                                 </li>
                                 <li class="delete_file_btn">
                                     <a href="{{route('delete_file_shared_links', ['fileSharedLink' => $item])}}" >
-                                        <i class="fa-solid fa-trash-can text-danger"></i>&nbsp;Delete
+                                        <i class="fa-solid fa-trash-can text-danger"></i><span style="padding-left: 20px">Delete</span>
                                     </a>
                                 </li>
                             </ul>
@@ -101,7 +106,7 @@
                     <div class="modal fade" id="editModal{{$item->id}}" tabindex="-1" aria-labelledby="uploadVideoModalLabel" aria-hidden="true"  data-bs-keyboard="false">
                         <div class="modal-dialog modal-dialog-centered" >
                             <div class="modal-content">
-                                <div class="modal-header">
+                                <div class="modal-header" style="padding-left:35px;padding-right: 35px;padding-top: 35px">
                                     <h5 class="modal-title" id="uploadVideoModalLabel">Edit File Shared Link</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
@@ -191,7 +196,7 @@
     <div class="modal fade" id="generateLinkModal" tabindex="-1" aria-labelledby="generateLinkModalLabel" aria-hidden="true"  data-bs-keyboard="false">
         <div class="modal-dialog modal-dialog-centered" >
             <div class="modal-content">
-                <div class="modal-header">
+                <div class="modal-header" style="padding-left:35px;padding-right: 35px;padding-top: 35px">
                     <h5 class="modal-title" id="uploadVideoModalLabel">Generate File Shared Link</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
@@ -222,7 +227,7 @@
                             @enderror
                         </div>
 
-                        <div class="my-4 d-flex justify-content-end">
+                        <div class="my-3 d-flex justify-content-end">
                             <button class="btn btn-success"  id="generateCodeBtn" type="submit" onclick="generateSharedLink({{$data['file']}})">Generate</button>
                         </div>
                     </div>
@@ -236,34 +241,30 @@
     <div class="modal fade" id="qrcodeModal" tabindex="-1" aria-labelledby="grcodeModalLabel" aria-hidden="true" data-bs-backdrop="static"  data-bs-keyboard="false">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-header">
+                <div class="modal-header" style="padding-top: 35px;padding-right: 35px;padding-left: 35px">
                     <h5 class="modal-title" id="uploadVideoModalLabel">Generated File Shared Link</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="closeQRCodeModal()"></button>
                 </div>
                 <div class="modal-body p-2">
                     <div class="row row-cols-1 mb-3">
-                        <div class="mb-3">
-                            <label for="exampleFormControlInput1" class="form-label d-flex justify-content-center">
+                        <div class="mb-3" style="padding-left: 35px">
+                            <label for="exampleFormControlInput1" class="form-label d-flex justify-content-start">
                                 <span class="fw-bold">Scan QR Code to access the Link</span>
                             </label>
                             <div id="qr_code" class="d-flex justify-content-center">
                             </div>
                         </div>
-
-                        <div class="d-flex justify-content-center mt-2">
-                            <label for="exampleFormControlInput1" class="form-label">
-                                <span class="fw-bold">Sharable Link after Scanning QR Code</span>
-                            </label>
-                        </div>
-                        <div class="input-group d-flex justify-content-center mb-3">
-                            <input type="text" class="form-control form-control-md" aria-describedby="button-addon2" disabled id="link">
+                        <div class="divider" style="padding-right: 35px;padding-left: 35px">OR</div>
+                        <div class="d-flex justify-content-between mt-4" style="padding-left: 35px;padding-right: 35px">
+                            <button class="btn btn-secondary" type="button" id="copy"
+                                    onclick="copyToClipboard()">Copy Link</button>
                             <button class="btn btn-success" type="button" id="copy"
-                                    onclick="copyToClipboard()">Copy</button>
+                                    onclick="copyToClipboard()">Share Link via Whatsapp</button>
                         </div>
 
-                        <form>
-                            <div class="my-4 d-flex justify-content-center">
-                                <button class="btn btn-success w-100" type="submit" onclick="saveQRCode()">Save</button>
+                        <form class="mt-2">
+                            <div class="my-4 d-flex justify-content-end" style="padding-right: 30px">
+                                <button class="btn btn-success" type="submit" onclick="saveQRCode()">Close</button>
                             </div>
                         </form>
                     </div>
@@ -301,6 +302,20 @@
 
 
     <style>
+        .divider {
+            font-size: 15px;
+            display: flex;
+            font-weight: bold;
+            align-items: center;
+        }
+
+        .divider::before, .divider::after {
+            flex: 1;
+            content: '';
+            padding: 1px;
+            background-color: black;
+            margin: 5px;
+        }
         .delete_file_btn > a{
             text-decoration: none;
             color: red;
@@ -428,11 +443,21 @@
         }
 
         let saveQRCode = function (){
+            $qrcodeModal.modal('hide');
             if(sharedLinkResponse){
                 toastr.success("File Shared link created successfully");
-            }else {
-                toastr.error("Fail! Unable to generate Shared link for this file");
+                return;
             }
+            toastr.error("Fail! Unable to generate Shared link for this file");
+        }
+
+        let closeQRCodeModal = function (){
+            $qrcodeModal.modal('hide');
+            if(sharedLinkResponse){
+                toastr.success("File Shared link created successfully");
+                return;
+            }
+            toastr.error("Fail! Unable to generate Shared link for this file");
         }
 
         let copyToClipboard = function() {
@@ -452,6 +477,8 @@
             $('#qr_code').css({'pointer-events':'none'});
         }
 
-
+        let copy = function (item){
+            navigator.clipboard.writeText(item.file_link)
+        }
     </script>
 @endsection
