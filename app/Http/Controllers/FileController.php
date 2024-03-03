@@ -210,17 +210,20 @@ class FileController extends Controller
         VideoStreamer::streamFile($path);
     }
 
-    /**
-     * @param Request $request
-     * @return void
-     * @throws \Exception
-     * This function is use stream a shared video
-     */
+
     public function getStreamVideo(Request $request)
     {
-        $file = File::find($request['fileId']);
-        $path = HelperTrait::getFilePath($file->id, $file->file_type);
-        VideoStreamer::streamFile($path);
+       if(!$request['hasExpired'] || !$request['notAvailable']){
+           $file = File::find($request['fileId']);
+           $path = HelperTrait::getFilePath($file->id, $file->file_type);
+           VideoStreamer::streamFile($path);
+       }
+        $notification = array(
+            'message' => 'File resource has either expired or has been removed',
+            'alert-type' => 'error'
+        );
+
+        return redirect()->back()->with($notification);
     }
 
 

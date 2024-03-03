@@ -63,41 +63,6 @@
             @forelse ($data['items'] as $item)
                 <div class="col-12 col-md-6 col-lg-2 mb-2 p-3">
                     <div class="shadow bg-white rounded position-relative pb-4">
-                        <div class="dropdown bg-white rounded shadow position-absolute top-0 end-0" style="z-index: 10">
-                            <button class="btn border btn-outline-success" type="button" data-bs-toggle="dropdown"
-                                aria-expanded="false">
-                                <i class="fa-solid fa-ellipsis"></i>
-                            </button>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                <li><a class="dropdown-item date_filter" type="button" data-bs-toggle="modal"
-                                        data-bs-target="#propertiesModal" onclick="showProperties({{ $item }})">
-                                        <i class="fa-solid fa-circle-info"></i><span style="padding-left: 20px">Properties</span>
-                                    </a></li>
-                                <li>
-                                    <a class="dropdown-item date_filter" type="button" onclick="openSharedLink({{$item}})">
-                                        <i class="fa-regular fa-share-from-square"></i><span style="padding-left: 20px">Share</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item date_filter" type="button" href="{{route('file_shared_links', ['fileId' => $item->id])}}">
-                                        <i class="fa-solid fa-list-check"></i><span style="padding-left: 20px">Manage Shared Links</span>
-                                    </a>
-                                </li>
-                               @if($item->file_type == 'VIDEO')
-                                    <li>
-                                        <a class="dropdown-item date_filter" type="button"  onclick="playVideo({{$item}})">
-                                            <i class="fa-solid fa-play"></i><span style="padding-left: 20px">Play Video</span>
-                                        </a>
-                                    </li>
-                               @endif
-                                <li class="delete_file_btn">
-                                    <a href="{{route('delete_file', ['file' => $item])}}" >
-                                        <i class="fa-solid fa-trash-can text-danger"></i><span style="padding-left: 20px">Delete</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-
                         <div class="d-flex flex-column ">
                             @if($item->file_type ==  \App\Constant\FileType::IMAGE)
                                 <img class="w-full thumbnail" src={{ asset($item->getFilePath($item->id, $item->file_type)) }} alt={{$item->name}}>
@@ -107,7 +72,56 @@
                                 </button>
                             @endif
 
-                            <div class=" pt-4 text-wrap px-3 text-muted text-xl text-break">{{ $item->name }}</div>
+                            <div class="pt-4 d-flex justify-content-between mx-2">
+                                @if(strlen($item->name) >= 25)
+                                    <div class="text-muted text-xl">{{ $item->reduceFileNameLength($item->name) }}
+{{--                                        <span class="tooltiptext">{{  $item->name }}</span>--}}
+                                    </div>
+
+                                @else
+                                    <div>
+                                        <span class="text-muted text-xl">
+                                        {{  $item->name }}</span>
+                                    </div>
+                                @endif
+
+
+                                <div class="dropdown bg-white rounded shadow " style="z-index: 10">
+                                    <button class="btn border btn-outline-success" type="button" data-bs-toggle="dropdown"
+                                            aria-expanded="false">
+                                        <i class="fa-solid fa-ellipsis-vertical"></i>
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                        <li><a class="dropdown-item date_filter" type="button" data-bs-toggle="modal"
+                                               data-bs-target="#propertiesModal" onclick="showProperties({{ $item }})">
+                                                <i class="fa-solid fa-circle-info"></i><span style="padding-left: 20px">Properties</span>
+                                            </a></li>
+                                        <li>
+                                            <a class="dropdown-item date_filter" type="button" onclick="openSharedLink({{$item}})">
+                                                <i class="fa-regular fa-share-from-square"></i><span style="padding-left: 20px">Share</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item date_filter" type="button" href="{{route('file_shared_links', ['fileId'=>$item->id])}}">
+                                                <i class="fa-solid fa-list-check"></i>
+                                                <span style="padding-left: 20px">Manage Shared Links</span>
+                                            </a>
+                                        </li>
+                                        @if($item->file_type == 'VIDEO')
+                                            <li>
+                                                <a class="dropdown-item date_filter" type="button"  onclick="playVideo({{$item}})">
+                                                    <i class="fa-solid fa-play"></i><span style="padding-left: 20px">Play Video</span>
+                                                </a>
+                                            </li>
+                                        @endif
+                                        <li class="delete_file_btn">
+                                            <a href="{{route('delete_file', ['file' => $item])}}" >
+                                                <i class="fa-solid fa-trash-can text-danger"></i><span style="padding-left: 20px">Delete</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -383,7 +397,8 @@
                                 <span class="fw-bold">Expiration Date</span>
                             </label>
                             <div>
-                                <input type="datetime-local" name="expire_at" id="expire_at" class="form-control @error('expire_at') is-invalid @enderror" value="{{old('expire_at')}}" required>
+                                <input type="datetime-local" name="expire_at" id="expire_at" class="form-control @error('expire_at') is-invalid @enderror"   required>
+                                <small class="text-muted">Default Expiration time is 4hours</small>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -519,6 +534,9 @@
             background-color: darkgreen;
             border: solid 1px darkgreen;
         }
+
+
+
     </style>
 
     <script>
@@ -560,6 +578,10 @@
             sharedFile = data;
             $('#file_generate_link').val(data.name)
             $generateLinkModal.modal('show')
+
+            let now = new Date();
+            now.setHours(now.getHours() + 4);
+            document.getElementById('expire_at').value = now.toISOString().slice(0,16);
         }
 
         let generateSharedLink = function (){

@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+    @include('notification')
     <div class="container">
         <div class="row justify-content-center">
             @if($hasExpired)
@@ -28,7 +29,7 @@
                             <div class="card-header d-flex justify-content-center header">{{ $title }}</div>
 
                             <div class="card-body d-flex justify-content-center m-4">
-                                <video src="{{route('get_stream_video', ['fileId' => $file->id])}}" width="600" height="350" controls  controlsList="nodownload"
+                                <video src="{{route('get_stream_video', ['fileId' => $file->id, 'notAvailable'=>$notAvailable, 'hasExpired' => $hasExpired])}}" width="600" height="350" controls  controlsList="nodownload"
                                        oncontextmenu="return false;">
                                 </video>
                             </div>
