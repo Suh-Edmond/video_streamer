@@ -5,17 +5,34 @@ namespace App\Http\Controllers;
 use App\Constant\UserStatus;
 use App\Models\User;
 use App\Traits\HelperTrait;
+use Illuminate\Http\Request;
 
 class UsersController extends Controller
 {
-    public function manageUsers()
+    public function manageUsers(Request $request)
     {
+        $users = null;
+        $sort = $request['sort'];
+        $filter = $request['filter'];
+        if(isset($sort)) {
+            $users = match ($sort) {
+                'DATE_ASC' => User::orderBy('created_at'),
+                'NAME' => User::orderBy('name'),
+                default => User::orderByDesc('created_at'),
+            };
 
-        $users = User::paginate(10);
+            $users = $users->paginate(10);
+        }
 
+        if (isset($filter)) {
+            $users= User::where('status', $filter)->paginate(10);
+        }
+        if(!isset($sort) && !isset($filter)){
+            $users = User::paginate(10);
+        }
         $data = [
             'items' => $users,
-            'filter' => false,
+            'filter' => true,
             'gridView'=> false,
             'admin'   => HelperTrait::getAdminInfo()
         ];

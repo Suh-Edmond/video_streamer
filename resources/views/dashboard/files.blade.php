@@ -245,11 +245,11 @@
     <div class="modal fade" id="propertiesModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content m-3">
-                <div class="modal-header" style="padding-top: 35px">
+                <div class="modal-header" style="padding-top: 35px;padding-left: 35px;padding-right: 35px">
                     <h5 class="modal-title fw-bold" id="exampleModalLabel">{{__('messages.fileProperties')}}</h5>
                     <button type="button" class="btn-close"   data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body mb-5">
+                <div class="modal-body mb-5" style="padding-right: 35px;padding-left: 35px">
                     <div class="my-2">
                         <label><span class="fw-bold">{{__('messages.name')}}</span>:&nbsp;<span class="item_name"></span></label>
                     </div>

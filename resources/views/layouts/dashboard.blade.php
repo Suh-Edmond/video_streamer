@@ -5,7 +5,7 @@
         <div class="flex flex-column mx-auto">
 
             @if(Auth::user()->status == \App\Constant\UserStatus::ACTIVE)
-                <div class="d-flex gap-3 gap-lg-0 rounded-lg flex-column flex-md-row align-items-md-stretch py-lg-5 bgwhite border-bottom">
+                <div class="d-flex gap-3 gap-lg-0 rounded-lg flex-column flex-md-row align-items-md-stretch py-4 bgwhite border-bottom">
                     <div>
                         <h2 class="mb-4 h4" class="title">@yield('title')</h2>
 

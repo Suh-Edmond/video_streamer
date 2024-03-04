@@ -71,7 +71,7 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-end bg-white" aria-labelledby="navbarDropdown">
-                                    @if(Auth::user()->role == 'ADMIN')
+                                    @if(Auth::user()->role == \App\Constant\UserRole::ADMIN)
                                         <a class="dropdown-item" href="{{ route('users') }}">{{ __('messages.manage_users') }}</a>
                                     @endif
                                     <a class="dropdown-item" href="{{ route('files') }}">{{ __('messages.manage_files') }}</a>

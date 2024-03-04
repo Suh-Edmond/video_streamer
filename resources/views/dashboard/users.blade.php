@@ -2,6 +2,35 @@
 
 @section('title', __('messages.manage_users'))
 
+@section('filters')
+    <div class="dropdown">
+        <button class="btn border btn-outline-success dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                aria-expanded="false">
+            {{__('messages.allUsers')}}
+        </button>
+        <ul class="dropdown-menu shadow py-3 bg-white">
+            <li><a class="dropdown-item date_filter" onclick="filterBy('')">{{__('messages.allUsers')}}</a></li>
+            <li><a onclick="filterBy('ACTIVE')" class="dropdown-item date_filter">{{__('messages.active')}}</a></li>
+            <li><a onclick="filterBy('IN_ACTIVE')" class="dropdown-item date_filter">{{__('messages.inactive')}}</a></li>
+        </ul>
+    </div>
+@endsection
+
+@section('sort')
+    <div class="dropdown">
+        <button class="btn border btn-outline-success" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <div class="d-flex gap-1 align-items-center">
+                <i class="fa-solid fa-filter"></i><span>{{__('messages.sort')}}:</span>
+            </div>
+        </button>
+        <ul class="dropdown-menu bg-white">
+            <li> <a onclick="sortBy('DATE_DESC')" class="dropdown-item date_filter">{{__('messages.newestFirst')}}</a></li>
+            <li><a onclick="sortBy('DATE_ASC')" class="dropdown-item date_filter">{{__('messages.oldestFirst')}}</a></li>
+            <li><a onclick="sortBy('NAME')" class="dropdown-item date_filter">{{__('messages.name')}}</a></li>
+        </ul>
+    </div>
+@endsection
+
 @section('dashboard-content')
     <div style="overflow-x: scroll;">
         <table class="table table-striped">
@@ -105,4 +134,33 @@
                 </nav>
             </div>
     </div>
+
+    <script>
+        let applyParams = function(sort, filtr) {
+            let url = new URL(location.href);
+            let searchParams = new URLSearchParams(url.search);
+            searchParams.set('filter', filtr);
+            searchParams.set('sort', sort);
+            url.search = searchParams.toString();
+
+            location.href = url
+        }
+
+        let filterBy = function(newFilter) {
+            filter = newFilter;
+            applyParams(sort, newFilter);
+        }
+
+        let sortBy = function(newSort) {
+            sort = newSort;
+            applyParams(newSort, filter);
+        }
+
+        $(document).ready(function() {
+            let urlParams = new URLSearchParams(location.search);
+            filter = urlParams.get('filter') || '';
+            sort = urlParams.get('sort') || '';
+
+        })
+    </script>
 @endsection

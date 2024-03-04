@@ -53,7 +53,7 @@ return [
     "shareViaWhatsapp" => "Share Link via Whatsapp",
     "generateShareLink" => "Generate Share Link",
     "link" => "Link",
-    "linkCode" => "Shared Code",
+    "linkCode" => "Link Code",
     "expired" => "EXPIRED",
     "notExpired" => "NOT EXPIRED",
     "viewQRCode" => "View QR Code",
@@ -88,5 +88,8 @@ return [
     "resourceHasBeenRemovedMsg" => "File resource has either expired or has been removed",
     "english" => "English",
     "french" => "French",
-    "locale" => "EN"
+    "active" => "ACTIVE",
+    "inactive" => "IN_ACTIVE",
+    "allUsers" => "All Users",
+
 ];

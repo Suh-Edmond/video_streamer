@@ -20,7 +20,7 @@
 
 @section('action')
     <button class="btn btn-success shadow py-2 px-3 d-flex align-items-center justify-content-center gap-2" type="button" data-bs-toggle="modal"
-            data-bs-target="#generateLinkModal">
+            data-bs-target="#generateLinkModal" onclick="setDefaultSharedLinkExpirationTime()">
         <i class="fa fa-add"></i><span>{{__('messages.generateShareLink')}}</span>
     </button>
 @endsection
@@ -215,6 +215,7 @@
                             </label>
                             <div>
                                 <input type="datetime-local" name="expire_at" id="expire_at" class="form-control @error('expire_at') is-invalid @enderror" value="{{old('expire_at')}}" >
+                                <small class="text-muted">{{__('messages.defaultExpirationTimeMsg')}}</small>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -332,6 +333,13 @@
         let closeQRCodeModal = function (){
             $qrcodeModal.modal('hide');
             window.location.reload();
+        }
+
+
+        let setDefaultSharedLinkExpirationTime = function (){
+            let now = new Date();
+            now.setHours(now.getHours() + 4);
+            document.getElementById('expire_at').value = now.toISOString().slice(0,16);
         }
 
         let generateSharedLink = function (file){
