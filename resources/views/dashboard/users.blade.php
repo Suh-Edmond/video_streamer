@@ -83,7 +83,6 @@
             @endforelse
         </table>
 
-        @if($data['items']->currentPage() != $data['items']->lastPage())
             <div class="d-flex justify-content-sm-end">
                 <nav aria-label="Page navigation example">
                     <ul class="pagination">
@@ -105,47 +104,5 @@
                     </ul>
                 </nav>
             </div>
-        @endif
-
     </div>
-
-    <style>
-        .pagination > li > a
-        {
-            background-color: white;
-            color: #198754;
-        }
-
-        .pagination > li > a:focus,
-        .pagination > li > a:hover,
-        .pagination > li > span:focus,
-        .pagination > li > span:hover
-        {
-            color: #198754;
-            background-color: #eee;
-            border-color: #ddd;
-        }
-
-        .pagination > .active > a
-        {
-            color: white;
-            background-color: #198754;
-            border: solid 1px #198754;
-        }
-
-        .pagination > .active > a:hover
-        {
-            background-color: #198754;
-            border: solid 1px #198754;
-        }
-
-        .dropdown-menu > dropdown-item:active {
-            background-color: #198754;
-            color: white;
-        }
-        .dropdown-menu > li > a:active {
-            background-color: #198754;
-            color: white;
-        }
-    </style>
 @endsection

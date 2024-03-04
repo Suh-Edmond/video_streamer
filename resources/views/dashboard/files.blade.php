@@ -72,7 +72,7 @@
 
                             <div class="pt-4 d-flex justify-content-between mx-2">
                                 @if(strlen($item->name) >= 25)
-                                    <div class="text-muted text-xl" id="data">{{ $item->name }}
+                                    <div class="text-muted text-xl file_name">{{ $item->name }}
                                     </div>
                                 @else
                                     <div>
@@ -124,9 +124,7 @@
             @empty
                 <p>{{__('messages.noItems')}}</p>
             @endforelse
-
-            @if($data['items']->lastPage() != $data['items']->currentPage())
-                    <div class="d-flex justify-content-sm-end">
+             <div class="d-flex justify-content-sm-end">
                         <nav aria-label="Page navigation example">
                             <ul class="pagination">
                                 <li   class="{{$data['items']->currentPage() == 1 ? 'page-item disabled':'page-item'}}">
@@ -147,8 +145,7 @@
                             </ul>
                         </nav>
                     </div>
-            @endif
-        </div>
+            </div>
     @else
         <div class="pt-3">
             <table class="table table-striped">
@@ -218,9 +215,7 @@
                     <p>{{__('messages.noItems')}}</p>
                 @endforelse
             </table>
-
-            @if($data['items']->lastPage() != $data['items']->currentPage())
-                <div class="d-flex justify-content-sm-end">
+             <div class="d-flex justify-content-sm-end">
                     <nav aria-label="Page navigation example">
                         <ul class="pagination">
                             <li   class="{{$data['items']->currentPage() == 1 ? 'page-item disabled':'page-item'}}">
@@ -241,8 +236,6 @@
                         </ul>
                     </nav>
                 </div>
-            @endif
-
         </div>
     @endif
 
@@ -448,99 +441,6 @@
     </div>
     <!----------------------END OF QR CODE LINK MODAL----------------------------------->
 
-
-
-    <style>
-        .divider {
-            font-size: 15px;
-            display: flex;
-            font-weight: bold;
-            align-items: center;
-        }
-
-        .divider::before, .divider::after {
-            flex: 1;
-            content: '';
-            padding: 1px;
-            background-color: black;
-            margin: 5px;
-        }
-        .delete_file_btn > a{
-            text-decoration: none;
-            color: red;
-            padding-left: 17px;
-        }
-        .delete_file_btn:hover {
-            color: black;
-        }
-
-        .delete_file_btn:active {
-            background-color: #198754;
-            color: white;
-        }
-        .dropdown-menu > dropdown-item:active {
-            background-color: #198754;
-            color: white;
-        }
-        .dropdown-menu > li > a:active {
-            background-color: #198754;
-            color: white;
-        }
-        .date_filter {
-            cursor: pointer;
-        }
-        .text-xl {
-
-        }
-        .thumbnail {
-            height: 180px;
-        }
-        .pagination > li > a
-        {
-            background-color: white;
-            color: darkgreen;
-        }
-
-        .pagination > li > a:focus,
-        .pagination > li > a:hover,
-        .pagination > li > span:focus,
-        .pagination > li > span:hover
-        {
-            color: darkgreen;
-            background-color: #eee;
-            border-color: #ddd;
-        }
-
-        .pagination > .active > a
-        {
-            color: white;
-            background-color: darkgreen;
-            border: solid 1px darkgreen;
-        }
-
-        .pagination > .active > a:hover
-        {
-            background-color: darkgreen;
-            border: solid 1px darkgreen;
-        }
-
-        div {
-            line-height: 20px;
-        }
-        #data {
-            width: 150px;
-            overflow: hidden;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-        }
-
-        #data:hover{
-            overflow: visible;
-            white-space: normal;
-            width: auto;
-        }
-
-    </style>
 
     <script>
         const CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');

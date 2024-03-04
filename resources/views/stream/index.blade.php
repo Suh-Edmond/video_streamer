@@ -26,7 +26,7 @@
                 @if($file->file_type == \App\Constant\FileType::VIDEO)
                     <div class="col-md-6">
                         <div class="card">
-                            <div class="card-header d-flex justify-content-center header">{{ $title }}</div>
+                            <div class="card-header d-flex justify-content-center fw-bold">{{ $title }}</div>
 
                             <div class="card-body d-flex justify-content-center m-4">
                                 <video src="{{route('get_stream_video', ['fileId' => $file->id, 'notAvailable'=>$notAvailable, 'hasExpired' => $hasExpired])}}" width="600" height="350" controls  controlsList="nodownload"
@@ -38,7 +38,7 @@
                 @else
                     <div class="col-md-6">
                         <div class="card">
-                            <div class="card-header d-flex justify-content-center header">{{ $title }}</div>
+                            <div class="card-header d-flex justify-content-center fw-bold">{{ $title }}</div>
 
                             <div class="card-body d-flex justify-content-center m-4">
                                 <img src="{{$file->getFilePath($file->id, $file->file_type)}}" alt="" style="width: 500px; height: 300px;">
@@ -49,10 +49,4 @@
             @endif
         </div>
     </div>
-
-    <style>
-        .header {
-            font-weight: bold;
-        }
-    </style>
 @endsection

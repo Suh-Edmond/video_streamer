@@ -167,7 +167,6 @@
             <p>{{__('messages.noLinksFoundMsg')}}</p>
         @endif
 
-        @if(count($data['links']->items()) > 0)
             <div class="d-flex justify-content-sm-end">
                 <nav aria-label="Page navigation example">
                     <ul class="pagination">
@@ -189,8 +188,6 @@
                     </ul>
                 </nav>
             </div>
-        @endif
-
     </div>
 
     <!----------------------GENERATE LINK MODAL------------------------------------------>
@@ -293,83 +290,6 @@
         </div>
     </div>
     <!----------------------END OF VIEW QR CODE LINK MODAL----------------------------------->
-
-
-
-
-    <style>
-        .divider {
-            font-size: 15px;
-            display: flex;
-            font-weight: bold;
-            align-items: center;
-        }
-
-        .divider::before, .divider::after {
-            flex: 1;
-            content: '';
-            padding: 1px;
-            background-color: black;
-            margin: 5px;
-        }
-        .delete_file_btn > a{
-            text-decoration: none;
-            color: red;
-            padding-left: 17px;
-        }
-        .delete_file_btn:hover {
-            color: black;
-        }
-        .date_filter {
-            cursor: pointer;
-        }
-
-        .delete_file_btn:active{
-            background-color: #198754;
-            color: white;
-        }
-        .link {
-            font-weight: bold;
-        }
-
-        .dropdown-menu > dropdown-item:active {
-            background-color: #198754;
-            color: white;
-        }
-        .dropdown-menu > li > a:active {
-            background-color: #198754;
-            color: white;
-        }
-
-        .pagination > li > a
-        {
-            background-color: white;
-            color: darkgreen;
-        }
-
-        .pagination > li > a:focus,
-        .pagination > li > a:hover,
-        .pagination > li > span:focus,
-        .pagination > li > span:hover
-        {
-            color: darkgreen;
-            background-color: #eee;
-            border-color: #ddd;
-        }
-
-        .pagination > .active > a
-        {
-            color: white;
-            background-color: darkgreen;
-            border: solid 1px darkgreen;
-        }
-
-        .pagination > .active > a:hover
-        {
-            background-color: darkgreen;
-            border: solid 1px darkgreen;
-        }
-    </style>
 
 
     <script>
