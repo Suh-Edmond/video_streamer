@@ -66,6 +66,8 @@ Route::middleware('guest')->group(function (){
         return view('auth.login');
     });
 
+    Route::get('change_language_guest/{locale}', [LanguageController::class, 'changeLanguageGuest'])->name('change_language_guest');
+
 });
 
 

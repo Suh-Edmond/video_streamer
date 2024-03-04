@@ -107,7 +107,7 @@
                         <div class="modal-dialog modal-dialog-centered" >
                             <div class="modal-content">
                                 <div class="modal-header" style="padding-left:35px;padding-right: 35px;padding-top: 35px">
-                                    <h5 class="modal-title" id="uploadVideoModalLabel">{{__('messages.editFileLinkMsg')}}</h5>
+                                    <h5 class="modal-title fw-bold" id="uploadVideoModalLabel">{{__('messages.editFileLinkMsg')}}</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body p-2">
@@ -198,7 +198,7 @@
         <div class="modal-dialog modal-dialog-centered" >
             <div class="modal-content">
                 <div class="modal-header" style="padding-left:35px;padding-right: 35px;padding-top: 35px">
-                    <h5 class="modal-title" id="uploadVideoModalLabel">{{__('messages.generateFileShareLink')}}</h5>
+                    <h5 class="modal-title fw-bold" id="uploadVideoModalLabel">{{__('messages.generateFileShareLink')}}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body p-2">
@@ -244,7 +244,7 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header" style="padding-top: 35px;padding-right: 35px;padding-left: 35px">
-                    <h5 class="modal-title" id="uploadVideoModalLabel">{{__('messages.generatedFileLinkMsg')}}</h5>
+                    <h5 class="modal-title fw-bold" id="uploadVideoModalLabel">{{__('messages.generatedFileLinkMsg')}}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="closeQRCodeModal()"></button>
                 </div>
                 <div class="modal-body p-2">
@@ -275,8 +275,8 @@
     <div class="modal fade" id="viewQRCodeModal" tabindex="-1" aria-labelledby="viewQRCodeModalLabel" aria-hidden="true" data-bs-backdrop="static"  data-bs-keyboard="false">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="uploadVideoModalLabel">{{__('messages.qrcodeForMsg')}} <span>{{$data['file']->name}}</span></h5>
+                <div class="modal-header" style="padding-top: 35px">
+                    <h5 class="modal-title fw-bold" id="uploadVideoModalLabel">{{__('messages.qrcodeFor')}} <span>{{$data['file']->name}}</span></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="closeViewModal()"></button>
                 </div>
                 <div class="modal-body p-3">

@@ -415,6 +415,19 @@
             background: #198754 !important;
         }
 
+        .lang {
+            position: absolute;
+            left: 96%;
+        }
+        .nav-item > .nav-link {
+            text-decoration: none;
+            color: black;
+        }
+
+        .dropdown-menu > .dropdown-item:active {
+            background-color: green;
+            color: white;
+        }
 
     </style>
 
@@ -431,17 +444,28 @@
 
     <div class="d-flex px-4 px-lg-0" style="height: 100vh">
         <div class="col d-none d-lg-block d-flex justify-content-center align-items-center">
-
-
             <div class="position-relative">
                 <div class="img-bg"></div>
                 <img src="{{ asset('assets/images/bg_auth2.jpg') }}" alt="background image"
                 class="rounded img-flud" width="100%" height="100%">
             </div>
-
         </div>
-        <div
-            class="col d-flex flex-column bg-white h-100 justify-content-center align-items-stretch align-items-lg-center">
+        <div class="lang">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item dropdown px-2">
+                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                        {{ session()->get('locale') !== null ? session()->get('locale'): 'en' }}
+                    </a>
+
+                    <div class="dropdown-menu dropdown-menu-end bg-white" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="{{ route('change_language_guest', ['locale' => "en"]) }}">{{ __('messages.english') }}</a>
+                        <a class="dropdown-item" href="{{ route('change_language_guest', ['locale' => 'fr']) }}">{{ __('messages.french') }}</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="col d-flex flex-column bg-white h-100 justify-content-center align-items-stretch align-items-lg-center">
+
             <div class="col-12 col-lg-5">
                 <nav class="nav nav-pills nav-fill nav-justified" id="pills-tab" role="tablist">
                     <a class="nav-link active fw-bold" href="{{ route('login') }}" id="pills-login-tab" data-bs-toggle="pill"

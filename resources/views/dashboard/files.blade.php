@@ -59,8 +59,8 @@
     @if ($data['gridView'])
         <div class="row" style="margin-left: -1.25rem">
             @forelse ($data['items'] as $item)
-                <div class="col-12 col-md-6 col-lg-2 mb-2 p-3">
-                    <div class="shadow bg-white rounded position-relative pb-4">
+                <div class="col-12 col-md-6 col-lg-2 mb-2 p-3 ">
+                    <div class=" bg-white rounded position-relative pb-4 bord">
                         <div class="d-flex flex-column ">
                             @if($item->file_type ==  \App\Constant\FileType::IMAGE)
                                 <img class="w-full thumbnail" src={{ asset($item->getFilePath($item->id, $item->file_type)) }} alt={{$item->name}}>
@@ -72,10 +72,8 @@
 
                             <div class="pt-4 d-flex justify-content-between mx-2">
                                 @if(strlen($item->name) >= 25)
-                                    <div class="text-muted text-xl">{{ $item->reduceFileNameLength($item->name) }}
-{{--                                        <span class="tooltiptext">{{  $item->name }}</span>--}}
+                                    <div class="text-muted text-xl" id="data">{{ $item->name }}
                                     </div>
-
                                 @else
                                     <div>
                                         <span class="text-muted text-xl">
@@ -84,7 +82,7 @@
                                 @endif
 
 
-                                <div class="dropdown bg-white rounded shadow " style="z-index: 10">
+                                <div class="dropdown bg-white rounded" style="z-index: 10">
                                     <button class="btn border btn-outline-success" type="button" data-bs-toggle="dropdown"
                                             aria-expanded="false">
                                         <i class="fa-solid fa-ellipsis-vertical"></i>
@@ -108,13 +106,13 @@
                                         @if($item->file_type == 'VIDEO')
                                             <li>
                                                 <a class="dropdown-item date_filter" type="button"  onclick="playVideo({{$item}})">
-                                                    <i class="fa-solid fa-play"></i><span style="padding-left: 21px">{{__('messages.playVideo')}}</span>
+                                                    <i class="fa-solid fa-play"></i><span style="padding-left: 25px">{{__('messages.playVideo')}}</span>
                                                 </a>
                                             </li>
                                         @endif
                                         <li class="delete_file_btn">
                                             <a href="{{route('delete_file', ['file' => $item])}}" >
-                                                <i class="fa-solid fa-trash-can text-danger"></i><span style="padding-left: 21px">{{__('messages.delete')}}</span>
+                                                <i class="fa-solid fa-trash-can text-danger"></i><span style="padding-left: 25px">{{__('messages.delete')}}</span>
                                             </a>
                                         </li>
                                     </ul>
@@ -254,25 +252,25 @@
     <div class="modal fade" id="propertiesModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content m-3">
-                <div class="modal-header">
-                    <h5 class="modal-title file_label" id="exampleModalLabel">{{__('messages.fileProperties')}}</h5>
+                <div class="modal-header" style="padding-top: 35px">
+                    <h5 class="modal-title fw-bold" id="exampleModalLabel">{{__('messages.fileProperties')}}</h5>
                     <button type="button" class="btn-close"   data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body mb-2">
+                <div class="modal-body mb-5">
                     <div class="my-2">
-                        <label><span class="file_label">{{__('messages.name')}}</span>:&nbsp;<span class="item_name"></span></label>
+                        <label><span class="fw-bold">{{__('messages.name')}}</span>:&nbsp;<span class="item_name"></span></label>
                     </div>
                     <div class="my-2">
-                        <label><span class="file_label">{{__('messages.type')}}</span>:&nbsp;<span class="item_type"></span></label>
+                        <label><span class="fw-bold">{{__('messages.type')}}</span>:&nbsp;<span class="item_type"></span></label>
                     </div>
                     <div class="my-2">
-                        <label><span class="file_label">{{__('messages.size')}}</span>:&nbsp;<span class="item_size"></span>{{__('messages.bytes')}}</label>
+                        <label><span class="fw-bold">{{__('messages.size')}}</span>:&nbsp;<span class="item_size"></span>{{__('messages.bytes')}}</label>
                     </div>
                     <div class="my-2">
-                        <label><span class="file_label">{{__('messages.created')}}</span>:&nbsp;<span class="item_created"></span></label>
+                        <label><span class="fw-bold">{{__('messages.created')}}</span>:&nbsp;<span class="item_created"></span></label>
                     </div>
                     <div class="my-2">
-                        <label><span class="file_label">{{__('messages.modified')}}</span>:&nbsp;<span class="item_modified"></span></label>
+                        <label><span class="fw-bold">{{__('messages.modified')}}</span>:&nbsp;<span class="item_modified"></span></label>
                     </div>
 
                 </div>
@@ -286,7 +284,7 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header" style="padding-left:35px;padding-right: 35px;padding-top: 35px">
-                    <h5 class="modal-title" id="uploadImageModalLabel">{{__('messages.uploadImage')}}</h5>
+                    <h5 class="modal-title fw-bold" id="uploadImageModalLabel">{{__('messages.uploadImage')}}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body p-2">
@@ -326,7 +324,7 @@
         <div class="modal-dialog modal-dialog-centered" >
             <div class="modal-content">
                 <div class="modal-header" style="padding-left:35px;padding-right: 37px;padding-top: 35px">
-                    <h5 class="modal-title" id="uploadVideoModalLabel">{{__('messages.uploadVideo')}}</h5>
+                    <h5 class="modal-title fw-bold" id="uploadVideoModalLabel">{{__('messages.uploadVideo')}}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body p-2">
@@ -358,7 +356,7 @@
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content m-3">
                 <div class="modal-header">
-                    <h5 class="modal-title file_label" id="exampleModalLabel">{{__('messages.playing')}} <span class="video_title"></span></h5>
+                    <h5 class="modal-title fw-bold" id="exampleModalLabel">{{__('messages.playing')}} <span class="video_title"></span></h5>
                     <button type="button" class="btn-close"   data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body d-flex justify-content-center">
@@ -376,7 +374,7 @@
         <div class="modal-dialog modal-dialog-centered" >
             <div class="modal-content">
                 <div class="modal-header" style="padding-left:35px;padding-right: 35px;padding-top: 35px">
-                    <h5 class="modal-title" id="uploadVideoModalLabel">{{__('messages.generateFileShareLink')}}</h5>
+                    <h5 class="modal-title fw-bold" id="uploadVideoModalLabel">{{__('messages.generateFileShareLink')}}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body p-2">
@@ -423,14 +421,14 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header" style="padding-top: 35px;padding-right: 35px;padding-left: 35px">
-                    <h5 class="modal-title" id="uploadVideoModalLabel">{{__('messages.generatedFileLinkMsg')}}</h5>
+                    <h5 class="modal-title fw-bold" id="uploadVideoModalLabel">{{__('messages.generatedFileLinkMsg')}}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="closeQRCodeModal()"></button>
                 </div>
                 <div class="modal-body p-2">
                     <div class="row row-cols-1 mb-3">
                         <div class="mb-3" style="padding-left: 35px">
                             <label for="exampleFormControlInput1" class="form-label d-flex justify-content-start">
-                                <span class="fw-bold">{{__('messages.scanQRCodeMsg')}}</span>
+                                <span>{{__('messages.scanQRCodeMsg')}}</span>
                             </label>
                             <div id="qr_code" class="d-flex justify-content-center">
                             </div>
@@ -497,14 +495,6 @@
         .thumbnail {
             height: 180px;
         }
-
-        .file_label {
-            font-weight: bold;
-        }
-        .link {
-            font-weight: bold;
-        }
-
         .pagination > li > a
         {
             background-color: white;
@@ -534,7 +524,21 @@
             border: solid 1px darkgreen;
         }
 
+        div {
+            line-height: 20px;
+        }
+        #data {
+            width: 150px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
 
+        #data:hover{
+            overflow: visible;
+            white-space: normal;
+            width: auto;
+        }
 
     </style>
 

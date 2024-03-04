@@ -15,4 +15,14 @@ class LanguageController extends Controller
 
         return redirect()->back();
     }
+
+    public function changeLanguageGuest($locale){
+        if (! in_array($locale, ['en', 'fr'])) {
+            abort(400);
+        }
+        App::setLocale($locale);
+        session()->put('locale', $locale);
+
+        return redirect()->back();
+    }
 }
