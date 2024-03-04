@@ -85,5 +85,8 @@ return [
     "deleteFileSuccessMsg" => "File deleted successfully",
     "deleteFileFailMsg" => "An error occurred! Could not delete file",
     "streaming" => "Streaming Video ",
-    "resourceHasBeenRemovedMsg" => "File resource has either expired or has been removed"
+    "resourceHasBeenRemovedMsg" => "File resource has either expired or has been removed",
+    "english" => "English",
+    "french" => "French",
+    "locale" => "EN"
 ];

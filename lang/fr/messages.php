@@ -1,5 +1,6 @@
 <?php
 
 return [
-    "continue" => "Continue in Fr"
+    "continue" => "Continue in Fr",
+    "myFiles" => "My Files in french",
 ];

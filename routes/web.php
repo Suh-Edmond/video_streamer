@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\FileSharedLinkController;
+use App\Http\Controllers\LanguageController;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FileController;
@@ -50,6 +52,7 @@ Route::middleware('auth')->group(function (){
 
     Route::post('files/{fileId}/links/sharer/create', [FileSharedLinkController::class, 'createFileSharedLink'])->name('create_file_shared_link');
 
+    Route::get('change_language/{locale}', [LanguageController::class, 'changeLanguage'])->name('change_language');
 });
 
 Route::middleware('guest')->group(function (){
@@ -62,6 +65,7 @@ Route::middleware('guest')->group(function (){
     Route::get('/', function () {
         return view('auth.login');
     });
+
 });
 
 

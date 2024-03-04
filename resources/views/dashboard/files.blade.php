@@ -108,13 +108,13 @@
                                         @if($item->file_type == 'VIDEO')
                                             <li>
                                                 <a class="dropdown-item date_filter" type="button"  onclick="playVideo({{$item}})">
-                                                    <i class="fa-solid fa-play"></i><span style="padding-left: 20px">{{__('messages.playVideo')}}</span>
+                                                    <i class="fa-solid fa-play"></i><span style="padding-left: 21px">{{__('messages.playVideo')}}</span>
                                                 </a>
                                             </li>
                                         @endif
                                         <li class="delete_file_btn">
                                             <a href="{{route('delete_file', ['file' => $item])}}" >
-                                                <i class="fa-solid fa-trash-can text-danger"></i><span style="padding-left: 20px">{{__('messages.delete')}}</span>
+                                                <i class="fa-solid fa-trash-can text-danger"></i><span style="padding-left: 21px">{{__('messages.delete')}}</span>
                                             </a>
                                         </li>
                                     </ul>
@@ -204,13 +204,13 @@
                                     @if($item->file_type == 'VIDEO')
                                         <li>
                                             <a class="dropdown-item date_filter" type="button" onclick="playVideo({{$item}})">
-                                                <i class="fa-solid fa-play"></i><span style="padding-left: 20px">{{__('messages.playVideo')}}</span>
+                                                <i class="fa-solid fa-play"></i><span style="padding-left: 21px">{{__('messages.playVideo')}}</span>
                                             </a>
                                         </li>
                                     @endif
                                     <li class="delete_file_btn">
                                         <a href="{{route('delete_file', ['file' => $item])}}" >
-                                            <i class="fa-solid fa-trash-can text-danger"></i><span style="padding-left: 20px">{{__('messages.delete')}}</span>
+                                            <i class="fa-solid fa-trash-can text-danger"></i><span style="padding-left: 21px">{{__('messages.delete')}}</span>
                                         </a>
                                     </li>
                                 </ul>

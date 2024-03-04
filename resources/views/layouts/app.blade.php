@@ -93,6 +93,16 @@
                                     </form>
                                 </div>
                             </li>
+                            <li class="nav-item dropdown px-2">
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    {{ session()->get('locale') !== null ? session()->get('locale'): 'en' }}
+                                </a>
+
+                                <div class="dropdown-menu dropdown-menu-end bg-white" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ route('change_language', ['locale' => "en"]) }}">{{ __('messages.english') }}</a>
+                                    <a class="dropdown-item" href="{{ route('change_language', ['locale' => 'fr']) }}">{{ __('messages.french') }}</a>
+                                </div>
+                            </li>
                         @endguest
                     </ul>
                 </div>
