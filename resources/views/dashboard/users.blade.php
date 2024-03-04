@@ -1,16 +1,45 @@
 @extends('layouts.dashboard')
 
-@section('title', 'Manage Users')
+@section('title', __('messages.manage_users'))
+
+@section('filters')
+    <div class="dropdown">
+        <button class="btn border btn-outline-success dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                aria-expanded="false">
+            {{__('messages.allUsers')}}
+        </button>
+        <ul class="dropdown-menu shadow py-3 bg-white">
+            <li><a class="dropdown-item date_filter" onclick="filterBy('')">{{__('messages.allUsers')}}</a></li>
+            <li><a onclick="filterBy('ACTIVE')" class="dropdown-item date_filter">{{__('messages.active')}}</a></li>
+            <li><a onclick="filterBy('IN_ACTIVE')" class="dropdown-item date_filter">{{__('messages.inactive')}}</a></li>
+        </ul>
+    </div>
+@endsection
+
+@section('sort')
+    <div class="dropdown">
+        <button class="btn border btn-outline-success" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <div class="d-flex gap-1 align-items-center">
+                <i class="fa-solid fa-filter"></i><span>{{__('messages.sort')}}:</span>
+            </div>
+        </button>
+        <ul class="dropdown-menu bg-white">
+            <li> <a onclick="sortBy('DATE_DESC')" class="dropdown-item date_filter">{{__('messages.newestFirst')}}</a></li>
+            <li><a onclick="sortBy('DATE_ASC')" class="dropdown-item date_filter">{{__('messages.oldestFirst')}}</a></li>
+            <li><a onclick="sortBy('NAME')" class="dropdown-item date_filter">{{__('messages.name')}}</a></li>
+        </ul>
+    </div>
+@endsection
 
 @section('dashboard-content')
     <div style="overflow-x: scroll;">
         <table class="table table-striped">
             <tr>
-                <th>SN</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Status</th>
-                <th>Role</th>
+                <th>{{__('messages.sn')}}</th>
+                <th>{{__('messages.name')}}</th>
+                <th>{{__('messages.email')}}</th>
+                <th>{{__('messages.status')}}</th>
+                <th>{{__('messages.role')}}</th>
                 <th></th>
             </tr>
             @forelse ($data['items'] as $user)
@@ -54,14 +83,14 @@
                                         <li>
                                             <a href="{{ route('users.block', ['user' => $user]) }}"
                                                 class="dropdown-item d-flex gap-2 align-items-center"> <i
-                                                    class="fa fa-close"></i> <span class="text-black">Block</span></a>
+                                                    class="fa fa-close"></i> <span class="text-black">{{__('messages.block')}}</span></a>
                                         </li>
                                     @endif
                                     @if ($user->status == \App\Constant\UserStatus::IN_ACTIVE)
                                         <li>
                                             <a href="{{ route('users.unblock', ['user' => $user]) }}"
                                                 class="dropdown-item d-flex gap-2 align-items-center"><i
-                                                    class="fas fa-close"></i><span class="text-black">Unblock</span></a>
+                                                    class="fas fa-close"></i><span class="text-black">{{__('messages.unBlock')}}</span></a>
                                             </a>
                                         </li>
                                     @endif
@@ -69,24 +98,20 @@
                                     <li>
                                         <a href="{{ route('users.delete', ['user' => $user]) }}"
                                             class="dropdown-item d-flex gap-2 align-items-center text-danger"><i
-                                                class="fas fa-trash-can"></i><span class="text-danger">Delete</span></a>
+                                                class="fas fa-trash-can"></i><span class="text-danger">{{__('messages.delete')}}</span></a>
                                         </a>
 
                                     </li>
-
-
-
                                 </ul>
                             </div>
                         @endif
                     </td>
                 </tr>
             @empty
-                <p>No items</p>
+                <p>{{__('messages.notItems')}}</p>
             @endforelse
         </table>
 
-        @if($data['items']->currentPage() != $data['items']->lastPage())
             <div class="d-flex justify-content-sm-end">
                 <nav aria-label="Page navigation example">
                     <ul class="pagination">
@@ -108,47 +133,34 @@
                     </ul>
                 </nav>
             </div>
-        @endif
-
     </div>
 
-    <style>
-        .pagination > li > a
-        {
-            background-color: white;
-            color: #198754;
+    <script>
+        let applyParams = function(sort, filtr) {
+            let url = new URL(location.href);
+            let searchParams = new URLSearchParams(url.search);
+            searchParams.set('filter', filtr);
+            searchParams.set('sort', sort);
+            url.search = searchParams.toString();
+
+            location.href = url
         }
 
-        .pagination > li > a:focus,
-        .pagination > li > a:hover,
-        .pagination > li > span:focus,
-        .pagination > li > span:hover
-        {
-            color: #198754;
-            background-color: #eee;
-            border-color: #ddd;
+        let filterBy = function(newFilter) {
+            filter = newFilter;
+            applyParams(sort, newFilter);
         }
 
-        .pagination > .active > a
-        {
-            color: white;
-            background-color: #198754;
-            border: solid 1px #198754;
+        let sortBy = function(newSort) {
+            sort = newSort;
+            applyParams(newSort, filter);
         }
 
-        .pagination > .active > a:hover
-        {
-            background-color: #198754;
-            border: solid 1px #198754;
-        }
+        $(document).ready(function() {
+            let urlParams = new URLSearchParams(location.search);
+            filter = urlParams.get('filter') || '';
+            sort = urlParams.get('sort') || '';
 
-        .dropdown-menu > dropdown-item:active {
-            background-color: #198754;
-            color: white;
-        }
-        .dropdown-menu > li > a:active {
-            background-color: #198754;
-            color: white;
-        }
-    </style>
+        })
+    </script>
 @endsection

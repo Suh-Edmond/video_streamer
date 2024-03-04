@@ -52,4 +52,9 @@ class File extends Model
         }
         return $path;
     }
+
+    public function reduceFileNameLength($fileName)
+    {
+        return strlen($fileName) > 25 ? substr($fileName, 0, 20)."...": $fileName;
+    }
 }

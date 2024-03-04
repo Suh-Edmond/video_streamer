@@ -7,21 +7,21 @@
     <div class="dropdown">
         <button class="btn border btn-outline-success" type="button" data-bs-toggle="dropdown" aria-expanded="false">
             <div class="d-flex gap-1 align-items-center">
-                <i class="fa-solid fa-filter"></i><span>Sort:</span>
+                <i class="fa-solid fa-filter"></i><span>{{__('messages.sort')}}:</span>
             </div>
         </button>
         <ul class="dropdown-menu bg-white">
-            <li> <a onclick="sortBy('EXPIRED')" class="dropdown-item date_filter">Expired</a></li>
-            <li><a onclick="sortBy('NOT_EXPIRED')" class="dropdown-item date_filter">Not Expired</a></li>
-            <li><a onclick="sortBy('ALL')" class="dropdown-item date_filter">All</a></li>
+            <li> <a onclick="sortBy('EXPIRED')" class="dropdown-item date_filter">{{__('messages.expired')}}</a></li>
+            <li><a onclick="sortBy('NOT_EXPIRED')" class="dropdown-item date_filter">{{__('messages.notExpired')}}</a></li>
+            <li><a onclick="sortBy('ALL')" class="dropdown-item date_filter">{{__('messages.all')}}</a></li>
         </ul>
     </div>
 @endsection
 
 @section('action')
     <button class="btn btn-success shadow py-2 px-3 d-flex align-items-center justify-content-center gap-2" type="button" data-bs-toggle="modal"
-            data-bs-target="#generateLinkModal">
-        <i class="fa fa-add"></i><span>Generate Share Link</span>
+            data-bs-target="#generateLinkModal" onclick="setDefaultSharedLinkExpirationTime()">
+        <i class="fa fa-add"></i><span>{{__('messages.generateShareLink')}}</span>
     </button>
 @endsection
 
@@ -30,11 +30,11 @@
         <table class="table table-striped">
             @if ($data['links']->total() !== 0)
                 <tr>
-                    <th>SN</th>
-                    <th>Link</th>
-                    <th>Shared Code</th>
-                    <th>Expired Date</th>
-                    <th>Status</th>
+                    <th>{{__('messages.sn')}}</th>
+                    <th>{{__('messages.link')}}</th>
+                    <th>{{__('messages.linkCode')}}</th>
+                    <th>{{__('messages.expirationTime')}}</th>
+                    <th>{{__('messages.status')}}</th>
                     <th></th>
                 </tr>
             @endif
@@ -62,11 +62,11 @@
 
                     @if(\Illuminate\Support\Carbon::now()->greaterThan($item->expire_at))
                         <td class="py-2 text-danger">
-                            EXPIRED
+                            {{__('messages.expired')}}
                         </td>
                     @else
                         <td class="py-2 text-success">
-                            NOT EXPIRED
+                            {{__('messages.notExpired')}}
                         </td>
                     @endif
 
@@ -79,18 +79,23 @@
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                 <li><a class="dropdown-item date_filter" type="button" onclick="viewQRCode({{$item}})"
                                     >
-                                        <i class="fa-solid fa-qrcode"></i>&nbsp;View QR Code
+                                        <i class="fa-solid fa-qrcode"></i><span style="padding-left: 20px">{{__('messages.viewQRCode')}}</span>
+                                    </a>
+                                </li>
+                                <li><a class="dropdown-item date_filter" type="button" onclick="copy({{$item}})"
+                                    >
+                                        <i class="fa-solid fa-copy"></i><span style="padding-left: 20px">{{__('messages.copy')}}</span>
                                     </a>
                                 </li>
                                 <li><a class="dropdown-item date_filter" type="button" data-bs-toggle="modal"
                                        data-bs-target="#editModal{{$item->id}}"
                                         >
-                                        <i class="fa-solid fa-pen"></i>&nbsp;Edit
+                                        <i class="fa-solid fa-pen"></i><span style="padding-left: 20px">{{__('messages.edit')}}</span>
                                     </a>
                                 </li>
                                 <li class="delete_file_btn">
                                     <a href="{{route('delete_file_shared_links', ['fileSharedLink' => $item])}}" >
-                                        <i class="fa-solid fa-trash-can text-danger"></i>&nbsp;Delete
+                                        <i class="fa-solid fa-trash-can text-danger"></i><span style="padding-left: 20px">{{__('messages.delete')}}</span>
                                     </a>
                                 </li>
                             </ul>
@@ -101,8 +106,8 @@
                     <div class="modal fade" id="editModal{{$item->id}}" tabindex="-1" aria-labelledby="uploadVideoModalLabel" aria-hidden="true"  data-bs-keyboard="false">
                         <div class="modal-dialog modal-dialog-centered" >
                             <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="uploadVideoModalLabel">Edit File Shared Link</h5>
+                                <div class="modal-header" style="padding-left:35px;padding-right: 35px;padding-top: 35px">
+                                    <h5 class="modal-title fw-bold" id="uploadVideoModalLabel">{{__('messages.editFileLinkMsg')}}</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body p-2">
@@ -111,7 +116,7 @@
                                             @csrf
                                             <div class="mb-3">
                                                 <label for="exampleFormControlInput1" class="form-label">
-                                                    <span class="fw-bold">File</span>
+                                                    <span class="fw-bold">{{__('messages.file')}}</span>
                                                 </label>
                                                 <div>
                                                     <input type="text" name="file_name"  class="form-control" value="{{$data['file']->name}}" disabled>
@@ -120,7 +125,7 @@
 
                                             <div class="mb-3">
                                                 <label for="exampleFormControlInput1" class="form-label">
-                                                    <span class="fw-bold">Shared Link</span>
+                                                    <span class="fw-bold">{{__('messages.sharedLink')}}</span>
                                                 </label>
                                                 <div>
                                                     <input type="text" name="shared_link"  class="form-control" value="{{$item->file_link}}" disabled >
@@ -129,7 +134,7 @@
 
                                             <div class="mb-3">
                                                 <label for="exampleFormControlInput1" class="form-label">
-                                                    <span class="fw-bold">Expiration Date</span>
+                                                    <span class="fw-bold">{{__('messages.expirationTime')}}</span>
                                                 </label>
                                                 <div>
                                                     <input type="datetime-local" name="expire_at"  class="form-control @error('video') is-invalid @enderror" value="{{$item->expire_at}}" >
@@ -144,7 +149,8 @@
                                             </div>
 
                                             <div class="my-4 d-flex justify-content-end">
-                                                <button class="btn btn-success  editBtn" onclick="updateLink()" type="submit" >Save</button>
+                                                <button class="btn btn-success  editBtn" onclick="updateLink()" type="submit" >
+                                                    {{__('messages.save')}}</button>
                                             </div>
                                         </form>
                                     </div>
@@ -158,10 +164,9 @@
                 @endforeach
         </table>
         @if($data['links']->total() == 0)
-            <p>No shared links available for this file</p>
+            <p>{{__('messages.noLinksFoundMsg')}}</p>
         @endif
 
-        @if(count($data['links']->items()) > 0)
             <div class="d-flex justify-content-sm-end">
                 <nav aria-label="Page navigation example">
                     <ul class="pagination">
@@ -183,23 +188,21 @@
                     </ul>
                 </nav>
             </div>
-        @endif
-
     </div>
 
     <!----------------------GENERATE LINK MODAL------------------------------------------>
     <div class="modal fade" id="generateLinkModal" tabindex="-1" aria-labelledby="generateLinkModalLabel" aria-hidden="true"  data-bs-keyboard="false">
         <div class="modal-dialog modal-dialog-centered" >
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="uploadVideoModalLabel">Generate File Shared Link</h5>
+                <div class="modal-header" style="padding-left:35px;padding-right: 35px;padding-top: 35px">
+                    <h5 class="modal-title fw-bold" id="uploadVideoModalLabel">{{__('messages.generateFileShareLink')}}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body p-2">
                     <div class="row row-cols-1 mt-3 mx-3 mb-3">
                         <div class="mb-3">
                             <label for="exampleFormControlInput1" class="form-label">
-                                <span class="fw-bold">File</span>
+                                <span class="fw-bold">{{__('messages.file')}}</span>
                             </label>
                             <div>
                                 <input type="text" name="file_name"  class="form-control" value="{{$data['file']->name}}" disabled>
@@ -208,10 +211,11 @@
 
                         <div class="mb-3">
                             <label for="exampleFormControlInput1" class="form-label">
-                                <span class="fw-bold">Expiration Date</span>
+                                <span class="fw-bold">{{__('messages.expirationTime')}}</span>
                             </label>
                             <div>
                                 <input type="datetime-local" name="expire_at" id="expire_at" class="form-control @error('expire_at') is-invalid @enderror" value="{{old('expire_at')}}" >
+                                <small class="text-muted">{{__('messages.defaultExpirationTimeMsg')}}</small>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -222,8 +226,9 @@
                             @enderror
                         </div>
 
-                        <div class="my-4 d-flex justify-content-end">
-                            <button class="btn btn-success"  id="generateCodeBtn" type="submit" onclick="generateSharedLink({{$data['file']}})">Generate</button>
+                        <div class="my-3 d-flex justify-content-end">
+                            <button class="btn btn-success"  id="generateCodeBtn" type="submit" onclick="generateSharedLink({{$data['file']}})">
+                                {{__('messages.generate')}}</button>
                         </div>
                     </div>
                 </div>
@@ -233,39 +238,29 @@
     <!----------------------END OF GENERATE LINK MODAL----------------------------------->
 
     <!----------------------QR CODE LINK MODAL------------------------------------------>
-    <div class="modal fade" id="qrcodeModal" tabindex="-1" aria-labelledby="grcodeModalLabel" aria-hidden="true" data-bs-backdrop="static"  data-bs-keyboard="false">
+    <div class="modal fade" id="qrcodeModal" tabindex="-1" aria-labelledby="grcodeModalLabel" aria-hidden="true"  data-bs-keyboard="false">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="uploadVideoModalLabel">Generated File Shared Link</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-header" style="padding-top: 35px;padding-right: 35px;padding-left: 35px">
+                    <h5 class="modal-title fw-bold" id="uploadVideoModalLabel">{{__('messages.generatedFileLinkMsg')}}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="closeQRCodeModal()"></button>
                 </div>
                 <div class="modal-body p-2">
                     <div class="row row-cols-1 mb-3">
-                        <div class="mb-3">
-                            <label for="exampleFormControlInput1" class="form-label d-flex justify-content-center">
-                                <span class="fw-bold">Scan QR Code to access the Link</span>
+                        <div class="mb-3" style="padding-left: 35px">
+                            <label for="exampleFormControlInput1" class="form-label d-flex justify-content-start">
+                                <span>{{__('messages.scanQRCodeMsg')}}</span>
                             </label>
                             <div id="qr_code" class="d-flex justify-content-center">
                             </div>
                         </div>
-
-                        <div class="d-flex justify-content-center mt-2">
-                            <label for="exampleFormControlInput1" class="form-label">
-                                <span class="fw-bold">Sharable Link after Scanning QR Code</span>
-                            </label>
-                        </div>
-                        <div class="input-group d-flex justify-content-center mb-3">
-                            <input type="text" class="form-control form-control-md" aria-describedby="button-addon2" disabled id="link">
+                        <div class="divider" style="padding-right: 35px;padding-left: 35px">{{__('messages.or')}}</div>
+                        <div class="d-flex justify-content-between my-3" style="padding-left: 35px;padding-right: 35px">
                             <button class="btn btn-success" type="button" id="copy"
-                                    onclick="copyToClipboard()">Copy</button>
+                                    onclick="copyToClipboard()">{{__('messages.copyLink')}}</button>
+                            <button class="btn btn-success" type="button" id="copy"
+                                    onclick="shareViaWhatsapp()">{{__('messages.shareViaWhatsapp')}}</button>
                         </div>
-
-                        <form>
-                            <div class="my-4 d-flex justify-content-center">
-                                <button class="btn btn-success w-100" type="submit" onclick="saveQRCode()">Save</button>
-                            </div>
-                        </form>
                     </div>
                 </div>
             </div>
@@ -278,8 +273,8 @@
     <div class="modal fade" id="viewQRCodeModal" tabindex="-1" aria-labelledby="viewQRCodeModalLabel" aria-hidden="true" data-bs-backdrop="static"  data-bs-keyboard="false">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="uploadVideoModalLabel">QR Code for <span>{{$data['file']->name}}</span></h5>
+                <div class="modal-header" style="padding-top: 35px">
+                    <h5 class="modal-title fw-bold" id="uploadVideoModalLabel">{{__('messages.qrcodeFor')}} <span>{{$data['file']->name}}</span></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="closeViewModal()"></button>
                 </div>
                 <div class="modal-body p-3">
@@ -298,74 +293,11 @@
     <!----------------------END OF VIEW QR CODE LINK MODAL----------------------------------->
 
 
-
-
-    <style>
-        .delete_file_btn > a{
-            text-decoration: none;
-            color: red;
-            padding-left: 17px;
-        }
-        .delete_file_btn:hover {
-            color: black;
-        }
-        .date_filter {
-            cursor: pointer;
-        }
-
-        .delete_file_btn:active{
-            background-color: #198754;
-            color: white;
-        }
-        .link {
-            font-weight: bold;
-        }
-
-        .dropdown-menu > dropdown-item:active {
-            background-color: #198754;
-            color: white;
-        }
-        .dropdown-menu > li > a:active {
-            background-color: #198754;
-            color: white;
-        }
-
-        .pagination > li > a
-        {
-            background-color: white;
-            color: darkgreen;
-        }
-
-        .pagination > li > a:focus,
-        .pagination > li > a:hover,
-        .pagination > li > span:focus,
-        .pagination > li > span:hover
-        {
-            color: darkgreen;
-            background-color: #eee;
-            border-color: #ddd;
-        }
-
-        .pagination > .active > a
-        {
-            color: white;
-            background-color: darkgreen;
-            border: solid 1px darkgreen;
-        }
-
-        .pagination > .active > a:hover
-        {
-            background-color: darkgreen;
-            border: solid 1px darkgreen;
-        }
-    </style>
-
-
     <script>
         const CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
         var $generateLinkModal = $('#generateLinkModal');
         var $qrcodeModal = $('#qrcodeModal');
-        var sharedLinkResponse;
+        var qrcodeLink =''
         var $viewQRCodeModal = $('#viewQRCodeModal');
 
         let applyParams = function(sort) {
@@ -398,6 +330,18 @@
             $(".editBtn").prepend('<i class="fa fa-spinner fa-spin"></i>');
         }
 
+        let closeQRCodeModal = function (){
+            $qrcodeModal.modal('hide');
+            window.location.reload();
+        }
+
+
+        let setDefaultSharedLinkExpirationTime = function (){
+            let now = new Date();
+            now.setHours(now.getHours() + 4);
+            document.getElementById('expire_at').value = now.toISOString().slice(0,16);
+        }
+
         let generateSharedLink = function (file){
             let route = "{{ route('create_file_shared_link', '__fileId__') }}".replace('__fileId__', file.id);
             let expire_at = $('#expire_at').val();
@@ -410,34 +354,30 @@
                 data: {_token: CSRF_TOKEN, 'expire_at':expire_at},
                 dataType: "json",
                 success: function(response) {
-                    $('#link').val(response.data)
+                    qrcodeLink = response.data;
                     generateQRCode(response.data, "qr_code")
                     $generateLinkModal.modal('hide')
                     $qrcodeModal.modal('show');
-                    sharedLinkResponse = response;
 
                     $("#generateCodeBtn").find(".fa-spinner").remove();
                     $("#generateCodeBtn").removeAttr("disabled");
+
+                    toastr.success("File shared link generated successfully");
                 },
                 error:function (error){
                     $("#generateCodeBtn").find(".fa-spinner").remove();
                     $("#generateCodeBtn").removeAttr("disabled");
-                    sharedLinkResponse = error;
                 }
             })
         }
 
-        let saveQRCode = function (){
-            if(sharedLinkResponse){
-                toastr.success("File Shared link created successfully");
-            }else {
-                toastr.error("Fail! Unable to generate Shared link for this file");
-            }
+        let copyToClipboard = function() {
+            navigator.clipboard.writeText(qrcodeLink)
+            $('#copy').html('Copied')
         }
 
-        let copyToClipboard = function() {
-            navigator.clipboard.writeText(($('#link').val()))
-            $('#copy').html('Copied')
+        let shareViaWhatsapp = function() {
+            window.open('https://api.whatsapp.com/send?phone=&text=' + encodeURIComponent(qrcodeLink));
         }
 
         let generateQRCode = function (url, docEle){
@@ -452,6 +392,8 @@
             $('#qr_code').css({'pointer-events':'none'});
         }
 
-
+        let copy = function (item){
+            navigator.clipboard.writeText(item.file_link)
+        }
     </script>
 @endsection

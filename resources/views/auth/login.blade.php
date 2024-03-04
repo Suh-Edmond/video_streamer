@@ -12,7 +12,7 @@
                             <div class="col-md-12">
                                 <label for="exampleFormControlInput1" class="form-label">
                                     <span><i class="fa-solid fa-envelope"></i></span>
-                                     <span class="fw-bold">Email</span>
+                                     <span class="fw-bold">{{__('messages.email')}}</span>
                                 </label>
                                 <div class="input-group">
                                     <input class="form-control form-control-md @error('email') is-invalid @enderror" type="email" name="email" value="{{ old('email') }}" required>
@@ -31,7 +31,7 @@
                             <div class="col-md-12">
                                 <label for="exampleFormControlInput1" class="form-label">
                                     <span><i class="fa-solid fa-lock"></i></span>
-                                    <span class="fw-bold">Password</span>
+                                    <span class="fw-bold">{{__('messages.password')}}</span>
                                 </label>
                                 <div class="input-group"  id="show_hide_password">
                                     <input id="password" type="password"
@@ -52,7 +52,7 @@
                         <div class="row mb-0 mt-4">
                             <div class="col-md-12">
                                 <button type="submit" class="btn btn-success w-100 fw-bold" id="loginBtn" onclick="submitLogin()">
-                                    {{ __('Continue') }} <span class="p-1"><i class="fa-solid fa-arrow-right"></i></span>
+                                    {{ __('messages.continue') }} <span class="p-1"><i class="fa-solid fa-arrow-right"></i></span>
                                 </button>
                             </div>
                         </div>
@@ -67,7 +67,7 @@
                             <div class="col-md-12">
                                 <label for="exampleFormControlInput1" class="form-label">
                                     <span><i class="fa-solid fa-user"></i></span>
-                                    <span class="fw-bold">Name</span>
+                                    <span class="fw-bold">{{__('messages.name')}}</span>
                                 </label>
                                 <input class="form-control form-control-md @error('name') is-invalid @enderror"
                                     type="text" name="name" value="{{ old('name') }}" required>
@@ -85,7 +85,7 @@
                             <div class="col-md-12">
                                 <label for="exampleFormControlInput1" class="form-label">
                                     <span><i class="fa-solid fa-envelope"></i></span>
-                                    <span class="fw-bold">Email</span>
+                                    <span class="fw-bold">{{__('messages.email')}}</span>
                                 </label>
                                 <input class="form-control form-control-md @error('email') is-invalid @enderror"
                                     type="email" name="email" value="{{ old('email') }}" required>
@@ -103,7 +103,7 @@
                             <div class="col-md-12">
                                 <label for="exampleFormControlInput1" class="form-label">
                                     <span><i class="fa-solid fa-lock"></i></span>
-                                    <span class="fw-bold">Password</span>
+                                    <span class="fw-bold">{{__('messages.password')}}</span>
                                 </label>
                                 <div class="input-group"  id="show_hide_password">
                                     <input id="confirm_password" type="password"
@@ -125,7 +125,7 @@
                             <div class="col-md-12">
                                 <label for="exampleFormControlInput1" class="form-label">
                                     <span><i class="fa-solid fa-lock"></i></span>
-                                    <span class="fw-bold">Confirm Password</span>
+                                    <span class="fw-bold">{{__('messages.confirmPassword')}}</span>
                                 </label>
                                 <div class="input-group"  id="show_hide_confirm_password">
                                 <input id="password-confirm" type="password" class="form-control form-control-md"
@@ -145,7 +145,7 @@
                         <div class="row mb-0 mt-4">
                             <div class="col-md-12">
                                 <button type="submit" class="btn btn-success w-100 fw-bold" id="registerBtn" onclick="submitRegister()">
-                                    {{ __('Continue') }} <span class="p-1"><i class="fa-solid fa-arrow-right"></i></span>
+                                    {{ __('messages.continue') }} <span class="p-1"><i class="fa-solid fa-arrow-right"></i></span>
                                 </button>
                             </div>
                         </div>

@@ -26,13 +26,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/js/bootstrap.min.js" integrity="sha512-1/RvZTcCDEUjY/CypiMz+iqqtaoQfAITmNSJY17Myp4Ms5mdxPS5UV7iOfdZoxcGhzFbOm6sntTKJppjvuhg4g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js" integrity="sha512-YUkaLm+KJ5lQXDBdqBqk7EVhJAdxRnVdT2vtCzwPHSweCzyMgYV/tgGF4/dCyqtCC2eCphz0lRQgatGVdfR0ww==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" integrity="sha512-CNgIRecGo7nphbeZ04Sc13ka07paqdeTu0WR1IM4kNcpmBAUSHSQX0FslNhTDadL4O5SAGapGt4FodqL8My0mA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-{{--    <script src="resources/js/qrcode.js"></script>--}}
-    <style>
-        .dropdown-menu > a:active {
-            background-color: green;
-            color: white;
-        }
-    </style>
 
 </head>
 
@@ -40,8 +33,8 @@
     @include('notification');
     <div id="app">
 
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm py-3">
-            <div class="container">
+        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm py-3 px-4">
+            <div class="container-fluid px-4">
                 <a class="navbar-brand" href="{{ url('/') }}">
                     {{ config('app.name', 'File Manager') }}
                 </a>
@@ -62,13 +55,13 @@
                         @guest
                             @if (Route::has('login') && ! \Illuminate\Support\Facades\Route::currentRouteNamed("set_stream_video") && ! \Illuminate\Support\Facades\Route::currentRouteNamed('view_share_image'))
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                                    <a class="nav-link" href="{{ route('login') }}">{{ __('messages.login') }}</a>
                                 </li>
                             @endif
 
                             @if (Route::has('register') && ! \Illuminate\Support\Facades\Route::currentRouteNamed("set_stream_video") && ! \Illuminate\Support\Facades\Route::currentRouteNamed('view_share_image'))
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                    <a class="nav-link" href="{{ route('register') }}">{{ __('messages.register') }}</a>
                                 </li>
                             @endif
                         @else
@@ -78,20 +71,30 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-end bg-white" aria-labelledby="navbarDropdown">
-                                    @if(Auth::user()->role == 'ADMIN')
-                                        <a class="dropdown-item" href="{{ route('users') }}">{{ __('Manage Users') }}</a>
+                                    @if(Auth::user()->role == \App\Constant\UserRole::ADMIN)
+                                        <a class="dropdown-item" href="{{ route('users') }}">{{ __('messages.manage_users') }}</a>
                                     @endif
-                                    <a class="dropdown-item" href="{{ route('files') }}">{{ __('Manage Files') }}</a>
+                                    <a class="dropdown-item" href="{{ route('files') }}">{{ __('messages.manage_files') }}</a>
 
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
+                                        {{ __('messages.logout') }}
                                     </a>
 
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                         @csrf
                                     </form>
+                                </div>
+                            </li>
+                            <li class="nav-item dropdown px-2">
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    {{ session()->get('locale') !== null ? session()->get('locale'): 'en' }}
+                                </a>
+
+                                <div class="dropdown-menu dropdown-menu-end bg-white" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ route('change_language', ['locale' => "en"]) }}">{{ __('messages.english') }}</a>
+                                    <a class="dropdown-item" href="{{ route('change_language', ['locale' => 'fr']) }}">{{ __('messages.french') }}</a>
                                 </div>
                             </li>
                         @endguest

@@ -15,3 +15,96 @@
         background-color: rgba(0, 0, 0, .1);
     }
 }
+.dropdown-menu > a:active {
+    background-color: green;
+    color: white;
+}
+
+.pagination > li > a
+{
+    background-color: white;
+    color: #198754;
+}
+
+.pagination > li > a:focus,
+.pagination > li > a:hover,
+.pagination > li > span:focus,
+.pagination > li > span:hover
+{
+    color: #198754;
+    background-color: #eee;
+    border-color: #ddd;
+}
+
+.pagination > .active > a
+{
+    color: white;
+    background-color: #198754;
+    border: solid 1px #198754;
+}
+
+.pagination > .active > a:hover
+{
+    background-color: #198754;
+    border: solid 1px #198754;
+}
+
+.dropdown-menu > dropdown-item:active {
+    background-color: #198754;
+    color: white;
+}
+.dropdown-menu > li > a:active {
+    background-color: #198754;
+    color: white;
+}
+
+.divider {
+    font-size: 15px;
+    display: flex;
+    font-weight: bold;
+    align-items: center;
+}
+
+.divider::before, .divider::after {
+    flex: 1;
+    content: '';
+    padding: 1px;
+    background-color: black;
+    margin: 5px;
+}
+
+.delete_file_btn > a{
+    text-decoration: none;
+    color: red;
+    padding-left: 17px;
+}
+.delete_file_btn:hover {
+    color: black;
+}
+
+.delete_file_btn:active {
+    background-color: #198754;
+    color: white;
+}
+
+.date_filter {
+    cursor: pointer;
+}
+
+.thumbnail {
+    height: 180px;
+}
+.file_name {
+    width: 150px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.file_name:hover{
+    overflow: visible;
+    white-space: normal;
+    width: auto;
+}
+
+

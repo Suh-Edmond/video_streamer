@@ -1,11 +1,11 @@
 @extends('layouts.app', ['admin' => $data['admin']])
 
 @section('content')
-    <div class="py-3 px-lg-5">
+    <div class="py-3">
         <div class="flex flex-column mx-auto">
 
             @if(Auth::user()->status == \App\Constant\UserStatus::ACTIVE)
-                <div class="d-flex gap-3 gap-lg-0 rounded-lg flex-column flex-md-row align-items-md-stretch p-3 px-2 py-lg-5 px-lg-5 bgwhite border-bottom">
+                <div class="d-flex gap-3 gap-lg-0 rounded-lg flex-column flex-md-row align-items-md-stretch py-4 bgwhite border-bottom">
                     <div>
                         <h2 class="mb-4 h4" class="title">@yield('title')</h2>
 
@@ -32,7 +32,7 @@
                 </div>
             @else
                 <div class="alert alert-info" role="alert">
-                    Your account has been blocked. Please Contact the Administrator of the application for more info. <b>Email:
+                    {{__('messages.accountBlockMsg')}} <b>{{__('messages.email')}}:
                         <span>
                         <a class="alert-link" href="mailto:{{$data['admin']->email}}">{{$data['admin']->email}}</a>
                     </span>
@@ -42,12 +42,5 @@
 
         </div>
     </div>
-
-    <style>
-        .mail_link {
-            text-decoration: none;
-            color: info;
-        }
-    </style>
 @endsection
 

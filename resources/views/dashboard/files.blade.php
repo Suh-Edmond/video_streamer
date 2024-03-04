@@ -1,11 +1,11 @@
 @extends('layouts.dashboard')
 
-@section('title', 'My Files')
+@section('title', __("messages.myFiles"))
 
 
 @section('layoutToggle')
     <div>
-        <span>View: </span>
+        <span>{{__('messages.view')}}: </span>
         <div class="btn-group" role="group" aria-label="view">
             <button onclick="changeLayout('grid')" type="button" class="btn border  {{$data['gridView'] ? ' bg-success text-white': ' bg-white'}}"><i
                     class="fas fa-th-large"></i></button>
@@ -18,12 +18,12 @@
     <div class="dropdown">
         <button class="btn border btn-outline-success dropdown-toggle" type="button" data-bs-toggle="dropdown"
             aria-expanded="false">
-            All files
+            {{__('messages.allFiles')}}
         </button>
         <ul class="dropdown-menu shadow py-3 bg-white">
-            <li><a class="dropdown-item date_filter" onclick="filterBy('')">All files</a></li>
-            <li><a onclick="filterBy('IMAGE')" class="dropdown-item date_filter">Images only</a></li>
-            <li><a onclick="filterBy('VIDEO')" class="dropdown-item date_filter">Videos only</a></li>
+            <li><a class="dropdown-item date_filter" onclick="filterBy('')">{{__('messages.allFiles')}}</a></li>
+            <li><a onclick="filterBy('IMAGE')" class="dropdown-item date_filter">{{__('messages.imageOnly')}}</a></li>
+            <li><a onclick="filterBy('VIDEO')" class="dropdown-item date_filter">{{__('messages.videoOnly')}}</a></li>
         </ul>
     </div>
 @endsection
@@ -32,13 +32,13 @@
     <div class="dropdown">
         <button class="btn border btn-outline-success" type="button" data-bs-toggle="dropdown" aria-expanded="false">
             <div class="d-flex gap-1 align-items-center">
-                <i class="fa-solid fa-filter"></i><span>Sort:</span>
+                <i class="fa-solid fa-filter"></i><span>{{__('messages.sort')}}:</span>
             </div>
         </button>
         <ul class="dropdown-menu bg-white">
-            <li> <a onclick="sortBy('DATE_DESC')" class="dropdown-item date_filter">Newest First</a></li>
-            <li><a onclick="sortBy('DATE_ASC')" class="dropdown-item date_filter">Oldest First</a></li>
-            <li><a onclick="sortBy('NAME')" class="dropdown-item date_filter">Name</a></li>
+            <li> <a onclick="sortBy('DATE_DESC')" class="dropdown-item date_filter">{{__('messages.newestFirst')}}</a></li>
+            <li><a onclick="sortBy('DATE_ASC')" class="dropdown-item date_filter">{{__('messages.oldestFirst')}}</a></li>
+            <li><a onclick="sortBy('NAME')" class="dropdown-item date_filter">{{__('messages.name')}}</a></li>
         </ul>
     </div>
 @endsection
@@ -47,13 +47,11 @@
     <button class="btn btn-success shadow py-2 px-3 d-flex align-items-center justify-content-center gap-2 dropdown-toggle" type="button" id="dropdownMenuButton1"
             data-bs-toggle="dropdown"
             aria-expanded="false">
-            <i class="fa fa-add"></i><span>Upload New Files</span>
+            <i class="fa fa-add"></i><span>{{__('messages.uploadFilesMsg')}}</span>
     </button>
     <ul class="dropdown-menu bg-white" aria-labelledby="dropdownMenuButton1">
-        <li><a class="dropdown-item upload" href="#" data-bs-toggle="modal" data-bs-target="#uploadImageModal">Upload
-                Images</a></li>
-        <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#uploadVideoModal">Upload
-                Videos</a></li>
+        <li><a class="dropdown-item upload" href="#" data-bs-toggle="modal" data-bs-target="#uploadImageModal">{{__('messages.uploadImage')}}</a></li>
+        <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#uploadVideoModal">{{__('messages.uploadVideo')}}</a></li>
     </ul>
 @endsection
 
@@ -61,43 +59,8 @@
     @if ($data['gridView'])
         <div class="row" style="margin-left: -1.25rem">
             @forelse ($data['items'] as $item)
-                <div class="col-12 col-md-6 col-lg-2 mb-2 p-3">
-                    <div class="shadow bg-white rounded position-relative pb-4">
-                        <div class="dropdown bg-white rounded shadow position-absolute top-0 end-0" style="z-index: 10">
-                            <button class="btn border btn-outline-success" type="button" data-bs-toggle="dropdown"
-                                aria-expanded="false">
-                                <i class="fa-solid fa-ellipsis"></i>
-                            </button>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                <li><a class="dropdown-item date_filter" type="button" data-bs-toggle="modal"
-                                        data-bs-target="#propertiesModal" onclick="showProperties({{ $item }})">
-                                        <i class="fa-solid fa-circle-info"></i>&nbsp;Properties
-                                    </a></li>
-                                <li>
-                                    <a class="dropdown-item date_filter" type="button" onclick="openSharedLink({{$item}})">
-                                        <i class="fa-regular fa-share-from-square"></i>&nbsp;Share
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item date_filter" type="button" href="{{route('file_shared_links', ['fileId' => $item->id])}}">
-                                        <i class="fa-solid fa-list-check"></i>&nbsp;Manage Share Links
-                                    </a>
-                                </li>
-                               @if($item->file_type == 'VIDEO')
-                                    <li>
-                                        <a class="dropdown-item date_filter" type="button"  onclick="playVideo({{$item}})">
-                                            <i class="fa-solid fa-play"></i>&nbsp;Play Video
-                                        </a>
-                                    </li>
-                               @endif
-                                <li class="delete_file_btn">
-                                    <a href="{{route('delete_file', ['file' => $item])}}" >
-                                        <i class="fa-solid fa-trash-can text-danger"></i>&nbsp;Delete
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-
+                <div class="col-12 col-md-6 col-lg-2 mb-2 p-3 ">
+                    <div class=" bg-white rounded position-relative pb-4 bord">
                         <div class="d-flex flex-column ">
                             @if($item->file_type ==  \App\Constant\FileType::IMAGE)
                                 <img class="w-full thumbnail" src={{ asset($item->getFilePath($item->id, $item->file_type)) }} alt={{$item->name}}>
@@ -107,16 +70,61 @@
                                 </button>
                             @endif
 
-                            <div class=" pt-4 text-wrap px-3 text-muted text-xl text-break">{{ $item->name }}</div>
+                            <div class="pt-4 d-flex justify-content-between mx-2">
+                                @if(strlen($item->name) >= 25)
+                                    <div class="text-muted text-xl file_name">{{ $item->name }}
+                                    </div>
+                                @else
+                                    <div>
+                                        <span class="text-muted text-xl">
+                                        {{  $item->name }}</span>
+                                    </div>
+                                @endif
+
+
+                                <div class="dropdown bg-white rounded" style="z-index: 10">
+                                    <button class="btn border btn-outline-success" type="button" data-bs-toggle="dropdown"
+                                            aria-expanded="false">
+                                        <i class="fa-solid fa-ellipsis-vertical"></i>
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                        <li><a class="dropdown-item date_filter" type="button" data-bs-toggle="modal"
+                                               data-bs-target="#propertiesModal" onclick="showProperties({{ $item }})">
+                                                <i class="fa-solid fa-circle-info"></i><span style="padding-left: 20px">{{__('messages.properties')}}</span>
+                                            </a></li>
+                                        <li>
+                                            <a class="dropdown-item date_filter" type="button" onclick="openSharedLink({{$item}})">
+                                                <i class="fa-regular fa-share-from-square"></i><span style="padding-left: 20px">{{__('messages.share')}}</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item date_filter" type="button" href="{{route('file_shared_links', ['fileId'=>$item->id])}}">
+                                                <i class="fa-solid fa-list-check"></i>
+                                                <span style="padding-left: 20px">{{__('messages.manageSharedLinks')}}</span>
+                                            </a>
+                                        </li>
+                                        @if($item->file_type == 'VIDEO')
+                                            <li>
+                                                <a class="dropdown-item date_filter" type="button"  onclick="playVideo({{$item}})">
+                                                    <i class="fa-solid fa-play"></i><span style="padding-left: 25px">{{__('messages.playVideo')}}</span>
+                                                </a>
+                                            </li>
+                                        @endif
+                                        <li class="delete_file_btn">
+                                            <a href="{{route('delete_file', ['file' => $item])}}" >
+                                                <i class="fa-solid fa-trash-can text-danger"></i><span style="padding-left: 25px">{{__('messages.delete')}}</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             @empty
-                <p>No items</p>
+                <p>{{__('messages.noItems')}}</p>
             @endforelse
-
-            @if($data['items']->lastPage() != $data['items']->currentPage())
-                    <div class="d-flex justify-content-sm-end">
+             <div class="d-flex justify-content-sm-end">
                         <nav aria-label="Page navigation example">
                             <ul class="pagination">
                                 <li   class="{{$data['items']->currentPage() == 1 ? 'page-item disabled':'page-item'}}">
@@ -137,16 +145,15 @@
                             </ul>
                         </nav>
                     </div>
-            @endif
-        </div>
+            </div>
     @else
         <div class="pt-3">
             <table class="table table-striped">
                 @if (count($data['items']) !== 0)
                     <tr>
-                    <th>SN</th>
-                    <th>Name</th>
-                    <th>File Type</th>
+                    <th>{{__('messages.sn')}}</th>
+                    <th>{{__('messages.name')}}</th>
+                    <th>{{__('messages.fileType')}}</th>
                     <th></th>
                     </tr>
                 @endif
@@ -177,40 +184,38 @@
                                     <li><a class="dropdown-item date_filter" type="button" data-bs-toggle="modal"
                                             data-bs-target="#propertiesModal"
                                             onclick="showProperties({{ $item }})">
-                                            <i class="fa-solid fa-circle-info"></i>&nbsp;Properties
+                                            <i class="fa-solid fa-circle-info"></i><span style="padding-left: 20px">{{__('messages.properties')}}</span>
                                         </a></li>
                                     <li>
                                         <a class="dropdown-item date_filter"   onclick="openSharedLink({{$item}})">
-                                            <i class="fa-regular fa-share-from-square"></i>&nbsp;Share
+                                            <i class="fa-regular fa-share-from-square"></i><span style="padding-left: 20px">{{__('messages.share')}}</span>
                                         </a>
                                     </li>
                                     <li>
                                         <a class="dropdown-item date_filter" type="button" href="{{route('file_shared_links', ['fileId' => $item->id])}}">
-                                            <i class="fa-solid fa-list-check"></i>&nbsp;Manage Share Links
+                                            <i class="fa-solid fa-list-check"></i><span style="padding-left: 20px">{{__('messages.manageSharedLinks')}}</span>
                                         </a>
                                     </li>
                                     @if($item->file_type == 'VIDEO')
                                         <li>
                                             <a class="dropdown-item date_filter" type="button" onclick="playVideo({{$item}})">
-                                                <i class="fa-solid fa-play"></i>&nbsp;Play Video
+                                                <i class="fa-solid fa-play"></i><span style="padding-left: 21px">{{__('messages.playVideo')}}</span>
                                             </a>
                                         </li>
                                     @endif
                                     <li class="delete_file_btn">
                                         <a href="{{route('delete_file', ['file' => $item])}}" >
-                                            <i class="fa-solid fa-trash-can text-danger"></i>&nbsp;Delete
+                                            <i class="fa-solid fa-trash-can text-danger"></i><span style="padding-left: 21px">{{__('messages.delete')}}</span>
                                         </a>
                                     </li>
                                 </ul>
                             </div>
                         </td>
                 @empty
-                    <p>No items</p>
+                    <p>{{__('messages.noItems')}}</p>
                 @endforelse
             </table>
-
-            @if($data['items']->lastPage() != $data['items']->currentPage())
-                <div class="d-flex justify-content-sm-end">
+             <div class="d-flex justify-content-sm-end">
                     <nav aria-label="Page navigation example">
                         <ul class="pagination">
                             <li   class="{{$data['items']->currentPage() == 1 ? 'page-item disabled':'page-item'}}">
@@ -231,8 +236,6 @@
                         </ul>
                     </nav>
                 </div>
-            @endif
-
         </div>
     @endif
 
@@ -242,25 +245,25 @@
     <div class="modal fade" id="propertiesModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content m-3">
-                <div class="modal-header">
-                    <h5 class="modal-title file_label" id="exampleModalLabel">File Properties</h5>
+                <div class="modal-header" style="padding-top: 35px;padding-left: 35px;padding-right: 35px">
+                    <h5 class="modal-title fw-bold" id="exampleModalLabel">{{__('messages.fileProperties')}}</h5>
                     <button type="button" class="btn-close"   data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body mb-2">
+                <div class="modal-body mb-5" style="padding-right: 35px;padding-left: 35px">
                     <div class="my-2">
-                        <label><span class="file_label">Name</span>:&nbsp;<span class="item_name"></span></label>
+                        <label><span class="fw-bold">{{__('messages.name')}}</span>:&nbsp;<span class="item_name"></span></label>
                     </div>
                     <div class="my-2">
-                        <label><span class="file_label">Type</span>:&nbsp;<span class="item_type"></span></label>
+                        <label><span class="fw-bold">{{__('messages.type')}}</span>:&nbsp;<span class="item_type"></span></label>
                     </div>
                     <div class="my-2">
-                        <label><span class="file_label">Size</span>:&nbsp;<span class="item_size"></span>bytes</label>
+                        <label><span class="fw-bold">{{__('messages.size')}}</span>:&nbsp;<span class="item_size"></span>{{__('messages.bytes')}}</label>
                     </div>
                     <div class="my-2">
-                        <label><span class="file_label">Created</span>:&nbsp;<span class="item_created"></span></label>
+                        <label><span class="fw-bold">{{__('messages.created')}}</span>:&nbsp;<span class="item_created"></span></label>
                     </div>
                     <div class="my-2">
-                        <label><span class="file_label">Modified</span>:&nbsp;<span class="item_modified"></span></label>
+                        <label><span class="fw-bold">{{__('messages.modified')}}</span>:&nbsp;<span class="item_modified"></span></label>
                     </div>
 
                 </div>
@@ -273,8 +276,8 @@
     <div class="modal fade" id="uploadImageModal" tabindex="-1" aria-labelledby="uploadImageModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="uploadImageModalLabel">Upload Image</h5>
+                <div class="modal-header" style="padding-left:35px;padding-right: 35px;padding-top: 35px">
+                    <h5 class="modal-title fw-bold" id="uploadImageModalLabel">{{__('messages.uploadImage')}}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body p-2">
@@ -298,8 +301,8 @@
                                 <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
                             </div>
 
-                            <div class="my-3 d-flex justify-content-center">
-                                <button class="btn btn-success w-100" type="submit">Save</button>
+                            <div class="my-3 d-flex justify-content-end">
+                                <button class="btn btn-success " type="submit">{{__('messages.save')}}</button>
                             </div>
                         </form>
                     </div>
@@ -313,8 +316,8 @@
     <div class="modal fade" id="uploadVideoModal" tabindex="-1" aria-labelledby="uploadVideoModalLabel" aria-hidden="true"  data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog modal-dialog-centered" >
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="uploadVideoModalLabel">Upload Video</h5>
+                <div class="modal-header" style="padding-left:35px;padding-right: 37px;padding-top: 35px">
+                    <h5 class="modal-title fw-bold" id="uploadVideoModalLabel">{{__('messages.uploadVideo')}}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body p-2">
@@ -330,8 +333,8 @@
                                 <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
                             </div>
 
-                            <div class="my-3 d-flex justify-content-center">
-                                <button class="btn btn-success w-100" type="submit">Save</button>
+                            <div class="my-3 d-flex justify-content-end">
+                                <button class="btn btn-success" type="submit">{{__('messages.save')}}</button>
                             </div>
                         </form>
                     </div>
@@ -346,7 +349,7 @@
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content m-3">
                 <div class="modal-header">
-                    <h5 class="modal-title file_label" id="exampleModalLabel">Playing <span class="video_title"></span></h5>
+                    <h5 class="modal-title fw-bold" id="exampleModalLabel">{{__('messages.playing')}} <span class="video_title"></span></h5>
                     <button type="button" class="btn-close"   data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body d-flex justify-content-center">
@@ -363,15 +366,15 @@
     <div class="modal fade" id="generateLinkModal" tabindex="-1" aria-labelledby="generateLinkModalLabel" aria-hidden="true"  data-bs-keyboard="false">
         <div class="modal-dialog modal-dialog-centered" >
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="uploadVideoModalLabel">Generate File Shared Link</h5>
+                <div class="modal-header" style="padding-left:35px;padding-right: 35px;padding-top: 35px">
+                    <h5 class="modal-title fw-bold" id="uploadVideoModalLabel">{{__('messages.generateFileShareLink')}}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body p-2">
                     <div class="row row-cols-1 mt-3 mx-3 mb-3">
                         <div class="mb-3">
                             <label for="exampleFormControlInput1" class="form-label">
-                                <span class="fw-bold">File</span>
+                                <span class="fw-bold">{{__('messages.file')}}</span>
                             </label>
                             <div>
                                 <input type="text" name="file_name"  class="form-control" value="" id="file_generate_link" disabled>
@@ -380,10 +383,11 @@
 
                         <div class="mb-3">
                             <label for="exampleFormControlInput1" class="form-label">
-                                <span class="fw-bold">Expiration Date</span>
+                                <span class="fw-bold">{{__('messages.expirationTime')}}</span>
                             </label>
                             <div>
-                                <input type="datetime-local" name="expire_at" id="expire_at" class="form-control @error('expire_at') is-invalid @enderror" value="{{old('expire_at')}}" >
+                                <input type="datetime-local" name="expire_at" id="expire_at" class="form-control @error('expire_at') is-invalid @enderror"   required>
+                                <small class="text-muted">{{__('messages.defaultExpirationTimeMsg')}}</small>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -395,7 +399,8 @@
                         </div>
 
                         <div class="my-4 d-flex justify-content-end">
-                            <button class="btn btn-success"  id="generateCodeBtn" type="submit" onclick="generateSharedLink()">Generate</button>
+                            <button class="btn btn-success"  id="generateCodeBtn" type="submit" onclick="generateSharedLink()">
+                                {{__('messages.generate')}}</button>
                         </div>
                     </div>
                 </div>
@@ -408,36 +413,27 @@
     <div class="modal fade" id="qrcodeModal" tabindex="-1" aria-labelledby="grcodeModalLabel" aria-hidden="true" data-bs-backdrop="static"  data-bs-keyboard="false">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="uploadVideoModalLabel">Generated File Shared Link</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-header" style="padding-top: 35px;padding-right: 35px;padding-left: 35px">
+                    <h5 class="modal-title fw-bold" id="uploadVideoModalLabel">{{__('messages.generatedFileLinkMsg')}}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="closeQRCodeModal()"></button>
                 </div>
                 <div class="modal-body p-2">
                     <div class="row row-cols-1 mb-3">
-                        <div class="mb-3">
-                            <label for="exampleFormControlInput1" class="form-label d-flex justify-content-center">
-                                <span class="fw-bold">Scan QR Code to access the Link</span>
+                        <div class="mb-3" style="padding-left: 35px">
+                            <label for="exampleFormControlInput1" class="form-label d-flex justify-content-start">
+                                <span>{{__('messages.scanQRCodeMsg')}}</span>
                             </label>
                             <div id="qr_code" class="d-flex justify-content-center">
                             </div>
                         </div>
 
-                        <div class="d-flex justify-content-center mt-2">
-                            <label for="exampleFormControlInput1" class="form-label">
-                                <span class="fw-bold">Sharable Link after Scanning QR Code</span>
-                            </label>
-                        </div>
-                        <div class="input-group d-flex justify-content-center mb-3">
-                            <input type="text" class="form-control form-control-md" aria-describedby="button-addon2" disabled id="generatedLink">
+                        <div class="divider" style="padding-right: 35px;padding-left: 35px">{{__('messages.or')}}</div>
+                        <div class="d-flex justify-content-between my-3" style="padding-left: 35px;padding-right: 35px">
                             <button class="btn btn-success" type="button" id="copy"
-                                    onclick="copyToClipboard()">Copy</button>
+                                    onclick="copyToClipboard()">{{__('messages.copyLink')}}</button>
+                            <button class="btn btn-success" type="button" id="copy"
+                                    onclick="shareViaWhatsapp()">{{__('messages.shareViaWhatsapp')}}</button>
                         </div>
-
-                        <form>
-                            <div class="my-4 d-flex justify-content-center">
-                                <button class="btn btn-success w-100" type="submit" onclick="saveQRCode()">Save</button>
-                            </div>
-                        </form>
                     </div>
                 </div>
             </div>
@@ -446,88 +442,17 @@
     <!----------------------END OF QR CODE LINK MODAL----------------------------------->
 
 
-
-    <style>
-        .delete_file_btn > a{
-            text-decoration: none;
-            color: red;
-            padding-left: 17px;
-        }
-        .delete_file_btn:hover {
-            color: black;
-        }
-
-        .delete_file_btn:active {
-            background-color: #198754;
-            color: white;
-        }
-        .dropdown-menu > dropdown-item:active {
-            background-color: #198754;
-            color: white;
-        }
-        .dropdown-menu > li > a:active {
-            background-color: #198754;
-            color: white;
-        }
-        .date_filter {
-            cursor: pointer;
-        }
-        .text-xl {
-
-        }
-        .thumbnail {
-            height: 180px;
-        }
-
-        .file_label {
-            font-weight: bold;
-        }
-        .link {
-            font-weight: bold;
-        }
-
-        .pagination > li > a
-        {
-            background-color: white;
-            color: darkgreen;
-        }
-
-        .pagination > li > a:focus,
-        .pagination > li > a:hover,
-        .pagination > li > span:focus,
-        .pagination > li > span:hover
-        {
-            color: darkgreen;
-            background-color: #eee;
-            border-color: #ddd;
-        }
-
-        .pagination > .active > a
-        {
-            color: white;
-            background-color: darkgreen;
-            border: solid 1px darkgreen;
-        }
-
-        .pagination > .active > a:hover
-        {
-            background-color: darkgreen;
-            border: solid 1px darkgreen;
-        }
-    </style>
-
     <script>
         const CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
         var $generateLinkModal = $('#generateLinkModal');
         var $streamModal = $('#streamVideoModal');
-        let link = '';
         let layout = 'grid';
         var $modal = $('#uploadImageModal');
         var $uploadVideoModal = $('#uploadVideoModal');
         var image = document.getElementById('image');
         var $qrcodeModal = $('#qrcodeModal');
-        var sharedLinkResponse;
         var sharedFile;
+        var qrcodeLink =''
 
         $(".image_field").on("change", function(e){
             var files = e.target.files;
@@ -556,6 +481,10 @@
             sharedFile = data;
             $('#file_generate_link').val(data.name)
             $generateLinkModal.modal('show')
+
+            let now = new Date();
+            now.setHours(now.getHours() + 4);
+            document.getElementById('expire_at').value = now.toISOString().slice(0,16);
         }
 
         let generateSharedLink = function (){
@@ -571,30 +500,31 @@
                 data: {_token: CSRF_TOKEN, 'expire_at':expire_at},
                 dataType: "json",
                 success: function(response) {
-                    $('#generatedLink').val(response.data)
+                    qrcodeLink = response.data;
+                    console.log(response)
                     generateQRCode(response.data)
                     $generateLinkModal.modal('hide')
                     $qrcodeModal.modal('show');
-                    sharedLinkResponse = response;
 
                     $("#generateCodeBtn").find(".fa-spinner").remove();
                     $("#generateCodeBtn").removeAttr("disabled");
+
+                    toastr.success("File shared link generated successfully");
                 },
                 error:function (error){
                     $("#generateCodeBtn").find(".fa-spinner").remove();
                     $("#generateCodeBtn").removeAttr("disabled");
-
-                    sharedLinkResponse = error;
                 }
             })
         }
 
-        let saveQRCode = function (){
-            if(sharedLinkResponse){
-                toastr.success("File Shared link created successfully");
-            }else {
-                toastr.error("Fail! Unable to generate Shared link for this file");
-            }
+        let shareViaWhatsapp = function() {
+            window.open('https://api.whatsapp.com/send?phone=&text=' + encodeURIComponent(qrcodeLink));
+        }
+
+        let closeQRCodeModal = function (){
+            $qrcodeModal.modal('hide');
+            window.location.reload();
         }
 
         let generateQRCode = function (url){
@@ -611,7 +541,7 @@
         }
 
         let copyToClipboard = function() {
-            navigator.clipboard.writeText(($('#link').val()))
+            navigator.clipboard.writeText(qrcodeLink)
             $('#copy').html('Copied')
         }
 

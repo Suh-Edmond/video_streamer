@@ -5,19 +5,34 @@ namespace App\Http\Controllers;
 use App\Constant\UserStatus;
 use App\Models\User;
 use App\Traits\HelperTrait;
-use Illuminate\Support\Facades\Request;
-use Illuminate\Support\Facades\Session;
+use Illuminate\Http\Request;
 
 class UsersController extends Controller
 {
-    public function manageUsers()
+    public function manageUsers(Request $request)
     {
+        $users = null;
+        $sort = $request['sort'];
+        $filter = $request['filter'];
+        if(isset($sort)) {
+            $users = match ($sort) {
+                'DATE_ASC' => User::orderBy('created_at'),
+                'NAME' => User::orderBy('name'),
+                default => User::orderByDesc('created_at'),
+            };
 
-        $users = User::paginate(10);
+            $users = $users->paginate(10);
+        }
 
+        if (isset($filter)) {
+            $users= User::where('status', $filter)->paginate(10);
+        }
+        if(!isset($sort) && !isset($filter)){
+            $users = User::paginate(10);
+        }
         $data = [
             'items' => $users,
-            'filter' => false,
+            'filter' => true,
             'gridView'=> false,
             'admin'   => HelperTrait::getAdminInfo()
         ];
@@ -31,12 +46,12 @@ class UsersController extends Controller
             $user->save();
 
             $notification = array(
-                'message' => 'Account blocked successfully',
+                'message' => __('messages.accountBlockSuccessMsg'),
                 'alert-type' => 'success'
             );
         }catch (\Exception $exception){
             $notification = array(
-                'message' => 'An error occurred! Could not block user account',
+                'message' => __('messages.accountBlockFailMsg'),
                 'alert-type' => 'error'
             );
         }
@@ -49,12 +64,12 @@ class UsersController extends Controller
             $user->status = UserStatus::ACTIVE;
             $user->save();
             $notification = array(
-                'message' => 'Account unblocked successfully',
+                'message' => __('messages.accountUnBlockSuccessMsg'),
                 'alert-type' => 'success'
             );
         }catch (\Exception $exception){
             $notification = array(
-                'message' => 'An error occurred! Could not unblock user account',
+                'message' => __('messages.accountUnBlockFailMsg'),
                 'alert-type' => 'error'
             );
         }
@@ -66,18 +81,18 @@ class UsersController extends Controller
         try {
             $user->delete();
             $notification = array(
-                'message' => 'Account deleted successfully',
+                'message' => __('messages.accountDeleteSuccessMsg'),
                 'alert-type' => 'success'
             );
         }catch (\Exception $e){
             if($e->getCode() == 23000){
                 $notification = array(
-                    'message' => 'Cannot delete user account. This account has files',
+                    'message' => __('messages.accountDeleteFailMsg'),
                     'alert-type' => 'error'
                 );
             }else{
                 $notification = array(
-                    'message' => 'An error occurred! Could not delete user account',
+                    'message' => __('messages.accountDeleteErrorMsg'),
                     'alert-type' => 'error'
                 );
             }
