@@ -61,13 +61,13 @@
                         @guest
                             @if (Route::has('login') && ! \Illuminate\Support\Facades\Route::currentRouteNamed("set_stream_video") && ! \Illuminate\Support\Facades\Route::currentRouteNamed('view_share_image'))
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                                    <a class="nav-link" href="{{ route('login') }}">{{ __('messages.login') }}</a>
                                 </li>
                             @endif
 
                             @if (Route::has('register') && ! \Illuminate\Support\Facades\Route::currentRouteNamed("set_stream_video") && ! \Illuminate\Support\Facades\Route::currentRouteNamed('view_share_image'))
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                    <a class="nav-link" href="{{ route('register') }}">{{ __('messages.register') }}</a>
                                 </li>
                             @endif
                         @else
@@ -78,14 +78,14 @@
 
                                 <div class="dropdown-menu dropdown-menu-end bg-white" aria-labelledby="navbarDropdown">
                                     @if(Auth::user()->role == 'ADMIN')
-                                        <a class="dropdown-item" href="{{ route('users') }}">{{ __('Manage Users') }}</a>
+                                        <a class="dropdown-item" href="{{ route('users') }}">{{ __('messages.manage_users') }}</a>
                                     @endif
-                                    <a class="dropdown-item" href="{{ route('files') }}">{{ __('Manage Files') }}</a>
+                                    <a class="dropdown-item" href="{{ route('files') }}">{{ __('messages.manage_files') }}</a>
 
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
+                                        {{ __('messages.logout') }}
                                     </a>
 
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">

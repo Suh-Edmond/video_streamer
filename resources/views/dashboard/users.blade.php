@@ -1,16 +1,16 @@
 @extends('layouts.dashboard')
 
-@section('title', 'Manage Users')
+@section('title', __('messages.manage_users'))
 
 @section('dashboard-content')
     <div style="overflow-x: scroll;">
         <table class="table table-striped">
             <tr>
-                <th>SN</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Status</th>
-                <th>Role</th>
+                <th>{{__('messages.sn')}}</th>
+                <th>{{__('messages.name')}}</th>
+                <th>{{__('messages.email')}}</th>
+                <th>{{__('messages.status')}}</th>
+                <th>{{__('messages.role')}}</th>
                 <th></th>
             </tr>
             @forelse ($data['items'] as $user)
@@ -54,14 +54,14 @@
                                         <li>
                                             <a href="{{ route('users.block', ['user' => $user]) }}"
                                                 class="dropdown-item d-flex gap-2 align-items-center"> <i
-                                                    class="fa fa-close"></i> <span class="text-black">Block</span></a>
+                                                    class="fa fa-close"></i> <span class="text-black">{{__('messages.block')}}</span></a>
                                         </li>
                                     @endif
                                     @if ($user->status == \App\Constant\UserStatus::IN_ACTIVE)
                                         <li>
                                             <a href="{{ route('users.unblock', ['user' => $user]) }}"
                                                 class="dropdown-item d-flex gap-2 align-items-center"><i
-                                                    class="fas fa-close"></i><span class="text-black">Unblock</span></a>
+                                                    class="fas fa-close"></i><span class="text-black">{{__('messages.unBlock')}}</span></a>
                                             </a>
                                         </li>
                                     @endif
@@ -69,20 +69,17 @@
                                     <li>
                                         <a href="{{ route('users.delete', ['user' => $user]) }}"
                                             class="dropdown-item d-flex gap-2 align-items-center text-danger"><i
-                                                class="fas fa-trash-can"></i><span class="text-danger">Delete</span></a>
+                                                class="fas fa-trash-can"></i><span class="text-danger">{{__('messages.delete')}}</span></a>
                                         </a>
 
                                     </li>
-
-
-
                                 </ul>
                             </div>
                         @endif
                     </td>
                 </tr>
             @empty
-                <p>No items</p>
+                <p>{{__('messages.notItems')}}</p>
             @endforelse
         </table>
 

@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use App\Constant\UserStatus;
 use App\Models\User;
 use App\Traits\HelperTrait;
-use Illuminate\Support\Facades\Request;
-use Illuminate\Support\Facades\Session;
 
 class UsersController extends Controller
 {
@@ -31,12 +29,12 @@ class UsersController extends Controller
             $user->save();
 
             $notification = array(
-                'message' => 'Account blocked successfully',
+                'message' => __('messages.accountBlockSuccessMsg'),
                 'alert-type' => 'success'
             );
         }catch (\Exception $exception){
             $notification = array(
-                'message' => 'An error occurred! Could not block user account',
+                'message' => __('messages.accountBlockFailMsg'),
                 'alert-type' => 'error'
             );
         }
@@ -49,12 +47,12 @@ class UsersController extends Controller
             $user->status = UserStatus::ACTIVE;
             $user->save();
             $notification = array(
-                'message' => 'Account unblocked successfully',
+                'message' => __('messages.accountUnBlockSuccessMsg'),
                 'alert-type' => 'success'
             );
         }catch (\Exception $exception){
             $notification = array(
-                'message' => 'An error occurred! Could not unblock user account',
+                'message' => __('messages.accountUnBlockFailMsg'),
                 'alert-type' => 'error'
             );
         }
@@ -66,18 +64,18 @@ class UsersController extends Controller
         try {
             $user->delete();
             $notification = array(
-                'message' => 'Account deleted successfully',
+                'message' => __('messages.accountDeleteSuccessMsg'),
                 'alert-type' => 'success'
             );
         }catch (\Exception $e){
             if($e->getCode() == 23000){
                 $notification = array(
-                    'message' => 'Cannot delete user account. This account has files',
+                    'message' => __('messages.accountDeleteFailMsg'),
                     'alert-type' => 'error'
                 );
             }else{
                 $notification = array(
-                    'message' => 'An error occurred! Could not delete user account',
+                    'message' => __('messages.accountDeleteErrorMsg'),
                     'alert-type' => 'error'
                 );
             }

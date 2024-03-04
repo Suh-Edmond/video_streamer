@@ -428,7 +428,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
         integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous">
     </script>
-{{--    @include('notification');--}}
 
     <div class="d-flex px-4 px-lg-0" style="height: 100vh">
         <div class="col d-none d-lg-block d-flex justify-content-center align-items-center">
@@ -447,10 +446,10 @@
                 <nav class="nav nav-pills nav-fill nav-justified" id="pills-tab" role="tablist">
                     <a class="nav-link active fw-bold" href="{{ route('login') }}" id="pills-login-tab" data-bs-toggle="pill"
                         data-bs-target="#pills-login" role="tab" aria-controls="pills-login"
-                        aria-selected="true">LOGIN</a>
+                        aria-selected="true">{{__('messages.login')}}</a>
                     <a class="nav-link fw-bold" href="{{ route('register') }}" id="pills-register-tab" data-bs-toggle="pill"
                         data-bs-target="#pills-register" role="tab" aria-controls="pills-register"
-                        aria-selected="true">REGISTER</a>
+                        aria-selected="true">{{__('messages.register')}}</a>
                 </nav>
                 <div class="border p-4 py-lg-4 rounded">
                     @if(count($errors) > 0)

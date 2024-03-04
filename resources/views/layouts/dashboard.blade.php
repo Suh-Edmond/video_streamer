@@ -32,7 +32,7 @@
                 </div>
             @else
                 <div class="alert alert-info" role="alert">
-                    Your account has been blocked. Please Contact the Administrator of the application for more info. <b>Email:
+                    {{__('messages.accountBlockMsg')}} <b>{{__('messages.email')}}:
                         <span>
                         <a class="alert-link" href="mailto:{{$data['admin']->email}}">{{$data['admin']->email}}</a>
                     </span>
@@ -42,12 +42,5 @@
 
         </div>
     </div>
-
-    <style>
-        .mail_link {
-            text-decoration: none;
-            color: info;
-        }
-    </style>
 @endsection
 

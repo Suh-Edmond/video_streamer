@@ -60,7 +60,7 @@ class FileSharedLinkController extends Controller
             'expire_at' => $request->expire_at
         ]);
         $notification = array(
-            'message' => 'File Shared link updated successfully',
+            'message' => __('messages.updateFileLinkMsg'),
             'alert-type' => 'success'
         );
         return back()->with($notification);
@@ -71,12 +71,12 @@ class FileSharedLinkController extends Controller
         try {
             $fileSharedLink->delete();
             $notification = array(
-                'message' => 'File Shared link deleted successfully',
+                'message' => __('messages.deleteFileLinkMsg'),
                 'alert-type' => 'success'
             );
         }catch (\Exception $exception){
             $notification = array(
-                'message' => 'An error occurred!Could not delete file sharable link',
+                'message' => __('messages.deleteFileLinkErrorMsg'),
                 'alert-type' => 'error'
             );
         }

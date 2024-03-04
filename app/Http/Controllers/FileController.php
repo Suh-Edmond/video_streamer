@@ -84,12 +84,12 @@ class FileController extends Controller
             $this->saveFile($fileName, $request, $size, FileType::IMAGE);
 
             $notification = array(
-                'message' => 'Image uploaded successfully',
+                'message' => __('messages.uploadImageSuccessMsg'),
                 'alert-type' => 'success'
             );
         }catch (\Exception $exception){
             $notification = array(
-                'message' => 'An error occurred!'. ' '.$exception->getMessage(),
+                'message' => __('messages.uploadImageFailMsg'),
                 'alert-type' => 'error'
             );
         }
@@ -100,6 +100,7 @@ class FileController extends Controller
     public function uploadVideo(Request $request)
     {
         //video/avi, video/mpeg, video/quicktime,mimetypes
+        $data['gridView'] = true;
         try {
             $request->validate([
                 'video' => 'required|max:50240'
@@ -115,15 +116,13 @@ class FileController extends Controller
 
             $this->saveFile($fileName, $request, $size, FileType::VIDEO);
 
-            $data['gridView'] = true;
-
             $notification = array(
-                'message' => 'Video uploaded successfully',
+                'message' => __('messages.uploadVideoSuccessMsg'),
                 'alert-type' => 'success'
             );
         }catch (\Exception $exception){
             $notification = array(
-                'message' => 'An error occurred!'.' '.$exception->getMessage(),
+                'message' => __('messages.uploadVideoFailMsg'),
                 'alert-type' => 'error'
             );
         }
@@ -139,12 +138,12 @@ class FileController extends Controller
             $file->delete();
 
             $notification = array(
-                'message' => 'File deleted successfully',
+                'message' => __('messages.deleteFileSuccessMsg'),
                 'alert-type' => 'success'
             );
         }catch (\Exception $exception){
             $notification = array(
-                'message' => 'An error occurred!'.' '.$exception->getMessage(),
+                'message' => __('message.deleteFileFailMsg'),
                 'alert-type' => 'error'
             );
         }
@@ -192,7 +191,7 @@ class FileController extends Controller
             $data['notAvailable'] = true;
         }else {
             $data['file'] = $file;
-            $data['title'] = $file->file_type == FileType::VIDEO? "Streaming Video ".$file->name: $file->name;
+            $data['title'] = $file->file_type == FileType::VIDEO? __('messages.streaming').$file->name: $file->name;
         }
 
         return view('stream.index')->with($data);
@@ -219,7 +218,7 @@ class FileController extends Controller
            VideoStreamer::streamFile($path);
        }
         $notification = array(
-            'message' => 'File resource has either expired or has been removed',
+            'message' => __('messages.resourceHasBeenRemovedMsg'),
             'alert-type' => 'error'
         );
 
