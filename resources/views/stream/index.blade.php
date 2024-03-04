@@ -7,7 +7,7 @@
             @if($hasExpired)
                 <div class=" col-md-12">
                     <div class="alert alert-info alert-dismissible fade show" role="alert">
-                        {{_('messages.fileLinkExpiredMsg')}} <b>{{__('messages.email')}}:
+                        {{__('messages.fileLinkExpiredMsg')}} <b>{{__('messages.email')}}:
                             <span>
                         <a class="alert-link" href="mailto:{{$file->user->email}}">{{$file->user->email}}</a>
                     </span>
