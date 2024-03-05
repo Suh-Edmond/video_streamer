@@ -450,6 +450,11 @@
         .delete_file_btn:hover {
             color: black;
         }
+
+        .delete_file_btn:active {
+            background-color: #198754;
+            color: white;
+        }
         .dropdown-menu > dropdown-item:active {
             background-color: #198754;
             color: white;
@@ -457,6 +462,22 @@
         .dropdown-menu > li > a:active {
             background-color: #198754;
             color: white;
+        }
+        .date_filter {
+            cursor: pointer;
+        }
+        .text-xl {
+
+        }
+        .thumbnail {
+            height: 180px;
+        }
+
+        .file_label {
+            font-weight: bold;
+        }
+        .link {
+            font-weight: bold;
         }
 
         .pagination > li > a
