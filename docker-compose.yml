@@ -3,11 +3,11 @@ services:
     app:
         build:
             args:
-                user: suh_edmond
-                uid: 10090
+                user: edmond
+                uid: 1000
             context: ./
             dockerfile: Dockerfile
-        image: video_streamer_laravel-docker:0.1
+        image: video_streamer_laravel-docker:1.1
         container_name: video_streamer_app
         restart: unless-stopped
         working_dir: /var/www/
@@ -23,7 +23,6 @@ services:
         environment:
             MYSQL_DATABASE: ${DB_DATABASE}
             MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
-#            MYSQL_PASSWORD: ${DB_PASSWORD}
             MYSQL_ROOT_USER: ${DB_USERNAME}
             SERVICE_TAGS: dev
             SERVICE_NAME: mysql
