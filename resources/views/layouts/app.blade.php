@@ -30,7 +30,7 @@
 </head>
 
 <body>
-    @include('notification');
+    @include('notification')
     <div id="app">
 
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm py-3 px-4">
