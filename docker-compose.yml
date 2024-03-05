@@ -41,7 +41,7 @@ services:
             - "8000:80"
         volumes:
             - ./docker-compose/nginx:/etc/nginx/conf.d
-            - ./storage/app/public:/var/www
+            - ./:/var/www
         networks:
             - video_streamer
 
