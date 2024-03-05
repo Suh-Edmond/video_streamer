@@ -562,8 +562,6 @@
             overflow: visible;
             white-space: normal;
             width: auto;
-            position: absolute;
-            background-color:#FFF;
         }
     </style>
     <script>

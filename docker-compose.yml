@@ -4,7 +4,7 @@ services:
         build:
             context: ./
             dockerfile: Dockerfile
-        image: video_streamer_laravel-docker:0.0.1-snapshot
+        image: video_streamer_laravel-docker:2.0
         container_name: video_streamer_app
         restart: unless-stopped
         working_dir: /var/www/
