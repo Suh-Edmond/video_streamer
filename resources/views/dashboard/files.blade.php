@@ -441,7 +441,53 @@
     </div>
     <!----------------------END OF QR CODE LINK MODAL----------------------------------->
 
+    <style>
+        .delete_file_btn > a{
+            text-decoration: none;
+            color: red;
+            padding-left: 17px;
+        }
+        .delete_file_btn:hover {
+            color: black;
+        }
+        .dropdown-menu > dropdown-item:active {
+            background-color: #198754;
+            color: white;
+        }
+        .dropdown-menu > li > a:active {
+            background-color: #198754;
+            color: white;
+        }
 
+        .pagination > li > a
+        {
+            background-color: white;
+            color: darkgreen;
+        }
+
+        .pagination > li > a:focus,
+        .pagination > li > a:hover,
+        .pagination > li > span:focus,
+        .pagination > li > span:hover
+        {
+            color: darkgreen;
+            background-color: #eee;
+            border-color: #ddd;
+        }
+
+        .pagination > .active > a
+        {
+            color: white;
+            background-color: darkgreen;
+            border: solid 1px darkgreen;
+        }
+
+        .pagination > .active > a:hover
+        {
+            background-color: darkgreen;
+            border: solid 1px darkgreen;
+        }
+    </style>
     <script>
         const CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
         var $generateLinkModal = $('#generateLinkModal');
