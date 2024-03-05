@@ -349,6 +349,21 @@
             background-color: darkgreen;
             border: solid 1px darkgreen;
         }
+
+        .divider {
+            font-size: 15px;
+            display: flex;
+            font-weight: bold;
+            align-items: center;
+        }
+
+        .divider::before, .divider::after {
+            flex: 1;
+            content: '';
+            padding: 1px;
+            background-color: black;
+            margin: 5px;
+        }
     </style>
 
     <script>

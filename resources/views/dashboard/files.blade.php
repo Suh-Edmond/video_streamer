@@ -72,7 +72,7 @@
 
                             <div class="pt-4 d-flex justify-content-between mx-2">
                                 @if(strlen($item->name) >= 25)
-                                    <div class="text-muted text-xl file_name">{{ $item->name }}
+                                    <div class="text-muted text-xl file_name_data">{{ $item->name }}
                                     </div>
                                 @else
                                     <div>
@@ -486,6 +486,36 @@
             color: darkgreen;
         }
 
+        .pagination > .active > a
+        {
+            color: white;
+            background-color: darkgreen;
+            border: solid 1px darkgreen;
+        }
+
+        .delete_file_btn > a{
+            text-decoration: none;
+            color: red;
+            padding-left: 17px;
+        }
+        .delete_file_btn:hover {
+            color: black;
+        }
+        .dropdown-menu > dropdown-item:active {
+            background-color: #198754;
+            color: white;
+        }
+        .dropdown-menu > li > a:active {
+            background-color: #198754;
+            color: white;
+        }
+
+        .pagination > li > a
+        {
+            background-color: white;
+            color: darkgreen;
+        }
+
         .pagination > li > a:focus,
         .pagination > li > a:hover,
         .pagination > li > span:focus,
@@ -496,17 +526,44 @@
             border-color: #ddd;
         }
 
-        .pagination > .active > a
-        {
-            color: white;
-            background-color: darkgreen;
-            border: solid 1px darkgreen;
-        }
 
         .pagination > .active > a:hover
         {
             background-color: darkgreen;
             border: solid 1px darkgreen;
+        }
+
+        .divider {
+            font-size: 15px;
+            display: flex;
+            font-weight: bold;
+            align-items: center;
+        }
+
+        .divider::before, .divider::after {
+            flex: 1;
+            content: '';
+            padding: 1px;
+            background-color: black;
+            margin: 5px;
+        }
+
+        div {
+            line-height: 20px;
+        }
+        .file_name_data {
+            width: 100px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+
+        .file_name_data:hover{
+            overflow: visible;
+            white-space: normal;
+            width: auto;
+            position: absolute;
+            background-color:#FFF;
         }
     </style>
     <script>
