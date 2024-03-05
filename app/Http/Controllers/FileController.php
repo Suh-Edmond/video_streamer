@@ -103,7 +103,7 @@ class FileController extends Controller
         $data['gridView'] = true;
         try {
             $request->validate([
-                'video' => 'required|max:50240'
+                'video' => 'required|max:1845248'
             ]);
 
             $fileName = $request->file('video')->getClientOriginalName();
