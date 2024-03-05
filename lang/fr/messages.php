@@ -8,7 +8,7 @@ return [
     'name' => 'Nom',
     'login' => 'SE CONNECTER',
     'register' => 'REGISTRE',
-    'manage_users' => 'gérer les utilisateurs',
+    'manage_users' => 'Gérer les utilisateurs',
     'manage_files' => 'Gérer les fichiers',
     'logout' => 'Se déconnecter',
     'accountBlockMsg' => "Votre compte a été bloqué. Veuillez contacter l'administrateur de l'application pour plus d'informations.",
