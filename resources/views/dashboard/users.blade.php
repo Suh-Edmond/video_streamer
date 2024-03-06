@@ -135,6 +135,9 @@
             </div>
     </div>
     <style>
+        .date_filter {
+            cursor: pointer;
+        }
         .pagination > li > a
         {
             background-color: white;
