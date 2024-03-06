@@ -16,7 +16,9 @@ class FileSharedLinkController extends Controller
         $file = File::findOrFail($fileId);
         $sharedCode = Str::random(10);
         $key = substr(encrypt($file->id),0, 30);
+
         $link = url('/') . '/files/'.$file->id.'/sharer/'.$sharedCode.'/code?key='.$key;
+
         FileSharedLink::create([
             'file_id'   => $file->id,
             'expire_at' => $request['expire_at'],
