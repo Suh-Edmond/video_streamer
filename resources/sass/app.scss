@@ -6,3 +6,12 @@
 
 // Bootstrap
 @import 'bootstrap/scss/bootstrap';
+
+.play-video-wrapper {
+    background-color: rgba(0, 0, 0, .05);
+    font-size: 48px;
+
+    &:hover {
+        background-color: rgba(0, 0, 0, .1);
+    }
+}
