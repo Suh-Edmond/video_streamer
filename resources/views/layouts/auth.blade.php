@@ -145,14 +145,11 @@
         </div>
         <div class="col d-flex flex-column bg-white h-100 justify-content-center align-items-stretch align-items-lg-center">
 
-            <div class="col-12 col-lg-5">
+            <div class="col-12 col-lg-6">
                 <nav class="nav nav-pills nav-fill nav-justified" id="pills-tab" role="tablist">
-                    <a class="nav-link active fw-bold" href="{{ route('login') }}" id="pills-login-tab" data-bs-toggle="pill"
+                    <a class="nav-link fw-bold" id="pills-login-tab" data-bs-toggle="pill"
                         data-bs-target="#pills-login" role="tab" aria-controls="pills-login"
                         aria-selected="true">{{__('messages.login')}}</a>
-                    <a class="nav-link fw-bold" href="{{ route('register') }}" id="pills-register-tab" data-bs-toggle="pill"
-                        data-bs-target="#pills-register" role="tab" aria-controls="pills-register"
-                        aria-selected="true">{{__('messages.register')}}</a>
                 </nav>
                 <div class="border p-4 py-lg-4 rounded">
                     @if(count($errors) > 0)

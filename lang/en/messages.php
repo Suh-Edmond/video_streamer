@@ -91,5 +91,7 @@ return [
     "active" => "ACTIVE",
     "inactive" => "IN_ACTIVE",
     "allUsers" => "All Users",
-
+    "addUser" => "Create Account",
+    "addUserMsg" => "Create User Account",
+    "accountCreatedSuccessMsg" => "User account created successfully"
 ];
