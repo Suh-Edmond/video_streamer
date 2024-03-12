@@ -44,7 +44,7 @@ return [
     'generateFileShareLink' => 'Générer un lien de partage de fichier',
     'file' => 'Déposer',
     'expirationTime' => "Date d'expiration",
-    'defaultExpirationTimeMsg' => "Le délai d'expiration par défaut est de 4 heures",
+    'defaultExpirationTimeMsg' => "Le délai d'expiration par défaut est de 3 mois",
     'generate' => 'Générer',
     'generatedFileLinkMsg' => 'Lien partagé de fichier généré',
     'scanQRCodeMsg' => 'Scannez le code QR pour accéder au lien',

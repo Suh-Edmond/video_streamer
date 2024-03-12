@@ -411,7 +411,7 @@
 
         let setDefaultSharedLinkExpirationTime = function (){
             let now = new Date();
-            now.setHours(now.getHours() + 4);
+            now.setHours(now.getHours() + 2190);
             document.getElementById('expire_at').value = now.toISOString().slice(0,16);
         }
 
