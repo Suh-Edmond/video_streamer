@@ -7,6 +7,7 @@ use App\Constant\UserStatus;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -30,7 +31,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/files';
+    protected $redirectTo = '/users';
 
     /**
      * Create a new controller instance.
@@ -39,7 +40,7 @@ class RegisterController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest');
+        $this->middleware('auth');
     }
 
     /**
@@ -57,20 +58,36 @@ class RegisterController extends Controller
         ]);
     }
 
-    /**
-     * Create a new user instance after a valid registration.
-     *
-     * @param  array  $data
-     * @return \App\Models\User
-     */
+
     protected function create(array $data)
     {
-         return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
+
+        return User::create([
+          'name' => $data['name'],
+          'email' => $data['email'],
+          'password' => Hash::make($data['password']),
+          'status'  => UserStatus::ACTIVE,
+          'role'    => UserRole::USER
+        ]);
+    }
+
+    public function createUserAccount(Request $request){
+        $validate = Validator::make($request['data'], [
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+        ]);
+        if($validate->fails()){
+            return response()->json(['error'=>$validate->errors()->all(), "status" => "400"]);
+        }
+        User::create([
+            'name' => $request['data']['name'],
+            'email' => $request['data']['email'],
+            'password' => Hash::make($request['data']['password']),
             'status'  => UserStatus::ACTIVE,
             'role'    => UserRole::USER
         ]);
+
+        return response()->json(['data' => 'success', 'status' => "200"]);
     }
 }
