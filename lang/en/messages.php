@@ -44,7 +44,7 @@ return [
     "generateFileShareLink" => "Generate File Shared Link",
     "file" => "File",
     "expirationTime" => "Expiration Date",
-    "defaultExpirationTimeMsg" => "Default Expiration time is 4hours",
+    "defaultExpirationTimeMsg" => "Default Expiration time is 3 months",
     "generate" => "Generate",
     "generatedFileLinkMsg" => "Generated File Shared Link",
     "scanQRCodeMsg" => "Scan QR Code to access the Link",
