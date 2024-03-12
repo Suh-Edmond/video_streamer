@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\FileSharedLinkController;
 use App\Http\Controllers\LanguageController;
 use Illuminate\Support\Facades\App;
@@ -22,6 +23,7 @@ use App\Http\Controllers\UsersController;
 Auth::routes();
 
 Route::middleware('auth')->group(function (){
+
     Route::get('/home', [FileController::class, 'manageFiles'])->name('home');
 
     Route::get('/files', [FileController::class, 'manageFiles'])->name('files');
@@ -53,6 +55,8 @@ Route::middleware('auth')->group(function (){
     Route::post('files/{fileId}/links/sharer/create', [FileSharedLinkController::class, 'createFileSharedLink'])->name('create_file_shared_link');
 
     Route::get('change_language/{locale}', [LanguageController::class, 'changeLanguage'])->name('change_language');
+
+    Route::post("create_account", [RegisterController::class, 'createUserAccount'])->name("create_account");
 });
 
 Route::middleware('guest')->group(function (){

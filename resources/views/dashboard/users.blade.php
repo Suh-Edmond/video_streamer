@@ -31,6 +31,13 @@
     </div>
 @endsection
 
+@section('action')
+    <button class="btn btn-success shadow px-3 d-flex align-items-center justify-content-center gap-2" type="button" data-bs-toggle="modal"
+            data-bs-target="#addUserModal" >
+        <i class="fa fa-add"></i><span>{{__('messages.addUser')}}</span>
+    </button>
+@endsection
+
 @section('dashboard-content')
     <div style="overflow-x: scroll;">
         <table class="table table-striped">
@@ -111,8 +118,7 @@
                 <p>{{__('messages.notItems')}}</p>
             @endforelse
         </table>
-
-            <div class="d-flex justify-content-sm-end">
+        <div class="d-flex justify-content-sm-end">
                 <nav aria-label="Page navigation example">
                     <ul class="pagination">
                         <li   class="{{$data['items']->currentPage() == 1 ? 'page-item disabled':'page-item'}}">
@@ -134,6 +140,77 @@
                 </nav>
             </div>
     </div>
+
+
+    <!----------------------GENERATE LINK MODAL------------------------------------------>
+    <div class="modal fade" id="addUserModal" data-bs-backdrop="static"  tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true"  data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered" >
+            <div class="modal-content">
+                <div class="modal-header" style="padding-left:35px;padding-right: 35px;padding-top: 35px">
+                    <h5 class="modal-title fw-bold" id="uploadVideoModalLabel">{{__('messages.addUserMsg')}}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="closeModal()"></button>
+                </div>
+                <div class="modal-body p-2">
+                    <div class="row mx-4 alert alert-danger print-error-msg" style="display:none">
+                        <ul></ul>
+                    </div>
+                    <div class="row row-cols-1 mt-3 mx-3 mb-3">
+                            <div class="mb-3">
+                                <label for="exampleFormControlInput1" class="form-label">
+                                    <span><i class="fa-solid fa-user"></i></span>
+                                    <span class="fw-bold">{{__('messages.name')}}</span>
+                                </label>
+                                <input class="name form-control form-control-md @error('name') is-invalid @enderror"
+                                       type="text" name="name" value="{{ old('name') }}" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="exampleFormControlInput1" class="form-label">
+                                    <span><i class="fa-solid fa-envelope"></i></span>
+                                    <span class="fw-bold">{{__('messages.email')}}</span>
+                                </label>
+                                <input class="email form-control form-control-md @error('email') is-invalid @enderror"
+                                       type="email" name="email" value="{{ old('email') }}" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="exampleFormControlInput1" class="form-label">
+                                    <span><i class="fa-solid fa-lock"></i></span>
+                                    <span class="fw-bold">{{__('messages.password')}}</span>
+                                </label>
+                                <div class="input-group"  id="show_hide_password">
+                                    <input id="confirm_password" type="password"
+                                           class="password form-control form-control-md @error('password') is-invalid @enderror"
+                                           name="password" required aria-describedby="basic-addon2">
+                                    <a class="input-group-text" id="basic-addon2"><i class="fa-solid fa-eye-slash"></i></a>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="exampleFormControlInput1" class="form-label">
+                                    <span><i class="fa-solid fa-lock"></i></span>
+                                    <span class="fw-bold">{{__('messages.confirmPassword')}}</span>
+                                </label>
+                                <div class="input-group"  id="show_hide_confirm_password">
+                                    <input id="password-confirm" type="password" class="confirm_password form-control form-control-md"
+                                           name="password_confirmation" required aria-describedby="basic-addon2">
+                                    <a class="input-group-text" id="basic-addon2"><i class="fa-solid fa-eye-slash" aria-hidden="true"></i></a>
+                                </div>
+                            </div>
+
+                            <div class="my-4 d-flex justify-content-end">
+                                <button class="btn btn-success fw-bold" id="registerBtn" onclick="submitRegister()">
+                                    {{ __('messages.save') }}
+                                </button>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!----------------------END OF GENERATE LINK MODAL----------------------------------->
+
+
     <style>
         .date_filter {
             cursor: pointer;
@@ -175,9 +252,15 @@
             background-color: #198754;
             color: white;
         }
+
+
     </style>
 
     <script>
+        const CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+        var $modal = $('#addUserModal');
+
+
         let applyParams = function(sort, filtr) {
             let url = new URL(location.href);
             let searchParams = new URLSearchParams(url.search);
@@ -204,5 +287,87 @@
             sort = urlParams.get('sort') || '';
 
         })
+
+        let validateForm = function (){
+            return $('.name').val() === "" || $('.email').val() === "" || $('.password').val() === "" || $('.confirm_password').val() === ""
+
+        }
+
+        function printErrorMsg (msg) {
+            $(".print-error-msg").find("ul").html('');
+            $(".print-error-msg").css('display','block');
+            $.each( msg, function( key, value ) {
+                $(".print-error-msg").find("ul").append('<li>'+value+'</li>');
+            });
+        }
+
+        let closeModal = function (){
+            $modal.modal('hide')
+            window.location.reload();
+        }
+
+        let submitRegister = function (){
+            let payload = {
+                "name" : $('.name').val(),
+                "email" : $('.email').val(),
+                "password" : $('.password').val(),
+                "password_confirmation" : $('.confirm_password').val()
+            }
+            $('#registerBtn').text('')
+            $("#registerBtn").prepend('<i class="fa fa-spinner fa-spin"></i>');
+            $.ajax({
+                method: 'POST',
+                url: "{{route('create_account')}}",
+                data: {_token: CSRF_TOKEN, 'data': payload},
+                dataType: "json",
+                success: function(response) {
+                    if(response.status === "200"){
+                        $modal.modal('hide');
+                        window.location.reload();
+                        toastr.success("User account created successfully");
+                    }else {
+                        printErrorMsg(response.error);
+                        $('#registerBtn').text('Save')
+                    }
+                },
+                error:function (error){
+                    $("#registerBtn").find(".fa-spinner").remove();
+                    $modal.modal('hide');
+
+                }
+            })
+
+        }
+
+
+        $(document).ready(function() {
+            $("#show_hide_password a").on('click', function(event) {
+                event.preventDefault();
+                if($('#show_hide_password input').attr("type") == "text"){
+                    $('#show_hide_password input').attr('type', 'password');
+                    $('#show_hide_password i').addClass( "fa-eye-slash" );
+                    $('#show_hide_password i').removeClass( "fa-eye" );
+                }else if($('#show_hide_password input').attr("type") == "password"){
+                    $('#show_hide_password input').attr('type', 'text');
+                    $('#show_hide_password i').removeClass( "fa-eye-slash" );
+                    $('#show_hide_password i').addClass( "fa-eye" );
+                }
+            });
+        });
+
+        $(document).ready(function() {
+            $("#show_hide_confirm_password a").on('click', function(event) {
+                event.preventDefault();
+                if($('#show_hide_confirm_password input').attr("type") == "text"){
+                    $('#show_hide_confirm_password input').attr('type', 'password');
+                    $('#show_hide_confirm_password i').addClass( "fa-eye-slash" );
+                    $('#show_hide_confirm_password i').removeClass( "fa-eye" );
+                }else if($('#show_hide_confirm_password input').attr("type") == "password"){
+                    $('#show_hide_confirm_password input').attr('type', 'text');
+                    $('#show_hide_confirm_password i').removeClass( "fa-eye-slash" );
+                    $('#show_hide_confirm_password i').addClass( "fa-eye" );
+                }
+            });
+        });
     </script>
 @endsection
