@@ -99,7 +99,6 @@ class FileController extends Controller
 
     public function uploadVideo(Request $request)
     {
-        //video/avi, video/mpeg, video/quicktime,mimetypes
         $data['gridView'] = true;
         try {
             $request->validate([
