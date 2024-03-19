@@ -2,12 +2,13 @@ version: "3.7"
 services:
     app:
         build:
-            dockerfile: ./.deploy/Dockerfile
-        image: video_streamer_laravel-docker:2.0
+            dockerfile: ./Dockerfile
+        image: video-streamer:2
         container_name: video_streamer_app
         restart: unless-stopped
         volumes:
-            - ./:/src/app
+            - "/var/www/html/public/app"
+            - "/var/www/html/storage/public"
         networks:
             - video_streamer
         ports:
@@ -26,7 +27,7 @@ services:
         ports:
             - '3306:3306'
         volumes:
-            - ./docker-compose/mysql:/docker-entrypoint-initdb.d
+            - dbdata:/var/lib/mysql
         networks:
             - video_streamer
 
@@ -34,4 +35,6 @@ networks:
     video_streamer:
         driver: bridge
 
+volumes:
+  dbdata:
 

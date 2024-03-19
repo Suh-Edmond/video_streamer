@@ -12,8 +12,7 @@ RUN install-php-extensions intl bcmath gd pdo_mysql pdo_pgsql opcache redis uuid
 COPY --from=ochinchina/supervisord:latest /usr/local/bin/supervisord /usr/local/bin/supervisord
 
 # Install caddy
-COPY --from=caddy:2.2.1 /usr/bin/caddy /usr/local/bin/caddy
-RUN setcap 'cap_net_bind_service=+ep' /usr/local/bin/caddy
+RUN apk add --no-cache nginx
 
 # Install composer
 COPY --from=composer/composer:2 /usr/bin/composer /usr/local/bin/composer
@@ -39,17 +38,18 @@ RUN chown -R $NON_ROOT_USER:$NON_ROOT_GROUP /etc/crontabs/$NON_ROOT_USER && setc
 
 # Switch to non-root 'app' user & install app dependencies
 COPY composer.json composer.lock package.json package-lock.json ./
+RUN npm install
 RUN chown -R $NON_ROOT_USER:$NON_ROOT_GROUP $LARAVEL_PATH
 USER $NON_ROOT_USER
 RUN composer install --prefer-dist --no-scripts --no-dev --no-autoloader
 RUN rm -rf /home/$NON_ROOT_USER/.composer
 
-RUN npm install
-RUN npm run build
-
 # Copy app
 COPY --chown=$NON_ROOT_USER:$NON_ROOT_GROUP . $LARAVEL_PATH/
+RUN npm run build
+
 COPY ./.deploy/config/php/local.ini /usr/local/etc/php/conf.d/local.ini
+COPY ./.deploy/config/default.conf /etc/nginx/nginx.conf
 
 # Set any ENVs
 ARG APP_KEY=${APP_KEY}
@@ -93,7 +93,7 @@ ARG PUSHER_APP_SECRET=${PUSHER_APP_SECRET}
 ARG PUSHER_APP_CLUSTER=${PUSHER_APP_CLUSTER}
 
 # Start app
-EXPOSE 9000
+EXPOSE 80
 COPY ./.deploy/entrypoint.sh /
 
 ENTRYPOINT ["sh", "/entrypoint.sh"]
