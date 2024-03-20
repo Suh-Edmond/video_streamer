@@ -14,7 +14,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call(FileSharedLinkSeeder::class);
+        $this->call(UserSeed::class);
 
     }
 }

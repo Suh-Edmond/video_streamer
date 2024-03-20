@@ -19,14 +19,12 @@ class UserSeed extends Seeder
      */
     public function run(Faker $faker)
     {
-        for ($i = 0; $i < 20; $i++) {
-            User::create([
-                'name' => $faker->name,
-                'email' => $faker->email,
-                'password' => Hash::make("password123"),
-                'status' => $faker->randomElement([UserStatus::ACTIVE, UserStatus::IN_ACTIVE]),
-                'role'   => UserRole::USER,
-            ]);
-        }
+        User::create([
+            'name'     => $faker->name,
+            'email'    => 'etha22@gmail.com',
+            'password' => Hash::make("password123"),
+            'status'   => UserStatus::ACTIVE,
+            'role'     => UserRole::ADMIN,
+        ]);
     }
 }
