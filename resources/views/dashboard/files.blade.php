@@ -623,7 +623,6 @@
                 dataType: "json",
                 success: function(response) {
                     qrcodeLink = response.data;
-                    console.log(response)
                     generateQRCode(response.data)
                     $generateLinkModal.modal('hide')
                     $qrcodeModal.modal('show');
