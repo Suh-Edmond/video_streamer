@@ -96,7 +96,7 @@
 
         .lang {
             position: absolute;
-            left: 96%;
+            right: 2%;
         }
         .nav-item > .nav-link {
             text-decoration: none;
