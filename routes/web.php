@@ -20,7 +20,7 @@ use App\Http\Controllers\UsersController;
 |
 */
 
-Auth::routes();
+Auth::routes(['register' => false]);
 
 Route::middleware('auth')->group(function (){
 
