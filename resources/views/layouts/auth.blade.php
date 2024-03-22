@@ -123,10 +123,9 @@
 
     <div class="d-flex px-4 px-lg-0" style="height: 100vh">
         <div class="col d-none d-lg-block d-flex justify-content-center align-items-center">
-            <div class="position-relative">
+            <div style="height: 100vh;" class="position-relative">
                 <div class="img-bg"></div>
-                <img src="{{ asset('assets/images/bg_auth2.jpg') }}" alt="background image"
-                class="rounded img-flud" width="100%" height="100%">
+                <img src="{{ asset('assets/images/bg_auth2.jpg') }}" alt="background image" class="rounded" height="100%" width="100%">
             </div>
         </div>
         <div class="lang">
